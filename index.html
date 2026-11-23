@@ -12,13 +12,6 @@
 
 
     <style>
-        :root {
-            --gold-bright: #ffd54f;
-            --gold-warm: #f59e0b;
-            --rose-accent: #f43f5e;
-            --midnight-deep: #070412;
-        }
-
         * {
             box-sizing: border-box;
             user-select: none;
@@ -32,7 +25,7 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Quicksand', sans-serif;
-            background: radial-gradient(circle at 50% 44%, #26174a 0%, #110926 52%, #06030f 100%);
+            background: radial-gradient(circle at 50% 44%, #371a56 0%, #200d35 52%, #10061e 100%);
             color: #fff;
         }
 
@@ -47,9 +40,9 @@
             border-radius: 50%;
             background: radial-gradient(
                 circle,
-                rgba(253, 224, 71, 0.42) 0%,
-                rgba(251, 146, 60, 0.24) 36%,
-                rgba(244, 63, 94, 0.12) 56%,
+                rgba(226, 196, 255, 0.42) 0%,
+                rgba(181, 122, 244, 0.24) 36%,
+                rgba(145, 81, 206, 0.12) 56%,
                 rgba(15, 10, 36, 0) 76%
             );
             pointer-events: none;
@@ -104,8 +97,8 @@
         .sparkle-dot {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, #fffbeb 0%, rgba(251, 191, 36, 0.85) 50%, transparent 100%);
-            box-shadow: 0 0 14px 2px rgba(251, 191, 36, 0.65);
+            background: radial-gradient(circle, #fffaff 0%, rgba(205, 166, 246, 0.85) 50%, transparent 100%);
+            box-shadow: 0 0 14px 2px rgba(205, 166, 246, 0.65);
             animation: floatSparkle linear infinite;
         }
 
@@ -127,10 +120,10 @@
         
         .birthday-main-title {
             font-family: 'Playfair Display', serif;
-            background: linear-gradient(180deg, #fffbeb 0%, #fde047 48%, #f59e0b 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #f3e2ff 55%, #cea5fa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 4px 18px rgba(245, 158, 11, 0.55)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
+            filter: drop-shadow(0 4px 18px rgba(186, 136, 236, 0.55)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
             letter-spacing: 0.03em;
         }
 
@@ -138,40 +131,40 @@
             background: rgba(18, 13, 40, 0.88);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1.5px solid rgba(251, 191, 36, 0.45);
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(251, 191, 36, 0.15);
+            border: 1.5px solid rgba(205, 166, 246, 0.45);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(205, 166, 246, 0.15);
         }
 
         .btn-party {
-            background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+            background: linear-gradient(135deg, #b47ae0 0%, #7132ab 100%);
             color: white;
-            border: 1.5px solid rgba(255, 228, 230, 0.8);
-            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+            border: 1.5px solid rgba(244, 223, 255, 0.8);
+            box-shadow: 0 6px 20px rgba(145, 81, 206, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.35);
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
         }
 
         .btn-party:hover {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 10px 26px rgba(244, 63, 94, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.55);
+            box-shadow: 0 10px 26px rgba(145, 81, 206, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.55);
         }
 
         .btn-party:active {
             transform: translateY(1px) scale(0.97);
         }
 
-        .btn-gold {
-            background: linear-gradient(135deg, #fde047 0%, #f59e0b 55%, #d97706 100%);
-            color: #2a1200;
-            border: 1.5px solid #fef9c3;
-            box-shadow: 0 6px 22px rgba(245, 158, 11, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.8);
+        .btn-pearl {
+            background: linear-gradient(135deg, #f5eaff 0%, #bd96e6 55%, #a775d3 100%);
+            color: #29143c;
+            border: 1.5px solid #fff8ff;
+            box-shadow: 0 6px 22px rgba(186, 136, 236, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.8);
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
         }
 
-        .btn-gold:hover {
+        .btn-pearl:hover {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 10px 28px rgba(245, 158, 11, 0.75), inset 0 2px 5px rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 28px rgba(186, 136, 236, 0.75), inset 0 2px 5px rgba(255, 255, 255, 0.9);
         }
 
         .menu-item-btn {
@@ -181,9 +174,9 @@
             border-radius: 12px;
             font-size: 0.82rem;
             font-weight: 700;
-            color: #fef3c7;
+            color: #f3e7fc;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(251, 191, 36, 0.22);
+            border: 1px solid rgba(205, 166, 246, 0.22);
             transition: all 0.2s ease;
             cursor: pointer;
             display: flex;
@@ -192,8 +185,8 @@
         }
 
         .menu-item-btn:hover {
-            background: rgba(251, 191, 36, 0.22);
-            border-color: rgba(251, 191, 36, 0.65);
+            background: rgba(205, 166, 246, 0.22);
+            border-color: rgba(205, 166, 246, 0.65);
             color: #ffffff;
             transform: translateX(2px);
         }
@@ -230,10 +223,10 @@
             inset: 0;
             width: 214px;
             height: 270px;
-            background: #fffdf9;
+            background: #fffaff;
             border-radius: 14px;
             padding: 10px 10px 42px 10px;
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px rgba(251, 191, 36, 0.45);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px rgba(205, 166, 246, 0.45);
             cursor: pointer;
             user-select: none;
             transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -242,7 +235,7 @@
         }
 
         .polaroid-card:hover {
-            box-shadow: 0 18px 38px rgba(251, 191, 36, 0.5), 0 0 0 3px #fbbf24;
+            box-shadow: 0 18px 38px rgba(205, 166, 246, 0.5), 0 0 0 3px #e0c8ff;
         }
 
         .polaroid-photo-frame {
@@ -251,7 +244,7 @@
             height: 190px;
             border-radius: 8px;
             overflow: hidden;
-            background: #1e1b4b;
+            background: #2c1746;
         }
 
         
@@ -294,7 +287,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            color: #fef08a;
+            color: #eee1fc;
             text-align: center;
             padding: 10px 8px 8px;
             transition: opacity 0.55s ease, transform 0.55s ease;
@@ -322,7 +315,7 @@
         .polaroid-caption {
             font-family: 'Caveat', cursive;
             font-size: 1.25rem;
-            color: #1e1b4b;
+            color: #2c1746;
             text-align: center;
             margin-top: 8px;
             line-height: 1.1;
@@ -335,7 +328,7 @@
             height: 38px;
             border-radius: 50%;
             background: conic-gradient(#111 0deg, #333 45deg, #111 90deg, #222 180deg, #333 270deg, #111 360deg);
-            border: 2px solid #fbbf24;
+            border: 2px solid #e0c8ff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -347,7 +340,7 @@
             content: '';
             width: 12px;
             height: 12px;
-            background: radial-gradient(circle, #fde047 0%, #f43f5e 100%);
+            background: radial-gradient(circle, #f5eaff 0%, #b47ae0 100%);
             border-radius: 50%;
             border: 1.5px solid #fff;
         }
@@ -364,8 +357,8 @@
             border-radius: 50%;
             pointer-events: none;
             z-index: 60;
-            background: radial-gradient(circle, #ffffff 0%, #fde047 55%, #f43f5e 100%);
-            box-shadow: 0 0 12px 3px rgba(251, 191, 36, 0.85);
+            background: radial-gradient(circle, #ffffff 0%, #f5eaff 55%, #b47ae0 100%);
+            box-shadow: 0 0 12px 3px rgba(205, 166, 246, 0.85);
             animation: riseSparkleParticle 1.25s ease-out forwards;
         }
 
@@ -405,9 +398,11 @@
 
         
         .letter-paper {
-            background: linear-gradient(180deg, #fffdf9 0%, #fef3c7 100%);
-            background-image: radial-gradient(#f59e0b 0.65px, transparent 0.65px);
-            background-size: 20px 20px;
+            background-color: #fffaff;
+            background-image:
+                radial-gradient(#d8baf3 0.65px, transparent 0.65px),
+                linear-gradient(180deg, #fffaff 0%, #f3e7fc 100%);
+            background-size: 20px 20px, 100% 100%;
         }
     </style>
 </head>
@@ -431,8 +426,8 @@
 
     
     <div class="fixed top-4 right-4 z-40 flex flex-col items-end">
-        <button id="corner-menu-toggle" class="glass-panel px-4 py-2.5 rounded-full text-amber-200 font-bold text-xs sm:text-sm flex items-center gap-2 hover:border-amber-300 transition cursor-pointer">
-            <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <button id="corner-menu-toggle" class="glass-panel px-4 py-2.5 rounded-full text-violet-200 font-bold text-xs sm:text-sm flex items-center gap-2 hover:border-violet-300 transition cursor-pointer">
+            <svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
             <span>Menú</span>
@@ -441,27 +436,27 @@
         <div id="corner-menu-dropdown" class="glass-panel mt-2 w-56 rounded-2xl p-2.5 hidden flex-col gap-1.5">
             <button id="toggle-box-btn" class="menu-item-btn">
                 <span id="btn-label">Desbloquear Caja</span>
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span class="w-2 h-2 rounded-full bg-violet-400"></span>
             </button>
 
             <button id="zoom-cake-btn" class="menu-item-btn hidden">
                 <span id="candles-btn-label">Pastel y Velas</span>
-                <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
             </button>
 
             <button id="open-letter-btn" class="menu-item-btn hidden">
                 <span>Carta de Amor</span>
-                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                <span class="w-2 h-2 rounded-full bg-violet-400"></span>
             </button>
 
             <button id="open-album-btn" class="menu-item-btn hidden">
                 <span>Cápsula de Recuerdos 3D</span>
-                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
             </button>
 
             <button id="party-burst-btn" class="menu-item-btn hidden">
                 <span>Globos y Confeti</span>
-                <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+                <span class="w-2 h-2 rounded-full bg-violet-300"></span>
             </button>
 
         </div>
@@ -470,7 +465,7 @@
     
     <div id="cake-zoom-overlay" class="fixed inset-x-0 bottom-6 z-30 hidden justify-center px-4 pointer-events-none">
         <div class="glass-panel px-4 py-2.5 rounded-full flex items-center gap-3 pointer-events-auto">
-            <button id="blow-all-zoom-btn" class="btn-gold px-5 py-2 rounded-full text-xs sm:text-sm font-extrabold">
+            <button id="blow-all-zoom-btn" class="btn-pearl px-5 py-2 rounded-full text-xs sm:text-sm font-extrabold">
                 <span id="blow-all-zoom-label">Soplar las Velas</span>
             </button>
             <button id="exit-cake-zoom-btn" class="btn-party px-5 py-2 rounded-full text-xs sm:text-sm font-bold">
@@ -484,23 +479,23 @@
 
     
     <div id="album-modal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative transform transition-all text-white">
+        <div class="bg-gradient-to-b from-violet-900 via-purple-950 to-violet-900 border-2 border-violet-400/80 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative transform transition-all text-white">
             <div class="-mt-11 mb-2 flex justify-center">
-                <div class="bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 border-2 border-white shadow-lg px-5 py-1 rounded-full text-slate-950 font-extrabold text-xs tracking-wider uppercase">
+                <div class="bg-gradient-to-r from-violet-300 via-violet-200 to-violet-400 border-2 border-white shadow-lg px-5 py-1 rounded-full text-violet-950 font-extrabold text-xs tracking-wider uppercase">
                     Cápsula de Momentos 3D
                 </div>
             </div>
 
-            <button id="close-modal-btn" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-amber-200 font-bold flex items-center justify-center transition cursor-pointer">
+            <button id="close-modal-btn" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-violet-200 font-bold flex items-center justify-center transition cursor-pointer">
                 ✕
             </button>
 
             <div class="flex items-center justify-between gap-2 mb-1">
                 <div>
-                    <h2 id="modal-title" class="text-lg sm:text-xl font-extrabold text-amber-300" style="font-family: 'Playfair Display', serif;">
+                    <h2 id="modal-title" class="text-lg sm:text-xl font-extrabold text-violet-300" style="font-family: 'Playfair Display', serif;">
                         Nuestra Ruleta de Recuerdos
                     </h2>
-                    <p class="text-[11px] text-amber-100/80 font-medium">
+                    <p class="text-[11px] text-violet-100/80 font-medium">
                         Haz clic en cada regalo para desenvolver nuestra foto
                     </p>
                 </div>
@@ -513,8 +508,8 @@
                     
                     <div class="polaroid-card unrevealed" data-index="0" data-msg="Feliz dia mi amor. Gracias por cada instante mágico que hemos vivido juntos.">
                         <div class="polaroid-photo-frame">
-                            <img class="polaroid-revealed-img" src="3.jpeg" alt="Foto 1" data-fallback-num="1" data-fallback-col="#be123c">
-                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 1" data-gift-num="1" data-gift-col="#e11d48">
+                            <img class="polaroid-revealed-img" src="3.jpeg" alt="Foto 1" data-fallback-num="1" data-fallback-col="#7132ab">
+                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 1" data-gift-num="1" data-gift-col="#9255cf">
                             <div class="polaroid-develop-overlay">
                                
                             </div>
@@ -525,8 +520,8 @@
                     
                     <div class="polaroid-card unrevealed" data-index="1" data-msg="Contigo todos los días se sienten como una celebración. Amo tu sonrisa y tu forma de brillar.">
                         <div class="polaroid-photo-frame">
-                            <img class="polaroid-revealed-img" src="4.jpeg" alt="Foto 2" data-fallback-num="2" data-fallback-col="#7e22ce">
-                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 2" data-gift-num="2" data-gift-col="#9333ea">
+                            <img class="polaroid-revealed-img" src="4.jpeg" alt="Foto 2" data-fallback-num="2" data-fallback-col="#7132ab">
+                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 2" data-gift-num="2" data-gift-col="#8250bc">
                             <div class="polaroid-develop-overlay">
                                
                             </div>
@@ -537,8 +532,8 @@
                     
                     <div class="polaroid-card unrevealed" data-index="2" data-msg="El mejor regalo de la vida es caminar a tu lado y construir sueños juntos. ¡Feliz cumpleaños!">
                         <div class="polaroid-photo-frame">
-                            <img class="polaroid-revealed-img" src="5.jpeg" alt="Foto 3" data-fallback-num="3" data-fallback-col="#0369a1">
-                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 3" data-gift-num="3" data-gift-col="#0284c7">
+                            <img class="polaroid-revealed-img" src="5.jpeg" alt="Foto 3" data-fallback-num="3" data-fallback-col="#654694">
+                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 3" data-gift-num="3" data-gift-col="#7050a8">
                             <div class="polaroid-develop-overlay">
                                
                             </div>
@@ -549,8 +544,8 @@
                     
                     <div class="polaroid-card unrevealed" data-index="3" data-msg="Que cada deseo que pidas hoy al soplar las velas se convierta en realidad. Siempre estaré apoyándote.">
                         <div class="polaroid-photo-frame">
-                            <img class="polaroid-revealed-img" src="6.jpeg" alt="Foto 4" data-fallback-num="4" data-fallback-col="#b45309">
-                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 4" data-gift-num="4" data-gift-col="#d97706">
+                            <img class="polaroid-revealed-img" src="6.jpeg" alt="Foto 4" data-fallback-num="4" data-fallback-col="#8458ad">
+                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 4" data-gift-num="4" data-gift-col="#a775d3">
                             <div class="polaroid-develop-overlay">
                               
                             </div>
@@ -561,8 +556,8 @@
                     
                     <div class="polaroid-card unrevealed" data-index="4" data-msg="Celebro tu vida, tu ternura y todo lo que eres. ¡Que este nuevo año te traiga felicidad infinita!">
                         <div class="polaroid-photo-frame">
-                            <img class="polaroid-revealed-img" src="7.jpeg" alt="Foto 5" data-fallback-num="5" data-fallback-col="#9d174d">
-                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 5" data-gift-num="5" data-gift-col="#db2777">
+                            <img class="polaroid-revealed-img" src="7.jpeg" alt="Foto 5" data-fallback-num="5" data-fallback-col="#632e8f">
+                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 5" data-gift-num="5" data-gift-col="#8c50be">
                             <div class="polaroid-develop-overlay">
                                 
                             </div>
@@ -573,8 +568,8 @@
                     
                     <div class="polaroid-card unrevealed" data-index="5" data-msg="Te amo muchísimo. Feliz cumpleaños, mi amor. Gracias por hacer mi mundo tan bonito.">
                         <div class="polaroid-photo-frame">
-                            <img class="polaroid-revealed-img" src="8.jpeg" alt="Foto 6" data-fallback-num="6" data-fallback-col="#4338ca">
-                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 6" data-gift-num="6" data-gift-col="#4f46e5">
+                            <img class="polaroid-revealed-img" src="8.jpeg" alt="Foto 6" data-fallback-num="6" data-fallback-col="#5c3887">
+                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 6" data-gift-num="6" data-gift-col="#8465b1">
                             <div class="polaroid-develop-overlay">
                                
                             </div>
@@ -586,26 +581,26 @@
 
             
             <div class="flex items-center justify-center gap-3 mt-1">
-                <button id="carousel-prev-btn" class="w-9 h-9 rounded-full bg-white/15 hover:bg-amber-400 hover:text-slate-950 font-extrabold transition flex items-center justify-center cursor-pointer">
+                <button id="carousel-prev-btn" class="w-9 h-9 rounded-full bg-white/15 hover:bg-violet-400 hover:text-violet-950 font-extrabold transition flex items-center justify-center cursor-pointer">
                     ‹
                 </button>
-                <button id="reveal-all-polaroids-btn" class="px-4 py-1.5 rounded-full bg-amber-400/20 hover:bg-amber-400/35 border border-amber-300/60 text-amber-200 text-xs font-bold transition cursor-pointer">
+                <button id="reveal-all-polaroids-btn" class="px-4 py-1.5 rounded-full bg-violet-400/20 hover:bg-violet-400/35 border border-violet-300/60 text-violet-200 text-xs font-bold transition cursor-pointer">
                     Abrir Todos los Regalos
                 </button>
-                <button id="carousel-next-btn" class="w-9 h-9 rounded-full bg-white/15 hover:bg-amber-400 hover:text-slate-950 font-extrabold transition flex items-center justify-center cursor-pointer">
+                <button id="carousel-next-btn" class="w-9 h-9 rounded-full bg-white/15 hover:bg-violet-400 hover:text-violet-950 font-extrabold transition flex items-center justify-center cursor-pointer">
                     ›
                 </button>
             </div>
 
             
-            <div id="album-message-box" class="mt-3 bg-slate-950/80 border border-amber-400/50 rounded-2xl p-3 text-center shadow-inner min-h-[60px] flex items-center justify-center">
-                <p id="album-message-text" class="text-amber-100 font-semibold text-xs sm:text-sm italic">
+            <div id="album-message-box" class="mt-3 bg-violet-950/80 border border-violet-400/50 rounded-2xl p-3 text-center shadow-inner min-h-[60px] flex items-center justify-center">
+                <p id="album-message-text" class="text-violet-100 font-semibold text-xs sm:text-sm italic">
                     Feliz cumpleaños mi amor. Gracias por cada instante mágico que hemos vivido juntos.
                 </p>
             </div>
 
             <div class="mt-3 flex justify-center">
-                <button id="modal-heart-burst-btn" class="btn-gold px-5 py-2 rounded-full text-xs sm:text-sm font-extrabold">
+                <button id="modal-heart-burst-btn" class="btn-pearl px-5 py-2 rounded-full text-xs sm:text-sm font-extrabold">
                     Lanzar Globos y Confeti
                 </button>
             </div>
@@ -614,26 +609,26 @@
 
     
     <div id="letter-modal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
-        <div class="letter-paper border-4 border-amber-400 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative transform transition-all">
+        <div class="letter-paper border-4 border-violet-400 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative transform transition-all">
             <div class="-mt-12 mb-3 flex justify-center">
-                <div class="bg-gradient-to-r from-rose-600 to-pink-600 border-4 border-white shadow-md px-5 py-1.5 rounded-full text-white font-bold text-xs tracking-wider uppercase">
+                <div class="bg-gradient-to-r from-purple-600 to-violet-600 border-4 border-white shadow-md px-5 py-1.5 rounded-full text-white font-bold text-xs tracking-wider uppercase">
                     Carta Para Mi Amor
                 </div>
             </div>
 
-            <button id="close-letter-btn" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-amber-200 hover:bg-amber-300 text-amber-950 font-bold flex items-center justify-center transition cursor-pointer">
+            <button id="close-letter-btn" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-violet-200 hover:bg-violet-300 text-violet-950 font-bold flex items-center justify-center transition cursor-pointer">
                 ✕
             </button>
 
             <div class="text-center mb-3">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-rose-800" style="font-family: 'Playfair Display', serif;">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-purple-800" style="font-family: 'Playfair Display', serif;">
                     ¡Feliz Cumpleaños, Mi Vida!
                 </h2>
-                <div class="w-28 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-1"></div>
+                <div class="w-28 h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent mx-auto mt-1"></div>
             </div>
 
-            <div class="bg-white/90 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 shadow-inner text-slate-800 text-xs sm:text-sm leading-relaxed space-y-2.5 max-h-[52vh] overflow-y-auto">
-                <p class="font-bold text-rose-700 text-sm sm:text-base" style="font-family: 'Playfair Display', serif;">
+            <div class="bg-white/90 border-2 border-violet-300 rounded-2xl p-4 sm:p-5 shadow-inner text-violet-800 text-xs sm:text-sm leading-relaxed space-y-2.5 max-h-[52vh] overflow-y-auto">
+                <p class="font-bold text-purple-700 text-sm sm:text-base" style="font-family: 'Playfair Display', serif;">
                     Mi amor:
                 </p>
                 <p>
@@ -645,14 +640,14 @@
                 <p>
                     Prometo seguir cuidándote, celebrando tus logros, abrazándote fuerte y sumando miles de recuerdos inolvidables juntos.
                 </p>
-                <p class="text-right font-bold text-rose-700 pt-1" style="font-family: 'Playfair Display', serif;">
+                <p class="text-right font-bold text-purple-700 pt-1" style="font-family: 'Playfair Display', serif;">
                     Con todo mi amor,<br>
                     ¡Feliz Dia Mi Vida!
                 </p>
             </div>
 
             <div class="mt-4 flex flex-wrap justify-center gap-2.5">
-                <button id="letter-celebrate-btn" class="btn-gold px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold">
+                <button id="letter-celebrate-btn" class="btn-pearl px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold">
                     Celebrar con Música y Confeti
                 </button>
                 <button id="letter-to-album-btn" class="btn-party px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold">
@@ -664,7 +659,7 @@
 
     <audio id="birthday-audio" src="./cumpleanos.wav" preload="auto"></audio>
     <button id="birthday-audio-retry" type="button" hidden
-        class="btn-gold fixed bottom-4 left-1/2 -translate-x-1/2 z-50 rounded-full px-5 py-2 text-sm font-bold">
+        class="btn-pearl fixed bottom-4 left-1/2 -translate-x-1/2 z-50 rounded-full px-5 py-2 text-sm font-bold">
         Reproducir música
     </button>
 
@@ -675,28 +670,28 @@
                 <defs>
                     <radialGradient id="gBg${num}" cx="50%" cy="45%" r="65%">
                         <stop offset="0%" stop-color="${hexColor}"/>
-                        <stop offset="100%" stop-color="#1e1b4b"/>
+                        <stop offset="100%" stop-color="#2c1746"/>
                     </radialGradient>
                 </defs>
                 <rect width="300" height="300" fill="url(#gBg${num})"/>
-                <g stroke="#fde047" stroke-width="3" opacity="0.35">
-                    <circle cx="48" cy="52" r="5" fill="#fde047"/>
-                    <circle cx="250" cy="60" r="6" fill="#fde047"/>
-                    <circle cx="52" cy="245" r="5" fill="#fde047"/>
-                    <circle cx="252" cy="240" r="6" fill="#fde047"/>
+                <g stroke="#f5eaff" stroke-width="3" opacity="0.35">
+                    <circle cx="48" cy="52" r="5" fill="#f5eaff"/>
+                    <circle cx="250" cy="60" r="6" fill="#f5eaff"/>
+                    <circle cx="52" cy="245" r="5" fill="#f5eaff"/>
+                    <circle cx="252" cy="240" r="6" fill="#f5eaff"/>
                 </g>
                 
-                <rect x="75" y="115" width="150" height="125" rx="10" fill="${hexColor}" stroke="#fde047" stroke-width="5"/>
+                <rect x="75" y="115" width="150" height="125" rx="10" fill="${hexColor}" stroke="#f5eaff" stroke-width="5"/>
                 
-                <rect x="65" y="88" width="170" height="34" rx="8" fill="${hexColor}" stroke="#fde047" stroke-width="5"/>
+                <rect x="65" y="88" width="170" height="34" rx="8" fill="${hexColor}" stroke="#f5eaff" stroke-width="5"/>
                 
-                <rect x="135" y="88" width="30" height="152" fill="#fde047"/>
-                <rect x="75" y="162" width="150" height="26" fill="#fde047"/>
+                <rect x="135" y="88" width="30" height="152" fill="#f5eaff"/>
+                <rect x="75" y="162" width="150" height="26" fill="#f5eaff"/>
                 
-                <ellipse cx="122" cy="74" rx="28" ry="15" transform="rotate(-18 122 74)" fill="#fde047" stroke="#78350f" stroke-width="3"/>
-                <ellipse cx="178" cy="74" rx="28" ry="15" transform="rotate(18 178 74)" fill="#fde047" stroke="#78350f" stroke-width="3"/>
-                <circle cx="150" cy="80" r="12" fill="#f59e0b" stroke="#fef08a" stroke-width="3"/>
-                <text x="150" y="50" text-anchor="middle" fill="#fffbeb" font-family="Quicksand, sans-serif" font-weight="700" font-size="18">REGALO #${num}</text>
+                <ellipse cx="122" cy="74" rx="28" ry="15" transform="rotate(-18 122 74)" fill="#f5eaff" stroke="#71479b" stroke-width="3"/>
+                <ellipse cx="178" cy="74" rx="28" ry="15" transform="rotate(18 178 74)" fill="#f5eaff" stroke="#71479b" stroke-width="3"/>
+                <circle cx="150" cy="80" r="12" fill="#bd96e6" stroke="#eee1fc" stroke-width="3"/>
+                <text x="150" y="50" text-anchor="middle" fill="#fffaff" font-family="Quicksand, sans-serif" font-weight="700" font-size="18">REGALO #${num}</text>
             </svg>`;
             return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
         }
@@ -706,13 +701,13 @@
                 <defs>
                     <linearGradient id="pBg${num}" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="${hexColor}"/>
-                        <stop offset="100%" stop-color="#0f172a"/>
+                        <stop offset="100%" stop-color="#1b102c"/>
                     </linearGradient>
                 </defs>
                 <rect width="300" height="300" fill="url(#pBg${num})"/>
-                <rect x="16" y="16" width="268" height="268" rx="14" fill="none" stroke="#fde047" stroke-width="3" opacity="0.65"/>
-                <path d="M150 215 C95 170 68 128 68 95 C68 68 90 50 115 50 C133 50 145 62 150 74 C155 62 167 50 185 50 C210 50 232 68 232 95 C232 128 205 170 150 215 Z" fill="#fb7185" stroke="#fde047" stroke-width="4"/>
-                <text x="150" y="255" text-anchor="middle" fill="#fef08a" font-family="Georgia, serif" font-weight="bold" font-size="22">Foto Especial ${num}</text>
+                <rect x="16" y="16" width="268" height="268" rx="14" fill="none" stroke="#f5eaff" stroke-width="3" opacity="0.65"/>
+                <path d="M150 215 C95 170 68 128 68 95 C68 68 90 50 115 50 C133 50 145 62 150 74 C155 62 167 50 185 50 C210 50 232 68 232 95 C232 128 205 170 150 215 Z" fill="#dcbdf8" stroke="#f5eaff" stroke-width="4"/>
+                <text x="150" y="255" text-anchor="middle" fill="#eee1fc" font-family="Georgia, serif" font-weight="bold" font-size="22">Foto Especial ${num}</text>
             </svg>`;
             return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
         }
@@ -720,7 +715,7 @@
         function attachImageFallbacks() {
             document.querySelectorAll('.polaroid-gift-cover').forEach(img => {
                 const num = img.getAttribute('data-gift-num') || '1';
-                const col = img.getAttribute('data-gift-col') || '#e11d48';
+                const col = img.getAttribute('data-gift-col') || '#9255cf';
                 img.onerror = function () {
                     this.onerror = null;
                     this.src = buildGiftFallbackDataUri(num, col);
@@ -729,7 +724,7 @@
 
             document.querySelectorAll('.polaroid-revealed-img').forEach(img => {
                 const num = img.getAttribute('data-fallback-num') || '1';
-                const col = img.getAttribute('data-fallback-col') || '#be123c';
+                const col = img.getAttribute('data-fallback-col') || '#7132ab';
                 img.onerror = function () {
                     this.onerror = null;
                     this.src = buildPhotoFallbackDataUri(num, col);
@@ -772,7 +767,7 @@
 
         function spawnScreenBalloonsAndConfetti() {
 
-            const confColors = ['#fde047', '#f43f5e', '#38bdf8', '#ffffff', '#c084fc', '#4ade80', '#fb923c'];
+            const confColors = ['#f5eaff', '#b47ae0', '#b78be7', '#ffffff', '#bd94ed', '#d9c5f5', '#c59ae9'];
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight * 0.52;
 
@@ -819,15 +814,15 @@
             return tex;
         }
 
-        function drawSoftInsetGoldFrame2D(ctx, w, h, pad = 30) {
+        function drawSoftInsetFrame2D(ctx, w, h, pad = 30) {
             ctx.save();
 
-            ctx.strokeStyle = '#fde047';
+            ctx.strokeStyle = '#f5eaff';
             ctx.lineWidth = 12;
             ctx.lineJoin = 'round';
             ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
 
-            ctx.strokeStyle = 'rgba(254, 249, 195, 0.65)';
+            ctx.strokeStyle = 'rgba(248, 231, 255, 0.65)';
             ctx.lineWidth = 4;
             ctx.strokeRect(pad + 16, pad + 16, w - (pad + 16) * 2, h - (pad + 16) * 2);
             ctx.restore();
@@ -835,8 +830,8 @@
 
         function drawBuntingFlags2D(ctx, x1, y1, x2, y2, flagCount = 9) {
             ctx.save();
-            const colors = ['#fde047', '#38bdf8', '#f472b6', '#c084fc', '#4ade80', '#fb923c'];
-            ctx.strokeStyle = '#fef08a';
+            const colors = ['#f5eaff', '#b78be7', '#c4a0e9', '#bd94ed', '#d9c5f5', '#c59ae9'];
+            ctx.strokeStyle = '#eee1fc';
             ctx.lineWidth = 4;
 
             ctx.beginPath();
@@ -879,13 +874,13 @@
             ctx.scale(scale, scale);
 
             const balloons = [
-                { x: -28, y: -10, r: 27, light: '#fda4af', mid: '#f43f5e', dark: '#9f1239', rot: -0.14 },
-                { x: 26, y: -6, r: 27, light: '#fef08a', mid: '#eab308', dark: '#854d0e', rot: 0.14 },
-                { x: 0, y: -32, r: 30, light: '#f5d0fe', mid: '#c084fc', dark: '#581c87', rot: 0 }
+                { x: -28, y: -10, r: 27, light: '#eed9ff', mid: '#b47ae0', dark: '#5c268d', rot: -0.14 },
+                { x: 26, y: -6, r: 27, light: '#eee1fc', mid: '#d7b7f4', dark: '#a275c5', rot: 0.14 },
+                { x: 0, y: -32, r: 30, light: '#f6e7ff', mid: '#bd94ed', dark: '#542d80', rot: 0 }
             ];
 
             ctx.lineWidth = 3;
-            ctx.strokeStyle = 'rgba(254, 240, 138, 0.85)';
+            ctx.strokeStyle = 'rgba(239, 215, 255, 0.85)';
             balloons.forEach(b => {
                 ctx.beginPath();
                 ctx.moveTo(b.x, b.y + b.r * 1.18);
@@ -905,7 +900,7 @@
                 grad.addColorStop(1, b.dark);
 
                 ctx.fillStyle = grad;
-                ctx.strokeStyle = '#4c0519';
+                ctx.strokeStyle = '#35184d';
                 ctx.lineWidth = 3;
 
                 ctx.beginPath();
@@ -938,11 +933,11 @@
             ctx.restore();
         }
 
-        function drawGiftBox2D(ctx, cx, cy, scale = 1, boxCol = '#38bdf8', ribCol = '#fde047') {
+        function drawGiftBox2D(ctx, cx, cy, scale = 1, boxCol = '#b78be7', ribCol = '#f5eaff') {
             ctx.save();
             ctx.translate(cx, cy);
             ctx.scale(scale, scale);
-            ctx.strokeStyle = '#4c0519';
+            ctx.strokeStyle = '#35184d';
             ctx.lineWidth = 4;
 
             ctx.fillStyle = boxCol;
@@ -965,12 +960,12 @@
             ctx.restore();
         }
 
-        function drawGoldenCrown2D(ctx, cx, cy, scale = 1) {
+        function drawPearlCrown2D(ctx, cx, cy, scale = 1) {
             ctx.save();
             ctx.translate(cx, cy);
             ctx.scale(scale, scale);
-            ctx.fillStyle = '#fde047';
-            ctx.strokeStyle = '#78350f';
+            ctx.fillStyle = '#f5eaff';
+            ctx.strokeStyle = '#71479b';
             ctx.lineWidth = 4.5;
             ctx.lineJoin = 'round';
 
@@ -986,17 +981,17 @@
             ctx.fill();
             ctx.stroke();
 
-            ctx.fillStyle = '#e11d48';
+            ctx.fillStyle = '#9255cf';
             ctx.beginPath();
             ctx.arc(0, 6, 7, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
 
-        function drawGoldenStarburst2D(ctx, cx, cy, radius = 36) {
+        function drawPearlStarburst2D(ctx, cx, cy, radius = 36) {
             ctx.save();
             ctx.translate(cx, cy);
-            ctx.fillStyle = '#fde047';
+            ctx.fillStyle = '#f5eaff';
             ctx.beginPath();
             for (let i = 0; i < 8; i++) {
                 const ang = (i * Math.PI) / 4;
@@ -1017,16 +1012,16 @@
             const ctx = canvas.getContext('2d');
 
             const bgGrad = ctx.createRadialGradient(560, 420, 60, 512, 400, 660);
-            bgGrad.addColorStop(0, '#e11d48');
-            bgGrad.addColorStop(0.52, '#9f1239');
-            bgGrad.addColorStop(1, '#580822');
+            bgGrad.addColorStop(0, '#9255cf');
+            bgGrad.addColorStop(0.52, '#5c268d');
+            bgGrad.addColorStop(1, '#39135d');
             ctx.fillStyle = bgGrad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 32);
+            drawSoftInsetFrame2D(ctx, canvas.width, canvas.height, 32);
             drawBuntingFlags2D(ctx, 56, 56, 968, 56, 11);
 
-            const confCols = ['#fde047', '#fffbeb', '#38bdf8', '#f472b6', '#fcd34d'];
+            const confCols = ['#f5eaff', '#fffaff', '#b78be7', '#c4a0e9', '#c598ef'];
             for (let i = 0; i < 45; i++) {
                 ctx.fillStyle = confCols[i % confCols.length];
                 ctx.beginPath();
@@ -1036,26 +1031,26 @@
 
             drawBalloonCluster2D(ctx, 880, 260, 0.92);
             drawBalloonCluster2D(ctx, 185, 610, 0.88);
-            drawGoldenCrown2D(ctx, 645, 310, 1.05);
-            drawGiftBox2D(ctx, 480, 665, 0.85, '#0284c7', '#fde047');
-            drawGiftBox2D(ctx, 810, 665, 0.85, '#9333ea', '#fde047');
-            drawGoldenStarburst2D(ctx, 645, 665, 32);
+            drawPearlCrown2D(ctx, 645, 310, 1.05);
+            drawGiftBox2D(ctx, 480, 665, 0.85, '#7050a8', '#f5eaff');
+            drawGiftBox2D(ctx, 810, 665, 0.85, '#8250bc', '#f5eaff');
+            drawPearlStarburst2D(ctx, 645, 665, 32);
 
             ctx.save();
             ctx.textAlign = 'center';
             ctx.font = 'italic 800 54px "Playfair Display", Georgia, serif';
-            ctx.strokeStyle = '#3b0414';
+            ctx.strokeStyle = '#211034';
             ctx.lineWidth = 12;
             ctx.lineJoin = 'round';
             ctx.strokeText('¡Feliz Cumpleaños,', 645, 445);
-            ctx.fillStyle = '#fde047';
+            ctx.fillStyle = '#f5eaff';
             ctx.fillText('¡Feliz Cumpleaños,', 645, 445);
 
             ctx.font = '900 76px "Fredoka", "Quicksand", sans-serif';
-            ctx.strokeStyle = '#3b0414';
+            ctx.strokeStyle = '#211034';
             ctx.lineWidth = 14;
             ctx.strokeText('Mi Reina!', 645, 540);
-            ctx.fillStyle = '#fffbeb';
+            ctx.fillStyle = '#fffaff';
             ctx.fillText('Mi Reina!', 645, 540);
             ctx.restore();
 
@@ -1069,18 +1064,18 @@
             const ctx = canvas.getContext('2d');
 
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grad.addColorStop(0, '#be123c');
-            grad.addColorStop(1, '#650924');
+            grad.addColorStop(0, '#7132ab');
+            grad.addColorStop(1, '#371553');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 26);
+            drawSoftInsetFrame2D(ctx, canvas.width, canvas.height, 26);
             drawBuntingFlags2D(ctx, 44, 42, 980, 42, 10);
 
             drawBalloonCluster2D(ctx, 150, 285, 1.08);
-            drawGiftBox2D(ctx, 360, 320, 1.0, '#0284c7', '#fde047');
-            drawGoldenStarburst2D(ctx, 512, 320, 38);
-            drawGiftBox2D(ctx, 680, 320, 1.0, '#9333ea', '#fde047');
+            drawGiftBox2D(ctx, 360, 320, 1.0, '#7050a8', '#f5eaff');
+            drawPearlStarburst2D(ctx, 512, 320, 38);
+            drawGiftBox2D(ctx, 680, 320, 1.0, '#8250bc', '#f5eaff');
             drawBalloonCluster2D(ctx, 870, 285, 1.08);
 
             return configureStableCanvasTexture(canvas);
@@ -1093,20 +1088,20 @@
             const ctx = canvas.getContext('2d');
 
             const grad = ctx.createRadialGradient(512, 400, 60, 512, 400, 560);
-            grad.addColorStop(0, '#501842');
-            grad.addColorStop(0.65, '#2b1233');
-            grad.addColorStop(1, '#180920');
+            grad.addColorStop(0, '#542679');
+            grad.addColorStop(0.65, '#34194f');
+            grad.addColorStop(1, '#1c0b30');
 
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 36);
+            drawSoftInsetFrame2D(ctx, canvas.width, canvas.height, 36);
 
             const drawLedDot = (x, y) => {
                 const rad = ctx.createRadialGradient(x, y, 2, x, y, 20);
-                rad.addColorStop(0, '#fffbeb');
-                rad.addColorStop(0.45, '#fbbf24');
-                rad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+                rad.addColorStop(0, '#fffaff');
+                rad.addColorStop(0.45, '#e0c8ff');
+                rad.addColorStop(1, 'rgba(205, 166, 246, 0)');
                 ctx.fillStyle = rad;
                 ctx.beginPath();
                 ctx.arc(x, y, 20, 0, Math.PI * 2);
@@ -1128,8 +1123,8 @@
             }
 
             drawBalloonCluster2D(ctx, 250, 290, 1.15);
-            drawGoldenCrown2D(ctx, 250, 520, 1.15);
-            drawGiftBox2D(ctx, 250, 635, 1.0, '#f43f5e', '#fde047');
+            drawPearlCrown2D(ctx, 250, 520, 1.15);
+            drawGiftBox2D(ctx, 250, 635, 1.0, '#b47ae0', '#f5eaff');
 
             ctx.save();
             ctx.translate(685, 395);
@@ -1146,14 +1141,14 @@
             };
 
             drawHeartPath(1.14);
-            ctx.fillStyle = '#3b0a26';
+            ctx.fillStyle = '#271239';
             ctx.fill();
-            ctx.strokeStyle = '#fbbf24';
+            ctx.strokeStyle = '#e0c8ff';
             ctx.lineWidth = 8;
             ctx.stroke();
 
             drawHeartPath(1.02);
-            ctx.strokeStyle = '#f43f5e';
+            ctx.strokeStyle = '#b47ae0';
             ctx.lineWidth = 4;
             ctx.stroke();
 
@@ -1162,15 +1157,15 @@
 
             const drawCrispText = (text, y, font, fillCol) => {
                 ctx.font = font;
-                ctx.strokeStyle = '#180510';
+                ctx.strokeStyle = '#170c23';
                 ctx.lineWidth = 8;
                 ctx.strokeText(text, 0, y);
                 ctx.fillStyle = fillCol;
                 ctx.fillText(text, 0, y);
             };
 
-            drawCrispText('Happy Birthday', -30, '900 46px "Playfair Display", serif', '#fb7185');
-            drawCrispText('Te Amo', 48, '900 48px "Playfair Display", serif', '#fde047');
+            drawCrispText('Happy Birthday', -30, '900 46px "Playfair Display", serif', '#dcbdf8');
+            drawCrispText('Te Amo', 48, '900 48px "Playfair Display", serif', '#f5eaff');
 
             ctx.restore();
 
@@ -1184,13 +1179,13 @@
             const ctx = canvas.getContext('2d');
 
             const rad = ctx.createRadialGradient(512, 384, 50, 512, 384, 600);
-            rad.addColorStop(0, '#3b1538');
-            rad.addColorStop(0.6, '#270f2b');
-            rad.addColorStop(1, '#16081c');
+            rad.addColorStop(0, '#482468');
+            rad.addColorStop(0.6, '#311849');
+            rad.addColorStop(1, '#1a0c2b');
             ctx.fillStyle = rad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.strokeStyle = 'rgba(251, 191, 36, 0.16)';
+            ctx.strokeStyle = 'rgba(205, 166, 246, 0.16)';
             ctx.lineWidth = 2;
             const step = 96;
             for (let x = -768; x < 1792; x += step) {
@@ -1205,15 +1200,15 @@
                 ctx.stroke();
             }
 
-            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 28);
+            drawSoftInsetFrame2D(ctx, canvas.width, canvas.height, 28);
 
-            const cols = ['#fde047', '#fb7185', '#38bdf8', '#c084fc', '#4ade80'];
+            const cols = ['#f5eaff', '#dcbdf8', '#b78be7', '#bd94ed', '#d9c5f5'];
             for (let i = 0; i < 65; i++) {
                 const px = 60 + ((i * 173) % 900);
                 const py = 60 + ((i * 139) % 648);
                 ctx.fillStyle = cols[i % cols.length];
                 if (i % 3 === 0) {
-                    drawGoldenStarburst2D(ctx, px, py, 10);
+                    drawPearlStarburst2D(ctx, px, py, 10);
                 } else {
                     ctx.beginPath();
                     ctx.arc(px, py, 4.5, 0, Math.PI * 2);
@@ -1317,27 +1312,27 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xfff4e6, 0.82);
+            const ambientLight = new THREE.AmbientLight(0xf6ecff, 0.82);
             scene.add(ambientLight);
 
-            const mainDirLight = new THREE.DirectionalLight(0xfffbeb, 0.78);
+            const mainDirLight = new THREE.DirectionalLight(0xfffaff, 0.78);
             mainDirLight.position.set(4, 9, 7);
             mainDirLight.castShadow = true;
             mainDirLight.shadow.mapSize.width = 1024;
             mainDirLight.shadow.mapSize.height = 1024;
             scene.add(mainDirLight);
 
-            const rimLightLeft = new THREE.DirectionalLight(0xfde047, 0.65);
+            const rimLightLeft = new THREE.DirectionalLight(0xf5eaff, 0.65);
             rimLightLeft.position.set(-6, 5, -5);
             scene.add(rimLightLeft);
 
-            const rimLightRight = new THREE.DirectionalLight(0xfb7185, 0.45);
+            const rimLightRight = new THREE.DirectionalLight(0xdcbdf8, 0.45);
             rimLightRight.position.set(6, 4, -4);
             scene.add(rimLightRight);
 
-            const warmInteriorLight = new THREE.PointLight(0xffca28, 0.65, 7.5);
-            warmInteriorLight.position.set(0, 1.3, 0.35);
-            scene.add(warmInteriorLight);
+            const interiorLight = new THREE.PointLight(0xdfc2ff, 0.65, 7.5);
+            interiorLight.position.set(0, 1.3, 0.35);
+            scene.add(interiorLight);
 
             partyGroup = new THREE.Group();
             scene.add(partyGroup);
@@ -1354,8 +1349,8 @@
         const REALISTIC_BALLOON_STYLES = [
 
             {
-                color: 0xfbbf24,
-                emissive: 0x78350f,
+                color: 0xe0c8ff,
+                emissive: 0x71479b,
                 emissiveIntensity: 0.16,
                 roughness: 0.24,
                 metalness: 0.52,
@@ -1364,8 +1359,8 @@
             },
 
             {
-                color: 0xe11d48,
-                emissive: 0x4c0519,
+                color: 0x9255cf,
+                emissive: 0x35184d,
                 emissiveIntensity: 0.18,
                 roughness: 0.32,
                 metalness: 0.08,
@@ -1374,8 +1369,8 @@
             },
 
             {
-                color: 0xf472b6,
-                emissive: 0x500724,
+                color: 0xc4a0e9,
+                emissive: 0x62378c,
                 emissiveIntensity: 0.14,
                 roughness: 0.34,
                 metalness: 0.06,
@@ -1384,8 +1379,8 @@
             },
 
             {
-                color: 0xfffbeb,
-                emissive: 0x451a03,
+                color: 0xfffaff,
+                emissive: 0x593780,
                 emissiveIntensity: 0.10,
                 roughness: 0.30,
                 metalness: 0.05,
@@ -1394,8 +1389,8 @@
             },
 
             {
-                color: 0xa855f7,
-                emissive: 0x3b0764,
+                color: 0xa26bd9,
+                emissive: 0x39135d,
                 emissiveIntensity: 0.15,
                 roughness: 0.34,
                 metalness: 0.10,
@@ -1479,8 +1474,8 @@
             });
 
             const goldTieMat = new THREE.MeshStandardMaterial({
-                color: 0xfde047,
-                emissive: 0x78350f,
+                color: 0xf5eaff,
+                emissive: 0x71479b,
                 emissiveIntensity: 0.22,
                 roughness: 0.25,
                 metalness: 0.65
@@ -1502,8 +1497,8 @@
 
             if (includeSilkString) {
                 const stringMat = new THREE.MeshStandardMaterial({
-                    color: 0xfef08a,
-                    emissive: 0x78350f,
+                    color: 0xeee1fc,
+                    emissive: 0x71479b,
                     emissiveIntensity: 0.18,
                     roughness: 0.35,
                     metalness: 0.4
@@ -1535,8 +1530,8 @@
 
             const pedDiscGeo = new THREE.CylinderGeometry(3.05, 3.22, 0.07, 48);
             const pedDiscMat = new THREE.MeshStandardMaterial({
-                color: 0x4c0519,
-                emissive: 0x3b0414,
+                color: 0x35184d,
+                emissive: 0x211034,
                 emissiveIntensity: 0.45,
                 roughness: 0.35,
                 metalness: 0.35
@@ -1545,29 +1540,29 @@
             pedDiscMesh.receiveShadow = true;
             pedestalGroup.add(pedDiscMesh);
 
-            const pedGoldRingGeo = new THREE.RingGeometry(2.92, 3.18, 64);
-            pedGoldRingGeo.rotateX(-Math.PI / 2);
-            const pedGoldRingMat = new THREE.MeshBasicMaterial({
-                color: 0xfde047,
+            const pedestalRingGeo = new THREE.RingGeometry(2.92, 3.18, 64);
+            pedestalRingGeo.rotateX(-Math.PI / 2);
+            const pedestalRingMat = new THREE.MeshBasicMaterial({
+                color: 0xf5eaff,
                 side: THREE.DoubleSide,
                 transparent: true,
                 opacity: 0.85
             });
-            const pedGoldRingMesh = new THREE.Mesh(pedGoldRingGeo, pedGoldRingMat);
-            pedGoldRingMesh.position.y = 0.038;
-            pedestalGroup.add(pedGoldRingMesh);
+            const pedestalRingMesh = new THREE.Mesh(pedestalRingGeo, pedestalRingMat);
+            pedestalRingMesh.position.y = 0.038;
+            pedestalGroup.add(pedestalRingMesh);
 
             const boxWallMat = new THREE.MeshStandardMaterial({
-                color: 0xbe123c,
-                emissive: 0x4c0519,
+                color: 0x7132ab,
+                emissive: 0x35184d,
                 emissiveIntensity: 0.42,
                 roughness: 0.4,
                 metalness: 0.18
             });
 
             const innerWallMat = new THREE.MeshStandardMaterial({
-                color: 0x3b0f2b,
-                emissive: 0x1a0614,
+                color: 0x2c1644,
+                emissive: 0x1e0b32,
                 emissiveIntensity: 0.25,
                 roughness: 0.8,
                 metalness: 0.05
@@ -1581,8 +1576,8 @@
             });
 
             const ribbonMat = new THREE.MeshStandardMaterial({
-                color: 0xfde047,
-                emissive: 0xb45309,
+                color: 0xffffff,
+                emissive: 0x8458ad,
                 emissiveIntensity: 0.24,
                 roughness: 0.26,
                 metalness: 0.52,
@@ -1605,7 +1600,7 @@
                 boxWallMat,
                 new THREE.MeshStandardMaterial({
                     map: frontTex,
-                    emissive: 0x3b0414,
+                    emissive: 0x211034,
                     emissiveIntensity: 0.22,
                     roughness: 0.52,
                     metalness: 0.12
@@ -1691,7 +1686,7 @@
             boxEnclosureGroup.add(frontRibbonMesh);
 
             const ledBubbleGeo = new THREE.SphereGeometry(0.048, 12, 12);
-            const ledBubbleMat = new THREE.MeshBasicMaterial({ color: 0xfde047 });
+            const ledBubbleMat = new THREE.MeshBasicMaterial({ color: 0xf5eaff });
             for (let i = -3; i <= 3; i++) {
                 const dot = new THREE.Mesh(ledBubbleGeo, ledBubbleMat);
                 dot.position.set(i * 0.56, 0.35, -D / 2 + wallT + 0.03);
@@ -1726,7 +1721,7 @@
                 boxWallMat,
                 new THREE.MeshStandardMaterial({
                     map: lidTopTex,
-                    emissive: 0x3b0414,
+                    emissive: 0x211034,
                     emissiveIntensity: 0.22,
                     roughness: 0.52,
                     metalness: 0.12
@@ -1784,7 +1779,7 @@
             rightTab.position.set(lidW / 2 + 0.015, -lipHeight / 2, horizZ);
             lidCrossRibbonMesh.add(rightTab);
 
-            bowGroup = create3DPinkBow(ribbonMat);
+            bowGroup = createRibbonBow3D(ribbonMat);
             bowGroup.scale.setScalar(0.76);
             bowGroup.position.set(ribbonX, lidThick + 0.055, horizZ);
             lidCrossRibbonMesh.add(bowGroup);
@@ -1793,43 +1788,43 @@
         }
 
         function buildLockAndKey3D(D, H) {
-            const metallicGoldMat = new THREE.MeshStandardMaterial({
-                color: 0xfbbf24,
-                emissive: 0x78350f,
+            const metallicPearlMat = new THREE.MeshStandardMaterial({
+                color: 0xe0c8ff,
+                emissive: 0x71479b,
                 emissiveIntensity: 0.24,
                 roughness: 0.22,
                 metalness: 0.72
             });
 
             const brushedSilverMat = new THREE.MeshStandardMaterial({
-                color: 0xe2e8f0,
-                emissive: 0x334155,
+                color: 0xf1eafa,
+                emissive: 0x554364,
                 emissiveIntensity: 0.14,
                 roughness: 0.20,
                 metalness: 0.75
             });
 
             const rubyGemMat = new THREE.MeshStandardMaterial({
-                color: 0xe11d48,
-                emissive: 0x881337,
+                color: 0x9255cf,
+                emissive: 0x4d2374,
                 emissiveIntensity: 0.32,
                 roughness: 0.15,
                 metalness: 0.2
             });
 
             const darkKeyholeMat = new THREE.MeshBasicMaterial({
-                color: 0x090406,
+                color: 0x190c26,
                 polygonOffset: true,
                 polygonOffsetFactor: -2,
                 polygonOffsetUnits: -2
             });
 
-            lockLight = new THREE.PointLight(0xfff3c4, 0.75, 4.2);
+            lockLight = new THREE.PointLight(0xeddbff, 0.75, 4.2);
             lockLight.position.set(0, H / 2 - 0.1, D / 2 + 1.15);
             boxEnclosureGroup.add(lockLight);
 
             const haspGeo = new THREE.BoxGeometry(0.36, 0.44, 0.045);
-            const haspMesh = new THREE.Mesh(haspGeo, metallicGoldMat);
+            const haspMesh = new THREE.Mesh(haspGeo, metallicPearlMat);
             haspMesh.position.set(0, H / 2 - 0.14, D / 2 + 0.045);
             boxEnclosureGroup.add(haspMesh);
 
@@ -1838,7 +1833,7 @@
             boxEnclosureGroup.add(padlockGroup);
 
             const bodyGeo = new THREE.BoxGeometry(0.48, 0.44, 0.18);
-            const bodyMesh = new THREE.Mesh(bodyGeo, metallicGoldMat);
+            const bodyMesh = new THREE.Mesh(bodyGeo, metallicPearlMat);
             bodyMesh.castShadow = true;
             padlockGroup.add(bodyMesh);
 
@@ -1895,22 +1890,22 @@
 
             const shaftGeo = new THREE.CylinderGeometry(0.028, 0.028, 0.44, 20);
             shaftGeo.rotateX(Math.PI / 2);
-            const shaftMesh = new THREE.Mesh(shaftGeo, metallicGoldMat);
+            const shaftMesh = new THREE.Mesh(shaftGeo, metallicPearlMat);
             shaftMesh.position.set(0, 0, 0.05);
             shaftMesh.castShadow = true;
             keyGroup.add(shaftMesh);
 
             const tipGeo = new THREE.ConeGeometry(0.028, 0.04, 16);
             tipGeo.rotateX(-Math.PI / 2);
-            const tipMesh = new THREE.Mesh(tipGeo, metallicGoldMat);
+            const tipMesh = new THREE.Mesh(tipGeo, metallicPearlMat);
             tipMesh.position.set(0, 0, -0.18);
             keyGroup.add(tipMesh);
 
-            const tooth1 = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.095, 0.038), metallicGoldMat);
+            const tooth1 = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.095, 0.038), metallicPearlMat);
             tooth1.position.set(0, -0.052, -0.125);
             keyGroup.add(tooth1);
 
-            const tooth2 = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.072, 0.034), metallicGoldMat);
+            const tooth2 = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.072, 0.034), metallicPearlMat);
             tooth2.position.set(0, -0.040, -0.065);
             keyGroup.add(tooth2);
 
@@ -1926,16 +1921,16 @@
             bowHandleGroup.position.set(0, 0, 0.41);
             keyGroup.add(bowHandleGroup);
 
-            const keyRingMesh = new THREE.Mesh(keyRingGeo, metallicGoldMat);
+            const keyRingMesh = new THREE.Mesh(keyRingGeo, metallicPearlMat);
             keyRingMesh.castShadow = true;
             bowHandleGroup.add(keyRingMesh);
 
             const sideLoopGeo = new THREE.TorusGeometry(0.055, 0.018, 12, 24);
-            const leftFiligree = new THREE.Mesh(sideLoopGeo, metallicGoldMat);
+            const leftFiligree = new THREE.Mesh(sideLoopGeo, metallicPearlMat);
             leftFiligree.position.set(-0.14, 0, 0);
             bowHandleGroup.add(leftFiligree);
 
-            const rightFiligree = new THREE.Mesh(sideLoopGeo, metallicGoldMat);
+            const rightFiligree = new THREE.Mesh(sideLoopGeo, metallicPearlMat);
             rightFiligree.position.set(0.14, 0, 0);
             bowHandleGroup.add(rightFiligree);
 
@@ -1949,7 +1944,7 @@
             });
         }
 
-        function create3DPinkBow(material) {
+        function createRibbonBow3D(material) {
             const group = new THREE.Group();
 
             const knotGeo = new THREE.SphereGeometry(0.22, 24, 24);
@@ -2000,7 +1995,7 @@
         function createStrawberry3D() {
             const berryGroup = new THREE.Group();
             const berryMat = new THREE.MeshStandardMaterial({
-                color: 0xe11d48,
+                color: 0x9255cf,
                 roughness: 0.32,
                 metalness: 0.05
             });
@@ -2013,7 +2008,7 @@
             baseSphere.position.y = 0.035;
             berryGroup.add(baseSphere);
 
-            const leafMat = new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.5 });
+            const leafMat = new THREE.MeshStandardMaterial({ color: 0x8156aa, roughness: 0.5 });
             const leafCrown = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.02, 0.02, 7), leafMat);
             leafCrown.position.y = 0.01;
             berryGroup.add(leafCrown);
@@ -2026,7 +2021,7 @@
             c.width = 128;
             c.height = 128;
             const ctx = c.getContext('2d');
-            ctx.fillStyle = '#fffdf9';
+            ctx.fillStyle = '#fffaff';
             ctx.fillRect(0, 0, 128, 128);
 
             ctx.fillStyle = stripeColorHex;
@@ -2048,9 +2043,9 @@
         function buildInteriorContents(W, H, D, wallT) {
             const floorY = -H / 2 + wallT;
 
-            const goldAccentMat = new THREE.MeshStandardMaterial({
-                color: 0xfbbf24,
-                emissive: 0x78350f,
+            const pearlAccentMat = new THREE.MeshStandardMaterial({
+                color: 0xe0c8ff,
+                emissive: 0x71479b,
                 emissiveIntensity: 0.2,
                 roughness: 0.28,
                 metalness: 0.58
@@ -2075,8 +2070,8 @@
                 const sMesh = new THREE.Mesh(
                     flatStarGeo,
                     idx % 2 === 0
-                        ? goldAccentMat
-                        : new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.4, metalness: 0.3 })
+                        ? pearlAccentMat
+                        : new THREE.MeshStandardMaterial({ color: 0xb47ae0, roughness: 0.4, metalness: 0.3 })
                 );
                 sMesh.position.set(sx, floorY + 0.015, sz);
                 sMesh.rotation.y = idx * 0.7;
@@ -2092,14 +2087,14 @@
             const cakeInteractiveMeshes = [];
 
             const porcelainStandMat = new THREE.MeshPhysicalMaterial({
-                color: 0xfffdf9,
+                color: 0xfffaff,
                 roughness: 0.18,
                 metalness: 0.05,
                 clearcoat: 0.7
             });
-            const goldTrimMat = new THREE.MeshStandardMaterial({
-                color: 0xd4af37,
-                emissive: 0x4a3508,
+            const pearlTrimMat = new THREE.MeshStandardMaterial({
+                color: 0xd5b8f5,
+                emissive: 0x6a478e,
                 emissiveIntensity: 0.15,
                 roughness: 0.25,
                 metalness: 0.65
@@ -2109,7 +2104,7 @@
             pedFoot.position.y = 0.04;
             cakeGroup.add(pedFoot);
 
-            const pedPillar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 0.12, 24), goldTrimMat);
+            const pedPillar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 0.12, 24), pearlTrimMat);
             pedPillar.position.y = 0.11;
             cakeGroup.add(pedPillar);
 
@@ -2119,13 +2114,13 @@
             cakeGroup.add(platterMesh);
             cakeInteractiveMeshes.push(platterMesh);
 
-            const platterRimTorus = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.025, 14, 48), goldTrimMat);
+            const platterRimTorus = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.025, 14, 48), pearlTrimMat);
             platterRimTorus.rotation.x = Math.PI / 2;
             platterRimTorus.position.y = 0.205;
             cakeGroup.add(platterRimTorus);
 
             const tier1SpongeMat = new THREE.MeshPhysicalMaterial({
-                color: 0xfce7f3,
+                color: 0xebd9fa,
                 roughness: 0.52,
                 clearcoat: 0.12
             });
@@ -2137,7 +2132,7 @@
             cakeInteractiveMeshes.push(tier1Mesh);
 
             const chocGlazeMat = new THREE.MeshPhysicalMaterial({
-                color: 0x3e1f14,
+                color: 0x673594,
                 roughness: 0.16,
                 metalness: 0.08,
                 clearcoat: 0.9,
@@ -2166,7 +2161,7 @@
             }
 
             const creamFrostingMat = new THREE.MeshPhysicalMaterial({
-                color: 0xfffdf7,
+                color: 0xfffaff,
                 roughness: 0.38,
                 clearcoat: 0.2
             });
@@ -2183,14 +2178,14 @@
                 cakeGroup.add(puff);
 
                 if (i % 2 === 0) {
-                    const goldPearl = new THREE.Mesh(new THREE.SphereGeometry(0.022, 10, 10), goldTrimMat);
-                    goldPearl.position.set(Math.cos(ang) * 0.685, 0.42 + (i % 4) * 0.03, Math.sin(ang) * 0.685);
-                    cakeGroup.add(goldPearl);
+                    const pearl = new THREE.Mesh(new THREE.SphereGeometry(0.022, 10, 10), pearlTrimMat);
+                    pearl.position.set(Math.cos(ang) * 0.685, 0.42 + (i % 4) * 0.03, Math.sin(ang) * 0.685);
+                    cakeGroup.add(pearl);
                 }
             }
 
             const tier2SpongeMat = new THREE.MeshPhysicalMaterial({
-                color: 0xfffbeb,
+                color: 0xfffaff,
                 roughness: 0.48,
                 clearcoat: 0.15
             });
@@ -2202,7 +2197,7 @@
             cakeInteractiveMeshes.push(tier2Mesh);
 
             const berryGlazeMat = new THREE.MeshPhysicalMaterial({
-                color: 0xf43f5e,
+                color: 0xb47ae0,
                 roughness: 0.15,
                 metalness: 0.05,
                 clearcoat: 0.92,
@@ -2258,7 +2253,7 @@
             }
 
             const candleGeo = new THREE.CylinderGeometry(0.036, 0.036, 0.34, 18);
-            const stripeHexColors = ['#38bdf8', '#f43f5e', '#f59e0b', '#a855f7', '#10b981'];
+            const stripeHexColors = ['#b78be7', '#b47ae0', '#bd96e6', '#a26bd9', '#9e7ccd'];
             const flameInnerGeo = new THREE.LatheGeometry([
                 new THREE.Vector2(0, 0),
                 new THREE.Vector2(0.014, 0.012),
@@ -2293,7 +2288,7 @@
             candleCoords.forEach(([cx, cz], idx) => {
                 const holderMesh = new THREE.Mesh(
                     new THREE.CylinderGeometry(0.052, 0.038, 0.035, 16),
-                    goldTrimMat
+                    pearlTrimMat
                 );
                 holderMesh.position.set(cx, 1.07, cz);
                 cakeGroup.add(holderMesh);
@@ -2311,18 +2306,18 @@
 
                 const wickMesh = new THREE.Mesh(
                     new THREE.CylinderGeometry(0.007, 0.007, 0.045, 8),
-                    new THREE.MeshBasicMaterial({ color: 0x1e1b18 })
+                    new THREE.MeshBasicMaterial({ color: 0x261730 })
                 );
                 wickMesh.position.set(cx, 1.425, cz);
                 cakeGroup.add(wickMesh);
 
-                const fInnerMat = new THREE.MeshBasicMaterial({ color: 0xfffbeb });
+                const fInnerMat = new THREE.MeshBasicMaterial({ color: 0xfffaff });
                 const fMesh = new THREE.Mesh(flameInnerGeo, fInnerMat);
                 fMesh.position.set(cx, 1.445, cz);
                 cakeGroup.add(fMesh);
 
                 const fOuterMat = new THREE.MeshBasicMaterial({
-                    color: 0xff9800,
+                    color: 0xc083f0,
                     transparent: true,
                     opacity: 0.55
                 });
@@ -2351,7 +2346,7 @@
                 interactiveObjects.push(cMesh, fMesh, fOuterMesh);
             });
 
-            candleLight = new THREE.PointLight(0xffb300, 0.95, 4.2);
+            candleLight = new THREE.PointLight(0xcf9df8, 0.95, 4.2);
             candleLight.position.set(0, 1.6, 0);
             cakeGroup.add(candleLight);
 
@@ -2368,20 +2363,20 @@
 
             const envBorderMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(1.18, 0.05, 0.82),
-                goldAccentMat
+                pearlAccentMat
             );
             letterGroup.add(envBorderMesh);
 
             const envGeo = new THREE.BoxGeometry(1.12, 0.065, 0.76);
-            const envMat = new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.48 });
+            const envMat = new THREE.MeshStandardMaterial({ color: 0xfffaff, roughness: 0.48 });
             const envMesh = new THREE.Mesh(envGeo, envMat);
             envMesh.castShadow = true;
             letterGroup.add(envMesh);
 
             const sealGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.04, 24);
             const sealMat = new THREE.MeshStandardMaterial({
-                color: 0xe11d48,
-                emissive: 0x881337,
+                color: 0x9255cf,
+                emissive: 0x4d2374,
                 emissiveIntensity: 0.28,
                 roughness: 0.28
             });
@@ -2395,9 +2390,9 @@
             interactiveObjects.push(envMesh, sealMesh);
 
             const giftConfigs = [
-                { x: 0.16, z: -0.62, w: 0.42, h: 0.36, d: 0.42, col: 0x0284c7, rotY: 0.28 },
-                { x: 0.68, z: -0.66, w: 0.38, h: 0.42, d: 0.38, col: 0xe11d48, rotY: -0.22 },
-                { x: -0.22, z: -0.88, w: 0.32, h: 0.30, d: 0.32, col: 0x9333ea, rotY: 0.42 }
+                { x: 0.16, z: -0.62, w: 0.42, h: 0.36, d: 0.42, col: 0x7050a8, rotY: 0.28 },
+                { x: 0.68, z: -0.66, w: 0.38, h: 0.42, d: 0.38, col: 0x9255cf, rotY: -0.22 },
+                { x: -0.22, z: -0.88, w: 0.32, h: 0.30, d: 0.32, col: 0x8250bc, rotY: 0.42 }
             ];
 
             giftConfigs.forEach(cfg => {
@@ -2415,15 +2410,15 @@
                 gLidMesh.position.y = cfg.h / 2 - 0.02;
                 gGroup.add(gLidMesh);
 
-                const r1 = new THREE.Mesh(new THREE.BoxGeometry(cfg.w + 0.05, cfg.h + 0.02, 0.07), goldAccentMat);
-                const r2 = new THREE.Mesh(new THREE.BoxGeometry(0.07, cfg.h + 0.02, cfg.d + 0.05), goldAccentMat);
+                const r1 = new THREE.Mesh(new THREE.BoxGeometry(cfg.w + 0.05, cfg.h + 0.02, 0.07), pearlAccentMat);
+                const r2 = new THREE.Mesh(new THREE.BoxGeometry(0.07, cfg.h + 0.02, cfg.d + 0.05), pearlAccentMat);
                 gGroup.add(r1, r2);
 
                 const loopGeo = new THREE.TorusGeometry(0.065, 0.02, 10, 20);
-                const loopL = new THREE.Mesh(loopGeo, goldAccentMat);
+                const loopL = new THREE.Mesh(loopGeo, pearlAccentMat);
                 loopL.position.set(-0.05, cfg.h / 2 + 0.04, 0);
                 loopL.rotation.z = 0.4;
-                const loopR = new THREE.Mesh(loopGeo, goldAccentMat);
+                const loopR = new THREE.Mesh(loopGeo, pearlAccentMat);
                 loopR.position.set(0.05, cfg.h / 2 + 0.04, 0);
                 loopR.rotation.z = -0.4;
                 gGroup.add(loopL, loopR);
@@ -2437,8 +2432,8 @@
             });
 
             const cupcakePositions = [
-                { x: 1.15, z: -0.45, frostCol: 0xfda4af, linerCol: 0xf59e0b },
-                { x: 0.25, z: -0.05, frostCol: 0xbae6fd, linerCol: 0xec4899 }
+                { x: 1.15, z: -0.45, frostCol: 0xeed9ff, linerCol: 0xbd96e6 },
+                { x: 0.25, z: -0.05, frostCol: 0xe8d8ff, linerCol: 0x9156c7 }
             ];
             cupcakePositions.forEach(cp => {
                 const cupcakeGroup = new THREE.Group();
@@ -2461,14 +2456,14 @@
 
                 const swirlTop = new THREE.Mesh(
                     new THREE.SphereGeometry(0.11, 14, 14),
-                    new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.4 })
+                    new THREE.MeshStandardMaterial({ color: 0xfffaff, roughness: 0.4 })
                 );
                 swirlTop.position.y = 0.24;
                 cupcakeGroup.add(swirlTop);
 
                 const cherryMesh = new THREE.Mesh(
                     new THREE.SphereGeometry(0.048, 12, 12),
-                    new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.2 })
+                    new THREE.MeshStandardMaterial({ color: 0x9255cf, roughness: 0.2 })
                 );
                 cherryMesh.position.y = 0.33;
                 cupcakeGroup.add(cherryMesh);
@@ -2482,20 +2477,20 @@
             hatGroup.rotation.z = -0.1;
             boxEnclosureGroup.add(hatGroup);
 
-            const hatBrim = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.032, 12, 24), goldAccentMat);
+            const hatBrim = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.032, 12, 24), pearlAccentMat);
             hatBrim.rotation.x = Math.PI / 2;
             hatBrim.position.y = -0.22;
             hatGroup.add(hatBrim);
 
             const coneMesh = new THREE.Mesh(
                 new THREE.ConeGeometry(0.21, 0.48, 24),
-                new THREE.MeshStandardMaterial({ color: 0x9333ea, roughness: 0.45 })
+                new THREE.MeshStandardMaterial({ color: 0x8250bc, roughness: 0.45 })
             );
             hatGroup.add(coneMesh);
 
             const pomMesh = new THREE.Mesh(
                 new THREE.SphereGeometry(0.068, 14, 14),
-                goldAccentMat
+                pearlAccentMat
             );
             pomMesh.position.y = 0.26;
             hatGroup.add(pomMesh);
@@ -2504,8 +2499,8 @@
             interactiveObjects.push(coneMesh);
 
             const hornConfigs = [
-                { x: -0.18, z: 0.45, rotY: 0.65, col: 0x06b6d4 },
-                { x: 1.48, z: 0.35, rotY: -0.85, col: 0xf43f5e }
+                { x: -0.18, z: 0.45, rotY: 0.65, col: 0xb58add },
+                { x: 1.48, z: 0.35, rotY: -0.85, col: 0xb47ae0 }
             ];
             hornConfigs.forEach(hc => {
                 const hornGroup = new THREE.Group();
@@ -2521,7 +2516,7 @@
 
                 const mouthpiece = new THREE.Mesh(
                     new THREE.CylinderGeometry(0.022, 0.022, 0.12, 12),
-                    goldAccentMat
+                    pearlAccentMat
                 );
                 mouthpiece.rotation.z = Math.PI / 2;
                 mouthpiece.position.x = 0.22;
@@ -2529,7 +2524,7 @@
 
                 const curledPaper = new THREE.Mesh(
                     new THREE.TorusGeometry(0.055, 0.018, 10, 20),
-                    goldAccentMat
+                    pearlAccentMat
                 );
                 curledPaper.position.set(-0.22, 0.02, 0);
                 hornGroup.add(curledPaper);
@@ -2548,7 +2543,7 @@
             bouquetGroup.position.set(1.45, floorY, -0.82);
             boxEnclosureGroup.add(bouquetGroup);
 
-            const weightMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.065, 0.06, 16), goldAccentMat);
+            const weightMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.065, 0.06, 16), pearlAccentMat);
             weightMesh.position.y = 0.03;
             bouquetGroup.add(weightMesh);
 
@@ -2571,7 +2566,7 @@
                     new THREE.Vector3(cfg.x, neckY, cfg.z)
                 ]);
                 const stemTubeGeo = new THREE.TubeGeometry(stemCurve, 16, 0.004, 6, false);
-                const stemMesh = new THREE.Mesh(stemTubeGeo, goldAccentMat);
+                const stemMesh = new THREE.Mesh(stemTubeGeo, pearlAccentMat);
                 bouquetGroup.add(stemMesh);
             });
 
@@ -2580,9 +2575,9 @@
             retroCameraGroup.rotation.set(-Math.PI / 2 + 0.14, -0.18, 0.12);
             boxEnclosureGroup.add(retroCameraGroup);
 
-            const camBodyMat = new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.38 });
-            const camCreamMat = new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.45 });
-            const camDarkMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.22, metalness: 0.45 });
+            const camBodyMat = new THREE.MeshStandardMaterial({ color: 0x9255cf, roughness: 0.38 });
+            const camCreamMat = new THREE.MeshStandardMaterial({ color: 0xfffaff, roughness: 0.45 });
+            const camDarkMat = new THREE.MeshStandardMaterial({ color: 0x1b102c, roughness: 0.22, metalness: 0.45 });
 
             const camBodyMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.74, 0.38), camCreamMat);
             camBodyMesh.castShadow = true;
@@ -2592,8 +2587,8 @@
             camStripeMesh.position.y = -0.03;
             retroCameraGroup.add(camStripeMesh);
 
-            const rainbowCols = [0xf43f5e, 0xf59e0b, 0x10b981, 0x38bdf8];
-            rainbowCols.forEach((rCol, idx) => {
+            const lensRingColors = [0xb47ae0, 0xbd96e6, 0x9e7ccd, 0xb78be7];
+            lensRingColors.forEach((rCol, idx) => {
                 const strip = new THREE.Mesh(
                     new THREE.BoxGeometry(0.045, 0.28, 0.015),
                     new THREE.MeshBasicMaterial({ color: rCol })
@@ -2607,7 +2602,7 @@
             lensRingBase.position.set(0, -0.02, 0.21);
             retroCameraGroup.add(lensRingBase);
 
-            const lensBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.26, 0.22, 28), goldAccentMat);
+            const lensBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.26, 0.22, 28), pearlAccentMat);
             lensBarrel.rotation.x = Math.PI / 2;
             lensBarrel.position.set(0, -0.02, 0.27);
             retroCameraGroup.add(lensBarrel);
@@ -2619,14 +2614,14 @@
 
             const lensReflection = new THREE.Mesh(
                 new THREE.CircleGeometry(0.055, 16),
-                new THREE.MeshBasicMaterial({ color: 0xbae6fd })
+                new THREE.MeshBasicMaterial({ color: 0xe8d8ff })
             );
             lensReflection.position.set(-0.05, 0.03, 0.402);
             retroCameraGroup.add(lensReflection);
 
             const flashMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(0.24, 0.15, 0.06),
-                new THREE.MeshBasicMaterial({ color: 0xfef08a })
+                new THREE.MeshBasicMaterial({ color: 0xeee1fc })
             );
             flashMesh.position.set(0.30, 0.21, 0.19);
             retroCameraGroup.add(flashMesh);
@@ -2653,7 +2648,7 @@
 
             const miniPhotoInner = new THREE.Mesh(
                 new THREE.BoxGeometry(0.48, 0.36, 0.03),
-                new THREE.MeshBasicMaterial({ color: 0xf43f5e })
+                new THREE.MeshBasicMaterial({ color: 0xb47ae0 })
             );
             miniPhotoInner.position.set(0, -0.49, 0.062);
             miniPhotoInner.rotation.x = -0.15;
@@ -2669,7 +2664,7 @@
         function spawnCandleSmoke3D(candleData) {
             if (!cakeGroup) return;
             const smokeMat = new THREE.MeshBasicMaterial({
-                color: 0xe2e8f0,
+                color: 0xf1eafa,
                 transparent: true,
                 opacity: 0.75
             });
@@ -2745,7 +2740,7 @@
                 });
             }
 
-            const confettiColors = [0xfde047, 0xf43f5e, 0x38bdf8, 0xffffff, 0xc084fc, 0x4ade80, 0xfb923c];
+            const confettiColors = [0xf5eaff, 0xb47ae0, 0xb78be7, 0xffffff, 0xbd94ed, 0xd9c5f5, 0xc59ae9];
 
             for (let c = 0; c < confettiCount; c++) {
                 const geo = sharedConfettiGeos[c % sharedConfettiGeos.length];
