@@ -662,6 +662,12 @@
         </div>
     </div>
 
+    <audio id="birthday-audio" src="./cumpleanos.wav" preload="auto"></audio>
+    <button id="birthday-audio-retry" type="button" hidden
+        class="btn-gold fixed bottom-4 left-1/2 -translate-x-1/2 z-50 rounded-full px-5 py-2 text-sm font-bold">
+        Reproducir música
+    </button>
+
     <script>
         
         function buildGiftFallbackDataUri(num, hexColor) {
@@ -3044,7 +3050,6 @@
         }
 
         let celebrationAudio;
-        let birthdayMelodyEndsAt = 0;
 
         async function prepareCelebrationAudio() {
             const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -3079,24 +3084,24 @@
             oscillator.stop(start + duration);
         }
 
-        async function playHappyBirthdayMelody() {
-            const context = await prepareCelebrationAudio();
-            if (!context || context.currentTime < birthdayMelodyEndsAt) return;
+        const birthdayAudio = document.getElementById('birthday-audio');
+        const birthdayAudioRetry = document.getElementById('birthday-audio-retry');
 
-            const notes = [
-                [60, 0.75], [60, 0.25], [62, 1], [60, 1], [65, 1], [64, 2],
-                [60, 0.75], [60, 0.25], [62, 1], [60, 1], [67, 1], [65, 2],
-                [60, 0.75], [60, 0.25], [72, 1], [69, 1], [65, 1], [64, 1], [62, 1],
-                [70, 0.75], [70, 0.25], [69, 1], [65, 1], [67, 1], [65, 2]
-            ];
-            const beat = 0.36;
-            let start = context.currentTime + 0.03;
-            for (const [note, beats] of notes) {
-                playCelebrationNote(context, note, start, beats * beat * 0.95, 0.22);
-                start += beats * beat;
+        function playHappyBirthdayMelody() {
+            if (!birthdayAudio.paused && !birthdayAudio.ended) return;
+
+            const playback = birthdayAudio.play();
+            if (playback) {
+                playback.catch(() => {
+                    birthdayAudioRetry.hidden = false;
+                });
             }
-            birthdayMelodyEndsAt = start;
         }
+
+        birthdayAudio.addEventListener('playing', () => {
+            birthdayAudioRetry.hidden = true;
+        });
+        birthdayAudioRetry.addEventListener('click', playHappyBirthdayMelody);
 
         async function playMagicChime(ascending) {
             const context = await prepareCelebrationAudio();
@@ -3117,7 +3122,8 @@
                 return;
             }
 
-            prepareCelebrationAudio();
+            // Safari requiere iniciar el audio dentro del gesto, antes de la animación.
+            playHappyBirthdayMelody();
             isUnlockingAnim = true;
             keyAnimState.active = true;
             keyAnimState.startTime = performance.now();
@@ -3154,8 +3160,6 @@
                         btn.classList.add('flex');
                     }
                 });
-
-                playHappyBirthdayMelody();
 
                 triggerBoxSurpriseBurst(7, 130);
                 spawnScreenBalloonsAndConfetti();
@@ -3206,6 +3210,7 @@
             const mouse = new THREE.Vector2();
 
             let isDragging = false;
+            let isSceneTap = false;
             let pointerDownPos = { x: 0, y: 0 };
             let prevPointerPos = { x: 0, y: 0 };
 
@@ -3233,6 +3238,7 @@
 
             container.addEventListener('pointerdown', (e) => {
                 isDragging = true;
+                isSceneTap = false;
                 pointerDownPos = { x: e.clientX, y: e.clientY };
                 prevPointerPos = { x: e.clientX, y: e.clientY };
             });
@@ -3252,9 +3258,18 @@
                 isDragging = false;
 
                 const moveDist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
-                if (moveDist < 8) {
-                    handleSceneClick(e.clientX, e.clientY);
-                }
+                isSceneTap = moveDist < 8;
+            });
+
+            window.addEventListener('pointercancel', () => {
+                isDragging = false;
+                isSceneTap = false;
+            });
+
+            container.addEventListener('click', (e) => {
+                if (!isSceneTap) return;
+                isSceneTap = false;
+                handleSceneClick(e.clientX, e.clientY);
             });
 
             function handleSceneClick(clientX, clientY) {
