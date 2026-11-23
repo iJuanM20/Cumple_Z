@@ -1,0 +1,3674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡Feliz Cumpleaños! - Caja Sorpresa 3D AlexDev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Quicksand:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+
+
+
+    <style>
+        :root {
+            --gold-bright: #ffd54f;
+            --gold-warm: #f59e0b;
+            --rose-accent: #f43f5e;
+            --midnight-deep: #070412;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            background: radial-gradient(circle at 50% 44%, #26174a 0%, #110926 52%, #06030f 100%);
+            color: #fff;
+        }
+
+        
+        .center-stage-glow {
+            position: absolute;
+            left: 50%;
+            top: 53%;
+            transform: translate(-50%, -50%);
+            width: min(82vw, 680px);
+            height: min(82vw, 680px);
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(253, 224, 71, 0.42) 0%,
+                rgba(251, 146, 60, 0.24) 36%,
+                rgba(244, 63, 94, 0.12) 56%,
+                rgba(15, 10, 36, 0) 76%
+            );
+            pointer-events: none;
+            z-index: 4;
+            filter: blur(20px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        
+        #cake-blur-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 8;
+            pointer-events: none;
+            opacity: 0;
+            background: radial-gradient(
+                circle at 50% 50%,
+                rgba(28, 14, 48, 0.45) 0%,
+                rgba(8, 5, 22, 0.86) 100%
+            );
+            backdrop-filter: blur(22px) saturate(1.2);
+            -webkit-backdrop-filter: blur(22px) saturate(1.2);
+            transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #cake-blur-backdrop.active {
+            opacity: 1;
+        }
+
+        #canvas-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            cursor: grab;
+        }
+
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+
+        
+        .sparkle-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .sparkle-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffbeb 0%, rgba(251, 191, 36, 0.85) 50%, transparent 100%);
+            box-shadow: 0 0 14px 2px rgba(251, 191, 36, 0.65);
+            animation: floatSparkle linear infinite;
+        }
+
+        @keyframes floatSparkle {
+            0% {
+                transform: translateY(0) scale(0.6);
+                opacity: 0.18;
+            }
+            50% {
+                transform: translateY(-36px) scale(1.25);
+                opacity: 0.92;
+            }
+            100% {
+                transform: translateY(-72px) scale(0.6);
+                opacity: 0.18;
+            }
+        }
+
+        
+        .birthday-main-title {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(180deg, #fffbeb 0%, #fde047 48%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 18px rgba(245, 158, 11, 0.55)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
+            letter-spacing: 0.03em;
+        }
+
+        .glass-panel {
+            background: rgba(18, 13, 40, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(251, 191, 36, 0.45);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(251, 191, 36, 0.15);
+        }
+
+        .btn-party {
+            background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+            color: white;
+            border: 1.5px solid rgba(255, 228, 230, 0.8);
+            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.35);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .btn-party:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 26px rgba(244, 63, 94, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.55);
+        }
+
+        .btn-party:active {
+            transform: translateY(1px) scale(0.97);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #fde047 0%, #f59e0b 55%, #d97706 100%);
+            color: #2a1200;
+            border: 1.5px solid #fef9c3;
+            box-shadow: 0 6px 22px rgba(245, 158, 11, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.8);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 28px rgba(245, 158, 11, 0.75), inset 0 2px 5px rgba(255, 255, 255, 0.9);
+        }
+
+        .menu-item-btn {
+            width: 100%;
+            text-align: left;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #fef3c7;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(251, 191, 36, 0.22);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-item-btn:hover {
+            background: rgba(251, 191, 36, 0.22);
+            border-color: rgba(251, 191, 36, 0.65);
+            color: #ffffff;
+            transform: translateX(2px);
+        }
+
+        .modal-backdrop {
+            background: rgba(8, 5, 24, 0.76);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: opacity 0.35s ease;
+        }
+
+        
+        .carousel-scene {
+            perspective: 1200px;
+            width: 100%;
+            height: 315px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .carousel-ring {
+            width: 214px;
+            height: 270px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .polaroid-card {
+            position: absolute;
+            inset: 0;
+            width: 214px;
+            height: 270px;
+            background: #fffdf9;
+            border-radius: 14px;
+            padding: 10px 10px 42px 10px;
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55), 0 0 0 2px rgba(251, 191, 36, 0.45);
+            cursor: pointer;
+            user-select: none;
+            transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .polaroid-card:hover {
+            box-shadow: 0 18px 38px rgba(251, 191, 36, 0.5), 0 0 0 3px #fbbf24;
+        }
+
+        .polaroid-photo-frame {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #1e1b4b;
+        }
+
+        
+        .polaroid-photo-frame .polaroid-revealed-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scale(1.14);
+            filter: brightness(0.75) saturate(0.85);
+            transition: transform 0.78s cubic-bezier(0.22, 1, 0.36, 1), filter 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        
+        .polaroid-photo-frame .polaroid-gift-cover {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 2;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            filter: brightness(1);
+            transition:
+                opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.72s ease;
+        }
+
+        .polaroid-develop-overlay {
+            position: absolute;
+            inset: auto 0 0 0;
+            z-index: 3;
+            background: linear-gradient(180deg, rgba(15, 10, 36, 0) 0%, rgba(15, 10, 36, 0.86) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            color: #fef08a;
+            text-align: center;
+            padding: 10px 8px 8px;
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        
+        .polaroid-card.revealed .polaroid-gift-cover {
+            opacity: 0;
+            transform: scale(1.22) rotate(3deg);
+            filter: blur(8px) brightness(1.35);
+            pointer-events: none;
+        }
+
+        .polaroid-card.revealed .polaroid-revealed-img {
+            transform: scale(1);
+            filter: brightness(1) saturate(1.06);
+        }
+
+        .polaroid-card.revealed .polaroid-develop-overlay {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        .polaroid-caption {
+            font-family: 'Caveat', cursive;
+            font-size: 1.25rem;
+            color: #1e1b4b;
+            text-align: center;
+            margin-top: 8px;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        
+        .vinyl-disc {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: conic-gradient(#111 0deg, #333 45deg, #111 90deg, #222 180deg, #333 270deg, #111 360deg);
+            border: 2px solid #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spinVinyl 4s linear infinite;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .vinyl-disc::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #fde047 0%, #f43f5e 100%);
+            border-radius: 50%;
+            border: 1.5px solid #fff;
+        }
+
+        @keyframes spinVinyl {
+            100% { transform: rotate(360deg); }
+        }
+
+        
+        .floating-sparkle-particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 60;
+            background: radial-gradient(circle, #ffffff 0%, #fde047 55%, #f43f5e 100%);
+            box-shadow: 0 0 12px 3px rgba(251, 191, 36, 0.85);
+            animation: riseSparkleParticle 1.25s ease-out forwards;
+        }
+
+        @keyframes riseSparkleParticle {
+            0% {
+                transform: translate(-50%, -50%) scale(0.4);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--dx)), calc(-50% - 110px)) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .dom-confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 36;
+            border-radius: 3px;
+            animation: burstDomConfetti cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        @keyframes burstDomConfetti {
+            0% {
+                transform: translate(0, 0) rotate3d(1, 1, 1, 0deg) scale(0.4);
+                opacity: 1;
+            }
+            35% {
+                transform: translate(var(--tx), var(--ty-peak)) rotate3d(1, 1, 0, 360deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(var(--tx) * 1.35), var(--ty-end)) rotate3d(1, 1, 1, 920deg) scale(0.85);
+                opacity: 0;
+            }
+        }
+
+        
+        .letter-paper {
+            background: linear-gradient(180deg, #fffdf9 0%, #fef3c7 100%);
+            background-image: radial-gradient(#f59e0b 0.65px, transparent 0.65px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="relative select-none">
+
+    
+    <div class="center-stage-glow"></div>
+
+    
+    <div id="sparkle-container" class="sparkle-bg"></div>
+
+    
+    <div id="cake-blur-backdrop"></div>
+
+    
+    <header class="fixed top-5 left-0 right-0 z-30 flex justify-center pointer-events-none px-4">
+        <h1 class="birthday-main-title text-3xl sm:text-5xl font-extrabold text-center tracking-wide">
+            ¡Feliz Cumpleaños!
+        </h1>
+    </header>
+
+    
+    <div class="fixed top-4 right-4 z-40 flex flex-col items-end">
+        <button id="corner-menu-toggle" class="glass-panel px-4 py-2.5 rounded-full text-amber-200 font-bold text-xs sm:text-sm flex items-center gap-2 hover:border-amber-300 transition cursor-pointer">
+            <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <span>Menú</span>
+        </button>
+
+        <div id="corner-menu-dropdown" class="glass-panel mt-2 w-56 rounded-2xl p-2.5 hidden flex-col gap-1.5">
+            <button id="toggle-box-btn" class="menu-item-btn">
+                <span id="btn-label">Desbloquear Caja</span>
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            </button>
+
+            <button id="zoom-cake-btn" class="menu-item-btn hidden">
+                <span id="candles-btn-label">Pastel y Velas</span>
+                <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+            </button>
+
+            <button id="open-letter-btn" class="menu-item-btn hidden">
+                <span>Carta de Amor</span>
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+            </button>
+
+            <button id="open-album-btn" class="menu-item-btn hidden">
+                <span>Cápsula de Recuerdos 3D</span>
+                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+            </button>
+
+            <button id="party-burst-btn" class="menu-item-btn hidden">
+                <span>Globos y Confeti</span>
+                <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+            </button>
+
+        </div>
+    </div>
+
+    
+    <div id="cake-zoom-overlay" class="fixed inset-x-0 bottom-6 z-30 hidden justify-center px-4 pointer-events-none">
+        <div class="glass-panel px-4 py-2.5 rounded-full flex items-center gap-3 pointer-events-auto">
+            <button id="blow-all-zoom-btn" class="btn-gold px-5 py-2 rounded-full text-xs sm:text-sm font-extrabold">
+                <span id="blow-all-zoom-label">Soplar las Velas</span>
+            </button>
+            <button id="exit-cake-zoom-btn" class="btn-party px-5 py-2 rounded-full text-xs sm:text-sm font-bold">
+                <span>Volver a la Caja</span>
+            </button>
+        </div>
+    </div>
+
+    
+    <div id="canvas-container" aria-label="Caja sorpresa de cumpleaños 3D interactiva"></div>
+
+    
+    <div id="album-modal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative transform transition-all text-white">
+            <div class="-mt-11 mb-2 flex justify-center">
+                <div class="bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 border-2 border-white shadow-lg px-5 py-1 rounded-full text-slate-950 font-extrabold text-xs tracking-wider uppercase">
+                    Cápsula de Momentos 3D
+                </div>
+            </div>
+
+            <button id="close-modal-btn" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-amber-200 font-bold flex items-center justify-center transition cursor-pointer">
+                ✕
+            </button>
+
+            <div class="flex items-center justify-between gap-2 mb-1">
+                <div>
+                    <h2 id="modal-title" class="text-lg sm:text-xl font-extrabold text-amber-300" style="font-family: 'Playfair Display', serif;">
+                        Nuestra Ruleta de Recuerdos
+                    </h2>
+                    <p class="text-[11px] text-amber-100/80 font-medium">
+                        Haz clic en cada regalo para desenvolver nuestra foto
+                    </p>
+                </div>
+                <div class="vinyl-disc shrink-0"></div>
+            </div>
+
+            
+            <div class="carousel-scene my-2" id="polaroid-carousel-scene">
+                <div class="carousel-ring" id="polaroid-carousel-ring">
+                    
+                    <div class="polaroid-card unrevealed" data-index="0" data-msg="Feliz dia mi amor. Gracias por cada instante mágico que hemos vivido juntos.">
+                        <div class="polaroid-photo-frame">
+                            <img class="polaroid-revealed-img" src="3.jpeg" alt="Foto 1" data-fallback-num="1" data-fallback-col="#be123c">
+                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 1" data-gift-num="1" data-gift-col="#e11d48">
+                            <div class="polaroid-develop-overlay">
+                               
+                            </div>
+                        </div>
+                        <div class="polaroid-caption">Mi persona favorita</div>
+                    </div>
+
+                    
+                    <div class="polaroid-card unrevealed" data-index="1" data-msg="Contigo todos los días se sienten como una celebración. Amo tu sonrisa y tu forma de brillar.">
+                        <div class="polaroid-photo-frame">
+                            <img class="polaroid-revealed-img" src="4.jpeg" alt="Foto 2" data-fallback-num="2" data-fallback-col="#7e22ce">
+                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 2" data-gift-num="2" data-gift-col="#9333ea">
+                            <div class="polaroid-develop-overlay">
+                               
+                            </div>
+                        </div>
+                        <div class="polaroid-caption">Tu sonrisa ilumina todo</div>
+                    </div>
+
+                    
+                    <div class="polaroid-card unrevealed" data-index="2" data-msg="El mejor regalo de la vida es caminar a tu lado y construir sueños juntos. ¡Feliz cumpleaños!">
+                        <div class="polaroid-photo-frame">
+                            <img class="polaroid-revealed-img" src="5.jpeg" alt="Foto 3" data-fallback-num="3" data-fallback-col="#0369a1">
+                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 3" data-gift-num="3" data-gift-col="#0284c7">
+                            <div class="polaroid-develop-overlay">
+                               
+                            </div>
+                        </div>
+                        <div class="polaroid-caption">Inolvidable junto a ti</div>
+                    </div>
+
+                    
+                    <div class="polaroid-card unrevealed" data-index="3" data-msg="Que cada deseo que pidas hoy al soplar las velas se convierta en realidad. Siempre estaré apoyándote.">
+                        <div class="polaroid-photo-frame">
+                            <img class="polaroid-revealed-img" src="6.jpeg" alt="Foto 4" data-fallback-num="4" data-fallback-col="#b45309">
+                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 4" data-gift-num="4" data-gift-col="#d97706">
+                            <div class="polaroid-develop-overlay">
+                              
+                            </div>
+                        </div>
+                        <div class="polaroid-caption">Por mil aventuras más</div>
+                    </div>
+
+                    
+                    <div class="polaroid-card unrevealed" data-index="4" data-msg="Celebro tu vida, tu ternura y todo lo que eres. ¡Que este nuevo año te traiga felicidad infinita!">
+                        <div class="polaroid-photo-frame">
+                            <img class="polaroid-revealed-img" src="7.jpeg" alt="Foto 5" data-fallback-num="5" data-fallback-col="#9d174d">
+                            <img class="polaroid-gift-cover" src="1.png" alt="Regalo 5" data-gift-num="5" data-gift-col="#db2777">
+                            <div class="polaroid-develop-overlay">
+                                
+                            </div>
+                        </div>
+                        <div class="polaroid-caption">Siempre cómplices</div>
+                    </div>
+
+                    
+                    <div class="polaroid-card unrevealed" data-index="5" data-msg="Te amo muchísimo. Feliz cumpleaños, mi amor. Gracias por hacer mi mundo tan bonito.">
+                        <div class="polaroid-photo-frame">
+                            <img class="polaroid-revealed-img" src="8.jpeg" alt="Foto 6" data-fallback-num="6" data-fallback-col="#4338ca">
+                            <img class="polaroid-gift-cover" src="2.jpeg" alt="Regalo 6" data-gift-num="6" data-gift-col="#4f46e5">
+                            <div class="polaroid-develop-overlay">
+                               
+                            </div>
+                        </div>
+                        <div class="polaroid-caption">Te amo infinito</div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="flex items-center justify-center gap-3 mt-1">
+                <button id="carousel-prev-btn" class="w-9 h-9 rounded-full bg-white/15 hover:bg-amber-400 hover:text-slate-950 font-extrabold transition flex items-center justify-center cursor-pointer">
+                    ‹
+                </button>
+                <button id="reveal-all-polaroids-btn" class="px-4 py-1.5 rounded-full bg-amber-400/20 hover:bg-amber-400/35 border border-amber-300/60 text-amber-200 text-xs font-bold transition cursor-pointer">
+                    Abrir Todos los Regalos
+                </button>
+                <button id="carousel-next-btn" class="w-9 h-9 rounded-full bg-white/15 hover:bg-amber-400 hover:text-slate-950 font-extrabold transition flex items-center justify-center cursor-pointer">
+                    ›
+                </button>
+            </div>
+
+            
+            <div id="album-message-box" class="mt-3 bg-slate-950/80 border border-amber-400/50 rounded-2xl p-3 text-center shadow-inner min-h-[60px] flex items-center justify-center">
+                <p id="album-message-text" class="text-amber-100 font-semibold text-xs sm:text-sm italic">
+                    Feliz cumpleaños mi amor. Gracias por cada instante mágico que hemos vivido juntos.
+                </p>
+            </div>
+
+            <div class="mt-3 flex justify-center">
+                <button id="modal-heart-burst-btn" class="btn-gold px-5 py-2 rounded-full text-xs sm:text-sm font-extrabold">
+                    Lanzar Globos y Confeti
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="letter-modal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="letter-paper border-4 border-amber-400 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative transform transition-all">
+            <div class="-mt-12 mb-3 flex justify-center">
+                <div class="bg-gradient-to-r from-rose-600 to-pink-600 border-4 border-white shadow-md px-5 py-1.5 rounded-full text-white font-bold text-xs tracking-wider uppercase">
+                    Carta Para Mi Amor
+                </div>
+            </div>
+
+            <button id="close-letter-btn" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-amber-200 hover:bg-amber-300 text-amber-950 font-bold flex items-center justify-center transition cursor-pointer">
+                ✕
+            </button>
+
+            <div class="text-center mb-3">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-rose-800" style="font-family: 'Playfair Display', serif;">
+                    ¡Feliz Cumpleaños, Mi Vida!
+                </h2>
+                <div class="w-28 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-1"></div>
+            </div>
+
+            <div class="bg-white/90 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 shadow-inner text-slate-800 text-xs sm:text-sm leading-relaxed space-y-2.5 max-h-[52vh] overflow-y-auto">
+                <p class="font-bold text-rose-700 text-sm sm:text-base" style="font-family: 'Playfair Display', serif;">
+                    Mi amor:
+                </p>
+                <p>
+                    Hoy abrimos con llave esta cajita sorpresa porque celebramos el día más especial del año: el día en que naciste. Gracias por existir, por iluminar mi vida con tu sonrisa y por ser mi compañía más bonita en cada aventura.
+                </p>
+                <p>
+                    Deseo de todo corazón que este nuevo año de vida te regale tanta felicidad como la que tú me das a mí cada día. Cuando soples las velas del pastel, pide tu deseo más grande con mucha fe, porque te mereces todo lo maravilloso del universo.
+                </p>
+                <p>
+                    Prometo seguir cuidándote, celebrando tus logros, abrazándote fuerte y sumando miles de recuerdos inolvidables juntos.
+                </p>
+                <p class="text-right font-bold text-rose-700 pt-1" style="font-family: 'Playfair Display', serif;">
+                    Con todo mi amor,<br>
+                    ¡Feliz Dia Mi Vida!
+                </p>
+            </div>
+
+            <div class="mt-4 flex flex-wrap justify-center gap-2.5">
+                <button id="letter-celebrate-btn" class="btn-gold px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold">
+                    Celebrar con Música y Confeti
+                </button>
+                <button id="letter-to-album-btn" class="btn-party px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold">
+                    Ver Cápsula de Fotos 3D
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function buildGiftFallbackDataUri(num, hexColor) {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+                <defs>
+                    <radialGradient id="gBg${num}" cx="50%" cy="45%" r="65%">
+                        <stop offset="0%" stop-color="${hexColor}"/>
+                        <stop offset="100%" stop-color="#1e1b4b"/>
+                    </radialGradient>
+                </defs>
+                <rect width="300" height="300" fill="url(#gBg${num})"/>
+                <g stroke="#fde047" stroke-width="3" opacity="0.35">
+                    <circle cx="48" cy="52" r="5" fill="#fde047"/>
+                    <circle cx="250" cy="60" r="6" fill="#fde047"/>
+                    <circle cx="52" cy="245" r="5" fill="#fde047"/>
+                    <circle cx="252" cy="240" r="6" fill="#fde047"/>
+                </g>
+                
+                <rect x="75" y="115" width="150" height="125" rx="10" fill="${hexColor}" stroke="#fde047" stroke-width="5"/>
+                
+                <rect x="65" y="88" width="170" height="34" rx="8" fill="${hexColor}" stroke="#fde047" stroke-width="5"/>
+                
+                <rect x="135" y="88" width="30" height="152" fill="#fde047"/>
+                <rect x="75" y="162" width="150" height="26" fill="#fde047"/>
+                
+                <ellipse cx="122" cy="74" rx="28" ry="15" transform="rotate(-18 122 74)" fill="#fde047" stroke="#78350f" stroke-width="3"/>
+                <ellipse cx="178" cy="74" rx="28" ry="15" transform="rotate(18 178 74)" fill="#fde047" stroke="#78350f" stroke-width="3"/>
+                <circle cx="150" cy="80" r="12" fill="#f59e0b" stroke="#fef08a" stroke-width="3"/>
+                <text x="150" y="50" text-anchor="middle" fill="#fffbeb" font-family="Quicksand, sans-serif" font-weight="700" font-size="18">REGALO #${num}</text>
+            </svg>`;
+            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+        function buildPhotoFallbackDataUri(num, hexColor) {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+                <defs>
+                    <linearGradient id="pBg${num}" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="${hexColor}"/>
+                        <stop offset="100%" stop-color="#0f172a"/>
+                    </linearGradient>
+                </defs>
+                <rect width="300" height="300" fill="url(#pBg${num})"/>
+                <rect x="16" y="16" width="268" height="268" rx="14" fill="none" stroke="#fde047" stroke-width="3" opacity="0.65"/>
+                <path d="M150 215 C95 170 68 128 68 95 C68 68 90 50 115 50 C133 50 145 62 150 74 C155 62 167 50 185 50 C210 50 232 68 232 95 C232 128 205 170 150 215 Z" fill="#fb7185" stroke="#fde047" stroke-width="4"/>
+                <text x="150" y="255" text-anchor="middle" fill="#fef08a" font-family="Georgia, serif" font-weight="bold" font-size="22">Foto Especial ${num}</text>
+            </svg>`;
+            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+        function attachImageFallbacks() {
+            document.querySelectorAll('.polaroid-gift-cover').forEach(img => {
+                const num = img.getAttribute('data-gift-num') || '1';
+                const col = img.getAttribute('data-gift-col') || '#e11d48';
+                img.onerror = function () {
+                    this.onerror = null;
+                    this.src = buildGiftFallbackDataUri(num, col);
+                };
+            });
+
+            document.querySelectorAll('.polaroid-revealed-img').forEach(img => {
+                const num = img.getAttribute('data-fallback-num') || '1';
+                const col = img.getAttribute('data-fallback-col') || '#be123c';
+                img.onerror = function () {
+                    this.onerror = null;
+                    this.src = buildPhotoFallbackDataUri(num, col);
+                };
+            });
+        }
+
+        
+        function createBackgroundSparkles() {
+            const container = document.getElementById('sparkle-container');
+            const count = 42;
+            for (let i = 0; i < count; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'sparkle-dot';
+                const size = 3 + Math.random() * 8;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.top = `${Math.random() * 100}%`;
+                dot.style.animationDuration = `${3 + Math.random() * 4.5}s`;
+                dot.style.animationDelay = `${Math.random() * 3}s`;
+                container.appendChild(dot);
+            }
+        }
+
+        function spawnFloatingSparkles(x, y, count = 10) {
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-sparkle-particle';
+                const size = 6 + Math.random() * 8;
+                el.style.width = `${size}px`;
+                el.style.height = `${size}px`;
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                el.style.setProperty('--dx', `${(Math.random() - 0.5) * 160}px`);
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1250);
+            }
+        }
+
+        function spawnScreenBalloonsAndConfetti() {
+
+            const confColors = ['#fde047', '#f43f5e', '#38bdf8', '#ffffff', '#c084fc', '#4ade80', '#fb923c'];
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight * 0.52;
+
+            for (let c = 0; c < 65; c++) {
+                const conf = document.createElement('div');
+                conf.className = 'dom-confetti';
+                const w = 7 + Math.random() * 7;
+                const h = 5 + Math.random() * 5;
+                const color = confColors[Math.floor(Math.random() * confColors.length)];
+                const duration = 2.1 + Math.random() * 1.3;
+
+                conf.style.width = `${w}px`;
+                conf.style.height = `${h}px`;
+                conf.style.left = `${centerX}px`;
+                conf.style.top = `${centerY}px`;
+                conf.style.background = color;
+                if (c % 3 === 0) conf.style.borderRadius = '50%';
+                conf.style.animationDuration = `${duration}s`;
+
+                const spreadX = (Math.random() - 0.5) * window.innerWidth * 0.85;
+                const peakY = -130 - Math.random() * (window.innerHeight * 0.42);
+                const endY = window.innerHeight * 0.52 + Math.random() * 160;
+
+                conf.style.setProperty('--tx', `${spreadX}px`);
+                conf.style.setProperty('--ty-peak', `${peakY}px`);
+                conf.style.setProperty('--ty-end', `${endY}px`);
+
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), duration * 1000 + 100);
+            }
+        }
+
+        function clearScreenBalloonsAndConfetti() {
+            document.querySelectorAll('.dom-confetti').forEach(el => el.remove());
+        }
+
+        
+        function configureStableCanvasTexture(canvas) {
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.generateMipmaps = false;
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            tex.needsUpdate = true;
+            return tex;
+        }
+
+        function drawSoftInsetGoldFrame2D(ctx, w, h, pad = 30) {
+            ctx.save();
+
+            ctx.strokeStyle = '#fde047';
+            ctx.lineWidth = 12;
+            ctx.lineJoin = 'round';
+            ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
+
+            ctx.strokeStyle = 'rgba(254, 249, 195, 0.65)';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(pad + 16, pad + 16, w - (pad + 16) * 2, h - (pad + 16) * 2);
+            ctx.restore();
+        }
+
+        function drawBuntingFlags2D(ctx, x1, y1, x2, y2, flagCount = 9) {
+            ctx.save();
+            const colors = ['#fde047', '#38bdf8', '#f472b6', '#c084fc', '#4ade80', '#fb923c'];
+            ctx.strokeStyle = '#fef08a';
+            ctx.lineWidth = 4;
+
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            const midX = (x1 + x2) / 2;
+            const sagY = Math.max(y1, y2) + 44;
+            ctx.quadraticCurveTo(midX, sagY, x2, y2);
+            ctx.stroke();
+
+            for (let i = 0; i < flagCount; i++) {
+                const t1 = i / flagCount;
+                const t2 = (i + 0.88) / flagCount;
+                const tMid = (t1 + t2) / 2;
+
+                const getPt = (t) => {
+                    const px = (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * midX + t * t * x2;
+                    const py = (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * sagY + t * t * y2;
+                    return [px, py];
+                };
+
+                const [ax, ay] = getPt(t1);
+                const [bx, by] = getPt(t2);
+                const [mx, my] = getPt(tMid);
+
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.beginPath();
+                ctx.moveTo(ax, ay);
+                ctx.lineTo(bx, by);
+                ctx.lineTo(mx, my + 42);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function drawBalloonCluster2D(ctx, cx, cy, scale = 1) {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(scale, scale);
+
+            const balloons = [
+                { x: -28, y: -10, r: 27, light: '#fda4af', mid: '#f43f5e', dark: '#9f1239', rot: -0.14 },
+                { x: 26, y: -6, r: 27, light: '#fef08a', mid: '#eab308', dark: '#854d0e', rot: 0.14 },
+                { x: 0, y: -32, r: 30, light: '#f5d0fe', mid: '#c084fc', dark: '#581c87', rot: 0 }
+            ];
+
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = 'rgba(254, 240, 138, 0.85)';
+            balloons.forEach(b => {
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y + b.r * 1.18);
+                ctx.quadraticCurveTo(b.x * 0.35, b.y + b.r * 1.18 + 34, 0, 74);
+                ctx.stroke();
+            });
+
+            balloons.forEach(b => {
+                ctx.save();
+                ctx.translate(b.x, b.y);
+                ctx.rotate(b.rot);
+
+                const r = b.r;
+                const grad = ctx.createRadialGradient(-r * 0.32, -r * 0.32, r * 0.08, 0, 0, r * 1.25);
+                grad.addColorStop(0, b.light);
+                grad.addColorStop(0.55, b.mid);
+                grad.addColorStop(1, b.dark);
+
+                ctx.fillStyle = grad;
+                ctx.strokeStyle = '#4c0519';
+                ctx.lineWidth = 3;
+
+                ctx.beginPath();
+                ctx.moveTo(0, -r * 1.12);
+                ctx.bezierCurveTo(r * 0.92, -r * 1.12, r * 1.06, -r * 0.25, r * 0.68, r * 0.52);
+                ctx.bezierCurveTo(r * 0.36, r * 0.96, r * 0.14, r * 1.10, 0, r * 1.18);
+                ctx.bezierCurveTo(-r * 0.14, r * 1.10, -r * 0.36, r * 0.96, -r * 0.68, r * 0.52);
+                ctx.bezierCurveTo(-r * 1.06, -r * 0.25, -r * 0.92, -r * 1.12, 0, -r * 1.12);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = b.dark;
+                ctx.beginPath();
+                ctx.moveTo(-4, r * 1.15);
+                ctx.lineTo(4, r * 1.15);
+                ctx.lineTo(6, r * 1.26);
+                ctx.lineTo(-6, r * 1.26);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+                ctx.beginPath();
+                ctx.ellipse(-r * 0.34, -r * 0.36, r * 0.14, r * 0.28, -0.35, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            });
+
+            ctx.restore();
+        }
+
+        function drawGiftBox2D(ctx, cx, cy, scale = 1, boxCol = '#38bdf8', ribCol = '#fde047') {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(scale, scale);
+            ctx.strokeStyle = '#4c0519';
+            ctx.lineWidth = 4;
+
+            ctx.fillStyle = boxCol;
+            ctx.fillRect(-32, -20, 64, 52);
+            ctx.strokeRect(-32, -20, 64, 52);
+
+            ctx.fillRect(-36, -32, 72, 14);
+            ctx.strokeRect(-36, -32, 72, 14);
+
+            ctx.fillStyle = ribCol;
+            ctx.fillRect(-8, -32, 16, 64);
+            ctx.strokeRect(-8, -32, 16, 64);
+
+            ctx.beginPath();
+            ctx.ellipse(-14, -38, 14, 8, -0.25, 0, Math.PI * 2);
+            ctx.ellipse(14, -38, 14, 8, 0.25, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawGoldenCrown2D(ctx, cx, cy, scale = 1) {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(scale, scale);
+            ctx.fillStyle = '#fde047';
+            ctx.strokeStyle = '#78350f';
+            ctx.lineWidth = 4.5;
+            ctx.lineJoin = 'round';
+
+            ctx.beginPath();
+            ctx.moveTo(-42, 24);
+            ctx.lineTo(-50, -18);
+            ctx.lineTo(-22, 4);
+            ctx.lineTo(0, -28);
+            ctx.lineTo(22, 4);
+            ctx.lineTo(50, -18);
+            ctx.lineTo(42, 24);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#e11d48';
+            ctx.beginPath();
+            ctx.arc(0, 6, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawGoldenStarburst2D(ctx, cx, cy, radius = 36) {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.fillStyle = '#fde047';
+            ctx.beginPath();
+            for (let i = 0; i < 8; i++) {
+                const ang = (i * Math.PI) / 4;
+                const rOuter = i % 2 === 0 ? radius : radius * 0.65;
+                const rInner = radius * 0.22;
+                ctx.lineTo(Math.cos(ang) * rOuter, Math.sin(ang) * rOuter);
+                ctx.lineTo(Math.cos(ang + Math.PI / 8) * rInner, Math.sin(ang + Math.PI / 8) * rInner);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function createLidTopTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+
+            const bgGrad = ctx.createRadialGradient(560, 420, 60, 512, 400, 660);
+            bgGrad.addColorStop(0, '#e11d48');
+            bgGrad.addColorStop(0.52, '#9f1239');
+            bgGrad.addColorStop(1, '#580822');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 32);
+            drawBuntingFlags2D(ctx, 56, 56, 968, 56, 11);
+
+            const confCols = ['#fde047', '#fffbeb', '#38bdf8', '#f472b6', '#fcd34d'];
+            for (let i = 0; i < 45; i++) {
+                ctx.fillStyle = confCols[i % confCols.length];
+                ctx.beginPath();
+                ctx.arc(90 + (i * 197) % 850, 120 + (i * 131) % 600, 3.5 + (i % 4), 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            drawBalloonCluster2D(ctx, 880, 260, 0.92);
+            drawBalloonCluster2D(ctx, 185, 610, 0.88);
+            drawGoldenCrown2D(ctx, 645, 310, 1.05);
+            drawGiftBox2D(ctx, 480, 665, 0.85, '#0284c7', '#fde047');
+            drawGiftBox2D(ctx, 810, 665, 0.85, '#9333ea', '#fde047');
+            drawGoldenStarburst2D(ctx, 645, 665, 32);
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.font = 'italic 800 54px "Playfair Display", Georgia, serif';
+            ctx.strokeStyle = '#3b0414';
+            ctx.lineWidth = 12;
+            ctx.lineJoin = 'round';
+            ctx.strokeText('¡Feliz Cumpleaños,', 645, 445);
+            ctx.fillStyle = '#fde047';
+            ctx.fillText('¡Feliz Cumpleaños,', 645, 445);
+
+            ctx.font = '900 76px "Fredoka", "Quicksand", sans-serif';
+            ctx.strokeStyle = '#3b0414';
+            ctx.lineWidth = 14;
+            ctx.strokeText('Mi Reina!', 645, 540);
+            ctx.fillStyle = '#fffbeb';
+            ctx.fillText('Mi Reina!', 645, 540);
+            ctx.restore();
+
+            return configureStableCanvasTexture(canvas);
+        }
+
+        function createFrontBoxTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#be123c');
+            grad.addColorStop(1, '#650924');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 26);
+            drawBuntingFlags2D(ctx, 44, 42, 980, 42, 10);
+
+            drawBalloonCluster2D(ctx, 150, 285, 1.08);
+            drawGiftBox2D(ctx, 360, 320, 1.0, '#0284c7', '#fde047');
+            drawGoldenStarburst2D(ctx, 512, 320, 38);
+            drawGiftBox2D(ctx, 680, 320, 1.0, '#9333ea', '#fde047');
+            drawBalloonCluster2D(ctx, 870, 285, 1.08);
+
+            return configureStableCanvasTexture(canvas);
+        }
+
+        function createInnerLidTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+
+            const grad = ctx.createRadialGradient(512, 400, 60, 512, 400, 560);
+            grad.addColorStop(0, '#501842');
+            grad.addColorStop(0.65, '#2b1233');
+            grad.addColorStop(1, '#180920');
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 36);
+
+            const drawLedDot = (x, y) => {
+                const rad = ctx.createRadialGradient(x, y, 2, x, y, 20);
+                rad.addColorStop(0, '#fffbeb');
+                rad.addColorStop(0.45, '#fbbf24');
+                rad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+                ctx.fillStyle = rad;
+                ctx.beginPath();
+                ctx.arc(x, y, 20, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(x, y, 5.5, 0, Math.PI * 2);
+                ctx.fill();
+            };
+
+            for (let x = 75; x <= 950; x += 108) {
+                drawLedDot(x, 68);
+                drawLedDot(x, 732);
+            }
+            for (let y = 160; y <= 650; y += 110) {
+                drawLedDot(68, y);
+                drawLedDot(956, y);
+            }
+
+            drawBalloonCluster2D(ctx, 250, 290, 1.15);
+            drawGoldenCrown2D(ctx, 250, 520, 1.15);
+            drawGiftBox2D(ctx, 250, 635, 1.0, '#f43f5e', '#fde047');
+
+            ctx.save();
+            ctx.translate(685, 395);
+            ctx.rotate(0.04);
+
+            const drawHeartPath = (s) => {
+                ctx.beginPath();
+                ctx.moveTo(0, 175 * s);
+                ctx.bezierCurveTo(-240 * s, 30 * s, -275 * s, -150 * s, -125 * s, -170 * s);
+                ctx.bezierCurveTo(-45 * s, -180 * s, 0, -105 * s, 0, -105 * s);
+                ctx.bezierCurveTo(0, -105 * s, 45 * s, -180 * s, 125 * s, -170 * s);
+                ctx.bezierCurveTo(275 * s, -150 * s, 240 * s, 30 * s, 0, 175 * s);
+                ctx.closePath();
+            };
+
+            drawHeartPath(1.14);
+            ctx.fillStyle = '#3b0a26';
+            ctx.fill();
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 8;
+            ctx.stroke();
+
+            drawHeartPath(1.02);
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.textAlign = 'center';
+            ctx.lineJoin = 'round';
+
+            const drawCrispText = (text, y, font, fillCol) => {
+                ctx.font = font;
+                ctx.strokeStyle = '#180510';
+                ctx.lineWidth = 8;
+                ctx.strokeText(text, 0, y);
+                ctx.fillStyle = fillCol;
+                ctx.fillText(text, 0, y);
+            };
+
+            drawCrispText('Happy Birthday', -30, '900 46px "Playfair Display", serif', '#fb7185');
+            drawCrispText('Te Amo', 48, '900 48px "Playfair Display", serif', '#fde047');
+
+            ctx.restore();
+
+            return configureStableCanvasTexture(canvas);
+        }
+
+        function createInteriorFloorCarpetTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 768;
+            const ctx = canvas.getContext('2d');
+
+            const rad = ctx.createRadialGradient(512, 384, 50, 512, 384, 600);
+            rad.addColorStop(0, '#3b1538');
+            rad.addColorStop(0.6, '#270f2b');
+            rad.addColorStop(1, '#16081c');
+            ctx.fillStyle = rad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.16)';
+            ctx.lineWidth = 2;
+            const step = 96;
+            for (let x = -768; x < 1792; x += step) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x + 768, 768);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(x + 768, 0);
+                ctx.lineTo(x, 768);
+                ctx.stroke();
+            }
+
+            drawSoftInsetGoldFrame2D(ctx, canvas.width, canvas.height, 28);
+
+            const cols = ['#fde047', '#fb7185', '#38bdf8', '#c084fc', '#4ade80'];
+            for (let i = 0; i < 65; i++) {
+                const px = 60 + ((i * 173) % 900);
+                const py = 60 + ((i * 139) % 648);
+                ctx.fillStyle = cols[i % cols.length];
+                if (i % 3 === 0) {
+                    drawGoldenStarburst2D(ctx, px, py, 10);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(px, py, 4.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            return configureStableCanvasTexture(canvas);
+        }
+
+        
+        let scene, camera, renderer;
+        let boxRootGroup, boxEnclosureGroup, lidPivotGroup, bowGroup;
+        let frontRibbonMesh, lidCrossRibbonMesh;
+        let padlockGroup, padlockShackle, keyGroup, lockLight;
+        let cakeGroup, candleLight;
+        let candleFlameData = [];
+        let smokeParticles = [];
+        let isCakeFocused = false;
+        let letterGroup, retroCameraGroup;
+        let interactiveObjects = [];
+
+        let isBoxLocked = true;
+        let isUnlockingAnim = false;
+        let isBoxOpen = false;
+
+        const LOCK_KEYHOLE_POS = {
+            x: 0,
+            y: 2.15 / 2 - 0.30,
+            z: 3.35 / 2 + 0.18 + 0.093
+        };
+
+        const keyAnimState = {
+            active: false,
+            startTime: 0,
+            duration: 1250
+        };
+
+        const cakeAnimState = {
+            pos: new THREE.Vector3(-1.05, -0.83, -0.18),
+            targetPos: new THREE.Vector3(-1.05, -0.83, -0.18),
+            scale: 1,
+            targetScale: 1,
+            rotY: 0
+        };
+
+        let partyGroup;
+        let activeBalloons = [];
+        let activeConfetti = [];
+        let sharedBalloonGeos = null;
+        let sharedConfettiGeos = null;
+
+        const BOX_SCALE = 0.66;
+
+        const animState = {
+            lidAngle: 0,
+            targetLidAngle: 0,
+            camPos: new THREE.Vector3(0, 2.7, 9.2),
+            targetCamPos: new THREE.Vector3(0, 2.7, 9.2),
+            camLookAt: new THREE.Vector3(0, 0.2, 0),
+            targetCamLookAt: new THREE.Vector3(0, 0.2, 0),
+            userRotX: 0.22,
+            userRotY: 0,
+            targetUserRotX: 0.22,
+            targetUserRotY: 0
+        };
+
+        function updateCameraFramingTargets() {
+            const aspect = window.innerWidth / window.innerHeight;
+            const distMultiplier = aspect < 0.75 ? 1.24 : (aspect < 1.1 ? 1.12 : 1.0);
+
+            if (isCakeFocused) {
+                animState.targetCamPos.set(0, 2.15 * distMultiplier, 6.3 * distMultiplier);
+                animState.targetCamLookAt.set(0, 0.85, 1.45);
+                animState.targetUserRotX = 0.05;
+                animState.targetUserRotY = 0;
+            } else if (isBoxOpen) {
+                animState.targetCamPos.set(0.12, 5.15 * distMultiplier, 8.6 * distMultiplier);
+                animState.targetCamLookAt.set(0, 0.42, -0.25);
+            } else {
+                animState.targetCamPos.set(0, 2.65 * distMultiplier, 8.8 * distMultiplier);
+                animState.targetCamLookAt.set(0, 0.15, 0);
+            }
+        }
+
+        function initThreeScene() {
+            const container = document.getElementById('canvas-container');
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
+            updateCameraFramingTargets();
+            animState.camPos.copy(animState.targetCamPos);
+            animState.camLookAt.copy(animState.targetCamLookAt);
+            camera.position.copy(animState.camPos);
+            camera.lookAt(animState.camLookAt);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xfff4e6, 0.82);
+            scene.add(ambientLight);
+
+            const mainDirLight = new THREE.DirectionalLight(0xfffbeb, 0.78);
+            mainDirLight.position.set(4, 9, 7);
+            mainDirLight.castShadow = true;
+            mainDirLight.shadow.mapSize.width = 1024;
+            mainDirLight.shadow.mapSize.height = 1024;
+            scene.add(mainDirLight);
+
+            const rimLightLeft = new THREE.DirectionalLight(0xfde047, 0.65);
+            rimLightLeft.position.set(-6, 5, -5);
+            scene.add(rimLightLeft);
+
+            const rimLightRight = new THREE.DirectionalLight(0xfb7185, 0.45);
+            rimLightRight.position.set(6, 4, -4);
+            scene.add(rimLightRight);
+
+            const warmInteriorLight = new THREE.PointLight(0xffca28, 0.65, 7.5);
+            warmInteriorLight.position.set(0, 1.3, 0.35);
+            scene.add(warmInteriorLight);
+
+            partyGroup = new THREE.Group();
+            scene.add(partyGroup);
+
+            buildGiftBox3D();
+
+            setupInteractionEvents();
+            initPolaroidCarousel();
+            onWindowResize();
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        
+        const REALISTIC_BALLOON_STYLES = [
+
+            {
+                color: 0xfbbf24,
+                emissive: 0x78350f,
+                emissiveIntensity: 0.16,
+                roughness: 0.24,
+                metalness: 0.52,
+                clearcoat: 0.65,
+                clearcoatRoughness: 0.18
+            },
+
+            {
+                color: 0xe11d48,
+                emissive: 0x4c0519,
+                emissiveIntensity: 0.18,
+                roughness: 0.32,
+                metalness: 0.08,
+                clearcoat: 0.55,
+                clearcoatRoughness: 0.24
+            },
+
+            {
+                color: 0xf472b6,
+                emissive: 0x500724,
+                emissiveIntensity: 0.14,
+                roughness: 0.34,
+                metalness: 0.06,
+                clearcoat: 0.52,
+                clearcoatRoughness: 0.25
+            },
+
+            {
+                color: 0xfffbeb,
+                emissive: 0x451a03,
+                emissiveIntensity: 0.10,
+                roughness: 0.30,
+                metalness: 0.05,
+                clearcoat: 0.60,
+                clearcoatRoughness: 0.20
+            },
+
+            {
+                color: 0xa855f7,
+                emissive: 0x3b0764,
+                emissiveIntensity: 0.15,
+                roughness: 0.34,
+                metalness: 0.10,
+                clearcoat: 0.52,
+                clearcoatRoughness: 0.24
+            }
+        ];
+
+        function initPartyGeometries() {
+            if (!sharedBalloonGeos) {
+
+                const profilePoints = [
+                    new THREE.Vector2(0.000,  0.390),
+                    new THREE.Vector2(0.085,  0.382),
+                    new THREE.Vector2(0.175,  0.355),
+                    new THREE.Vector2(0.255,  0.300),
+                    new THREE.Vector2(0.308,  0.220),
+                    new THREE.Vector2(0.332,  0.120),
+                    new THREE.Vector2(0.330,  0.010),
+                    new THREE.Vector2(0.305, -0.095),
+                    new THREE.Vector2(0.255, -0.195),
+                    new THREE.Vector2(0.185, -0.285),
+                    new THREE.Vector2(0.108, -0.358),
+                    new THREE.Vector2(0.045, -0.405),
+                    new THREE.Vector2(0.024, -0.432),
+                    new THREE.Vector2(0.042, -0.456),
+                    new THREE.Vector2(0.000, -0.460)
+                ];
+
+                const pearBalloonGeo = new THREE.LatheGeometry(profilePoints, 44);
+                pearBalloonGeo.computeVertexNormals();
+
+                const lipRingGeo = new THREE.TorusGeometry(0.036, 0.011, 12, 28);
+                lipRingGeo.rotateX(Math.PI / 2);
+
+                const goldTieGeo = new THREE.TorusGeometry(0.028, 0.009, 10, 24);
+                goldTieGeo.rotateX(Math.PI / 2);
+
+                const curvePts = [];
+                const segments = 14;
+                for (let s = 0; s <= segments; s++) {
+                    const t = s / segments;
+                    curvePts.push(new THREE.Vector3(
+                        Math.sin(t * Math.PI * 1.5) * 0.018,
+                        -0.44 - t * 0.92,
+                        (1 - Math.cos(t * Math.PI * 1.5)) * 0.012
+                    ));
+                }
+                const silkCurve = new THREE.CatmullRomCurve3(curvePts);
+                const silkStringGeo = new THREE.TubeGeometry(silkCurve, 28, 0.0045, 6, false);
+
+                sharedBalloonGeos = {
+                    pearBalloonGeo,
+                    lipRingGeo,
+                    goldTieGeo,
+                    silkStringGeo
+                };
+            }
+
+            if (!sharedConfettiGeos) {
+                const rectGeo = new THREE.PlaneGeometry(0.11, 0.055);
+                const squareGeo = new THREE.PlaneGeometry(0.08, 0.08);
+                const circleGeo = new THREE.CircleGeometry(0.05, 8);
+                sharedConfettiGeos = [rectGeo, squareGeo, circleGeo];
+            }
+        }
+
+        function createRealisticBalloon3D(styleConfig, includeSilkString = true) {
+            initPartyGeometries();
+
+            const mat = new THREE.MeshPhysicalMaterial({
+                color: styleConfig.color,
+                emissive: styleConfig.emissive,
+                emissiveIntensity: styleConfig.emissiveIntensity,
+                roughness: styleConfig.roughness,
+                metalness: styleConfig.metalness,
+                clearcoat: styleConfig.clearcoat,
+                clearcoatRoughness: styleConfig.clearcoatRoughness,
+                transparent: true,
+                opacity: 0.96
+            });
+
+            const goldTieMat = new THREE.MeshStandardMaterial({
+                color: 0xfde047,
+                emissive: 0x78350f,
+                emissiveIntensity: 0.22,
+                roughness: 0.25,
+                metalness: 0.65
+            });
+
+            const group = new THREE.Group();
+
+            const balloonMesh = new THREE.Mesh(sharedBalloonGeos.pearBalloonGeo, mat);
+            balloonMesh.castShadow = true;
+            group.add(balloonMesh);
+
+            const lipRingMesh = new THREE.Mesh(sharedBalloonGeos.lipRingGeo, mat);
+            lipRingMesh.position.y = -0.452;
+            group.add(lipRingMesh);
+
+            const tieMesh = new THREE.Mesh(sharedBalloonGeos.goldTieGeo, goldTieMat);
+            tieMesh.position.y = -0.428;
+            group.add(tieMesh);
+
+            if (includeSilkString) {
+                const stringMat = new THREE.MeshStandardMaterial({
+                    color: 0xfef08a,
+                    emissive: 0x78350f,
+                    emissiveIntensity: 0.18,
+                    roughness: 0.35,
+                    metalness: 0.4
+                });
+                const silkStringMesh = new THREE.Mesh(sharedBalloonGeos.silkStringGeo, stringMat);
+                group.add(silkStringMesh);
+            }
+
+            return { group, balloonMesh };
+        }
+
+        
+        function buildGiftBox3D() {
+            boxRootGroup = new THREE.Group();
+            boxRootGroup.scale.setScalar(BOX_SCALE);
+            scene.add(boxRootGroup);
+
+            boxEnclosureGroup = new THREE.Group();
+            boxRootGroup.add(boxEnclosureGroup);
+
+            const W = 4.4;
+            const H = 2.15;
+            const D = 3.35;
+            const wallT = 0.12;
+
+            const pedestalGroup = new THREE.Group();
+            pedestalGroup.position.set(0, -H / 2 - 0.04, 0);
+            boxEnclosureGroup.add(pedestalGroup);
+
+            const pedDiscGeo = new THREE.CylinderGeometry(3.05, 3.22, 0.07, 48);
+            const pedDiscMat = new THREE.MeshStandardMaterial({
+                color: 0x4c0519,
+                emissive: 0x3b0414,
+                emissiveIntensity: 0.45,
+                roughness: 0.35,
+                metalness: 0.35
+            });
+            const pedDiscMesh = new THREE.Mesh(pedDiscGeo, pedDiscMat);
+            pedDiscMesh.receiveShadow = true;
+            pedestalGroup.add(pedDiscMesh);
+
+            const pedGoldRingGeo = new THREE.RingGeometry(2.92, 3.18, 64);
+            pedGoldRingGeo.rotateX(-Math.PI / 2);
+            const pedGoldRingMat = new THREE.MeshBasicMaterial({
+                color: 0xfde047,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.85
+            });
+            const pedGoldRingMesh = new THREE.Mesh(pedGoldRingGeo, pedGoldRingMat);
+            pedGoldRingMesh.position.y = 0.038;
+            pedestalGroup.add(pedGoldRingMesh);
+
+            const boxWallMat = new THREE.MeshStandardMaterial({
+                color: 0xbe123c,
+                emissive: 0x4c0519,
+                emissiveIntensity: 0.42,
+                roughness: 0.4,
+                metalness: 0.18
+            });
+
+            const innerWallMat = new THREE.MeshStandardMaterial({
+                color: 0x3b0f2b,
+                emissive: 0x1a0614,
+                emissiveIntensity: 0.25,
+                roughness: 0.8,
+                metalness: 0.05
+            });
+
+            const floorCarpetTex = createInteriorFloorCarpetTexture();
+            const innerFloorMat = new THREE.MeshStandardMaterial({
+                map: floorCarpetTex,
+                roughness: 0.75,
+                metalness: 0.08
+            });
+
+            const ribbonMat = new THREE.MeshStandardMaterial({
+                color: 0xfde047,
+                emissive: 0xb45309,
+                emissiveIntensity: 0.24,
+                roughness: 0.26,
+                metalness: 0.52,
+                polygonOffset: true,
+                polygonOffsetFactor: -1,
+                polygonOffsetUnits: -1
+            });
+
+            const floorGeo = new THREE.BoxGeometry(W, wallT, D);
+            const floorMesh = new THREE.Mesh(floorGeo, innerFloorMat);
+            floorMesh.position.y = -H / 2 + wallT / 2;
+            floorMesh.receiveShadow = true;
+            boxEnclosureGroup.add(floorMesh);
+
+            const frontTex = createFrontBoxTexture();
+            const frontMaterials = [
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                new THREE.MeshStandardMaterial({
+                    map: frontTex,
+                    emissive: 0x3b0414,
+                    emissiveIntensity: 0.22,
+                    roughness: 0.52,
+                    metalness: 0.12
+                }),
+                innerWallMat
+            ];
+            const frontWallGeo = new THREE.BoxGeometry(W, H, wallT);
+            const frontWallMesh = new THREE.Mesh(frontWallGeo, frontMaterials);
+            frontWallMesh.position.set(0, 0, D / 2 - wallT / 2);
+            frontWallMesh.castShadow = true;
+            frontWallMesh.receiveShadow = true;
+            boxEnclosureGroup.add(frontWallMesh);
+
+            const backWallMaterials = [
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                innerWallMat,
+                boxWallMat
+            ];
+            const backWallMesh = new THREE.Mesh(frontWallGeo, backWallMaterials);
+            backWallMesh.position.set(0, 0, -D / 2 + wallT / 2);
+            backWallMesh.receiveShadow = true;
+            boxEnclosureGroup.add(backWallMesh);
+
+            const sideWallGeo = new THREE.BoxGeometry(wallT, H, D - wallT * 2);
+            const leftWallMaterials = [
+                innerWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat
+            ];
+            const leftWallMesh = new THREE.Mesh(sideWallGeo, leftWallMaterials);
+            leftWallMesh.position.set(-W / 2 + wallT / 2, 0, 0);
+            leftWallMesh.receiveShadow = true;
+            boxEnclosureGroup.add(leftWallMesh);
+
+            const rightWallMaterials = [
+                boxWallMat,
+                innerWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat,
+                boxWallMat
+            ];
+            const rightWallMesh = new THREE.Mesh(sideWallGeo, rightWallMaterials);
+            rightWallMesh.position.set(W / 2 - wallT / 2, 0, 0);
+            rightWallMesh.receiveShadow = true;
+            boxEnclosureGroup.add(rightWallMesh);
+
+            const cornerPillarGeo = new THREE.CylinderGeometry(0.055, 0.055, H + 0.02, 16);
+            [
+                [-W / 2, -D / 2],
+                [W / 2, -D / 2],
+                [-W / 2, D / 2],
+                [W / 2, D / 2]
+            ].forEach(([cx, cz]) => {
+                const pillar = new THREE.Mesh(cornerPillarGeo, ribbonMat);
+                pillar.position.set(cx, 0, cz);
+                boxEnclosureGroup.add(pillar);
+            });
+
+            const bottomTrimFront = new THREE.Mesh(new THREE.BoxGeometry(W + 0.06, 0.07, 0.05), ribbonMat);
+            bottomTrimFront.position.set(0, -H / 2 + 0.035, D / 2 + 0.015);
+            boxEnclosureGroup.add(bottomTrimFront);
+
+            const bottomTrimLeft = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.07, D + 0.06), ribbonMat);
+            bottomTrimLeft.position.set(-W / 2 - 0.015, -H / 2 + 0.035, 0);
+            boxEnclosureGroup.add(bottomTrimLeft);
+
+            const bottomTrimRight = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.07, D + 0.06), ribbonMat);
+            bottomTrimRight.position.set(W / 2 + 0.015, -H / 2 + 0.035, 0);
+            boxEnclosureGroup.add(bottomTrimRight);
+
+            const ribbonX = -1.28;
+            const ribbonW = 0.36;
+            const frontRibbonGeo = new THREE.BoxGeometry(ribbonW, H - 0.02, 0.02);
+            frontRibbonMesh = new THREE.Mesh(frontRibbonGeo, ribbonMat);
+            frontRibbonMesh.position.set(ribbonX, 0, D / 2 + 0.024);
+            boxEnclosureGroup.add(frontRibbonMesh);
+
+            const ledBubbleGeo = new THREE.SphereGeometry(0.048, 12, 12);
+            const ledBubbleMat = new THREE.MeshBasicMaterial({ color: 0xfde047 });
+            for (let i = -3; i <= 3; i++) {
+                const dot = new THREE.Mesh(ledBubbleGeo, ledBubbleMat);
+                dot.position.set(i * 0.56, 0.35, -D / 2 + wallT + 0.03);
+                boxEnclosureGroup.add(dot);
+            }
+            for (let z = -1; z <= 1; z++) {
+                const dotL = new THREE.Mesh(ledBubbleGeo, ledBubbleMat);
+                dotL.position.set(-W / 2 + wallT + 0.03, 0.35, z * 0.85);
+                boxEnclosureGroup.add(dotL);
+
+                const dotR = new THREE.Mesh(ledBubbleGeo, ledBubbleMat);
+                dotR.position.set(W / 2 - wallT - 0.03, 0.35, z * 0.85);
+                boxEnclosureGroup.add(dotR);
+            }
+
+            buildInteriorContents(W, H, D, wallT);
+
+            lidPivotGroup = new THREE.Group();
+            lidPivotGroup.position.set(0, H / 2, -D / 2);
+            boxEnclosureGroup.add(lidPivotGroup);
+
+            const lidW = W + 0.14;
+            const lidD = D + 0.14;
+            const lidThick = 0.12;
+            const lipHeight = 0.32;
+
+            const lidTopTex = createLidTopTexture();
+            const innerLidTex = createInnerLidTexture();
+
+            const lidTopMaterials = [
+                boxWallMat,
+                boxWallMat,
+                new THREE.MeshStandardMaterial({
+                    map: lidTopTex,
+                    emissive: 0x3b0414,
+                    emissiveIntensity: 0.22,
+                    roughness: 0.52,
+                    metalness: 0.12
+                }),
+                new THREE.MeshStandardMaterial({ map: innerLidTex, roughness: 0.85, metalness: 0.0 }),
+                boxWallMat,
+                boxWallMat
+            ];
+
+            const lidPlateGeo = new THREE.BoxGeometry(lidW, lidThick, lidD);
+            const lidPlateMesh = new THREE.Mesh(lidPlateGeo, lidTopMaterials);
+            lidPlateMesh.position.set(0, lidThick / 2, D / 2);
+            lidPlateMesh.castShadow = true;
+            lidPivotGroup.add(lidPlateMesh);
+
+            const frontLipGeo = new THREE.BoxGeometry(lidW, lipHeight, 0.08);
+            const frontLipMesh = new THREE.Mesh(frontLipGeo, boxWallMat);
+            frontLipMesh.position.set(0, -lipHeight / 2, D + 0.03);
+            lidPivotGroup.add(frontLipMesh);
+
+            const sideLipGeo = new THREE.BoxGeometry(0.08, lipHeight, lidD - 0.16);
+            const leftLipMesh = new THREE.Mesh(sideLipGeo, boxWallMat);
+            leftLipMesh.position.set(-lidW / 2 + 0.04, -lipHeight / 2, D / 2);
+            lidPivotGroup.add(leftLipMesh);
+
+            const rightLipMesh = new THREE.Mesh(sideLipGeo, boxWallMat);
+            rightLipMesh.position.set(lidW / 2 - 0.04, -lipHeight / 2, D / 2);
+            lidPivotGroup.add(rightLipMesh);
+
+            lidCrossRibbonMesh = new THREE.Group();
+            lidPivotGroup.add(lidCrossRibbonMesh);
+
+            const lidVertRibbonGeo = new THREE.BoxGeometry(ribbonW, 0.018, lidD + 0.02);
+            const lidVertRibbon = new THREE.Mesh(lidVertRibbonGeo, ribbonMat);
+            lidVertRibbon.position.set(ribbonX, lidThick + 0.014, D / 2);
+            lidCrossRibbonMesh.add(lidVertRibbon);
+
+            const lipVertRibbonGeo = new THREE.BoxGeometry(ribbonW, lipHeight, 0.02);
+            const lipVertRibbon = new THREE.Mesh(lipVertRibbonGeo, ribbonMat);
+            lipVertRibbon.position.set(ribbonX, -lipHeight / 2, D + 0.082);
+            lidCrossRibbonMesh.add(lipVertRibbon);
+
+            const horizZ = 0.78;
+            const lidHorizRibbonGeo = new THREE.BoxGeometry(lidW + 0.02, 0.018, 0.34);
+            const lidHorizRibbon = new THREE.Mesh(lidHorizRibbonGeo, ribbonMat);
+            lidHorizRibbon.position.set(0, lidThick + 0.026, horizZ);
+            lidCrossRibbonMesh.add(lidHorizRibbon);
+
+            const sideRibbonTabGeo = new THREE.BoxGeometry(0.02, lipHeight, 0.34);
+            const leftTab = new THREE.Mesh(sideRibbonTabGeo, ribbonMat);
+            leftTab.position.set(-lidW / 2 - 0.015, -lipHeight / 2, horizZ);
+            lidCrossRibbonMesh.add(leftTab);
+
+            const rightTab = new THREE.Mesh(sideRibbonTabGeo, ribbonMat);
+            rightTab.position.set(lidW / 2 + 0.015, -lipHeight / 2, horizZ);
+            lidCrossRibbonMesh.add(rightTab);
+
+            bowGroup = create3DPinkBow(ribbonMat);
+            bowGroup.scale.setScalar(0.76);
+            bowGroup.position.set(ribbonX, lidThick + 0.055, horizZ);
+            lidCrossRibbonMesh.add(bowGroup);
+
+            buildLockAndKey3D(D, H);
+        }
+
+        function buildLockAndKey3D(D, H) {
+            const metallicGoldMat = new THREE.MeshStandardMaterial({
+                color: 0xfbbf24,
+                emissive: 0x78350f,
+                emissiveIntensity: 0.24,
+                roughness: 0.22,
+                metalness: 0.72
+            });
+
+            const brushedSilverMat = new THREE.MeshStandardMaterial({
+                color: 0xe2e8f0,
+                emissive: 0x334155,
+                emissiveIntensity: 0.14,
+                roughness: 0.20,
+                metalness: 0.75
+            });
+
+            const rubyGemMat = new THREE.MeshStandardMaterial({
+                color: 0xe11d48,
+                emissive: 0x881337,
+                emissiveIntensity: 0.32,
+                roughness: 0.15,
+                metalness: 0.2
+            });
+
+            const darkKeyholeMat = new THREE.MeshBasicMaterial({
+                color: 0x090406,
+                polygonOffset: true,
+                polygonOffsetFactor: -2,
+                polygonOffsetUnits: -2
+            });
+
+            lockLight = new THREE.PointLight(0xfff3c4, 0.75, 4.2);
+            lockLight.position.set(0, H / 2 - 0.1, D / 2 + 1.15);
+            boxEnclosureGroup.add(lockLight);
+
+            const haspGeo = new THREE.BoxGeometry(0.36, 0.44, 0.045);
+            const haspMesh = new THREE.Mesh(haspGeo, metallicGoldMat);
+            haspMesh.position.set(0, H / 2 - 0.14, D / 2 + 0.045);
+            boxEnclosureGroup.add(haspMesh);
+
+            padlockGroup = new THREE.Group();
+            padlockGroup.position.set(0, H / 2 - 0.30, D / 2 + 0.18);
+            boxEnclosureGroup.add(padlockGroup);
+
+            const bodyGeo = new THREE.BoxGeometry(0.48, 0.44, 0.18);
+            const bodyMesh = new THREE.Mesh(bodyGeo, metallicGoldMat);
+            bodyMesh.castShadow = true;
+            padlockGroup.add(bodyMesh);
+
+            const rimGeo = new THREE.BoxGeometry(0.50, 0.055, 0.195);
+            const topRimMesh = new THREE.Mesh(rimGeo, brushedSilverMat);
+            topRimMesh.position.y = 0.19;
+            padlockGroup.add(topRimMesh);
+
+            const botRimMesh = new THREE.Mesh(rimGeo, brushedSilverMat);
+            botRimMesh.position.y = -0.19;
+            padlockGroup.add(botRimMesh);
+
+            const escutcheonRing = new THREE.Mesh(
+                new THREE.RingGeometry(0.068, 0.092, 24),
+                brushedSilverMat
+            );
+            escutcheonRing.position.set(0, 0.01, 0.092);
+            padlockGroup.add(escutcheonRing);
+
+            const khCircle = new THREE.Mesh(new THREE.CircleGeometry(0.052, 24), darkKeyholeMat);
+            khCircle.position.set(0, 0.025, 0.094);
+            padlockGroup.add(khCircle);
+
+            const khSlot = new THREE.Mesh(new THREE.PlaneGeometry(0.044, 0.125), darkKeyholeMat);
+            khSlot.position.set(0, -0.042, 0.094);
+            padlockGroup.add(khSlot);
+
+            padlockShackle = new THREE.Group();
+            padlockShackle.position.set(-0.12, 0.22, 0);
+            padlockGroup.add(padlockShackle);
+
+            const shackleArcGeo = new THREE.TorusGeometry(0.12, 0.038, 16, 32, Math.PI);
+            const shackleArcMesh = new THREE.Mesh(shackleArcGeo, brushedSilverMat);
+            shackleArcMesh.position.set(0.12, 0.08, 0);
+            padlockShackle.add(shackleArcMesh);
+
+            const legGeo = new THREE.CylinderGeometry(0.038, 0.038, 0.16, 16);
+            const leftLeg = new THREE.Mesh(legGeo, brushedSilverMat);
+            leftLeg.position.set(0, 0, 0);
+            padlockShackle.add(leftLeg);
+
+            const rightLeg = new THREE.Mesh(legGeo, brushedSilverMat);
+            rightLeg.position.set(0.24, 0, 0);
+            padlockShackle.add(rightLeg);
+
+            keyGroup = new THREE.Group();
+            keyGroup.position.set(
+                LOCK_KEYHOLE_POS.x,
+                LOCK_KEYHOLE_POS.y,
+                LOCK_KEYHOLE_POS.z + 0.48
+            );
+            keyGroup.rotation.set(0, 0, Math.PI / 2);
+            boxEnclosureGroup.add(keyGroup);
+
+            const shaftGeo = new THREE.CylinderGeometry(0.028, 0.028, 0.44, 20);
+            shaftGeo.rotateX(Math.PI / 2);
+            const shaftMesh = new THREE.Mesh(shaftGeo, metallicGoldMat);
+            shaftMesh.position.set(0, 0, 0.05);
+            shaftMesh.castShadow = true;
+            keyGroup.add(shaftMesh);
+
+            const tipGeo = new THREE.ConeGeometry(0.028, 0.04, 16);
+            tipGeo.rotateX(-Math.PI / 2);
+            const tipMesh = new THREE.Mesh(tipGeo, metallicGoldMat);
+            tipMesh.position.set(0, 0, -0.18);
+            keyGroup.add(tipMesh);
+
+            const tooth1 = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.095, 0.038), metallicGoldMat);
+            tooth1.position.set(0, -0.052, -0.125);
+            keyGroup.add(tooth1);
+
+            const tooth2 = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.072, 0.034), metallicGoldMat);
+            tooth2.position.set(0, -0.040, -0.065);
+            keyGroup.add(tooth2);
+
+            const collarGeo = new THREE.CylinderGeometry(0.052, 0.052, 0.055, 20);
+            collarGeo.rotateX(Math.PI / 2);
+            const collarMesh = new THREE.Mesh(collarGeo, brushedSilverMat);
+            collarMesh.position.set(0, 0, 0.25);
+            keyGroup.add(collarMesh);
+
+            const keyRingGeo = new THREE.TorusGeometry(0.145, 0.036, 18, 36);
+
+            const bowHandleGroup = new THREE.Group();
+            bowHandleGroup.position.set(0, 0, 0.41);
+            keyGroup.add(bowHandleGroup);
+
+            const keyRingMesh = new THREE.Mesh(keyRingGeo, metallicGoldMat);
+            keyRingMesh.castShadow = true;
+            bowHandleGroup.add(keyRingMesh);
+
+            const sideLoopGeo = new THREE.TorusGeometry(0.055, 0.018, 12, 24);
+            const leftFiligree = new THREE.Mesh(sideLoopGeo, metallicGoldMat);
+            leftFiligree.position.set(-0.14, 0, 0);
+            bowHandleGroup.add(leftFiligree);
+
+            const rightFiligree = new THREE.Mesh(sideLoopGeo, metallicGoldMat);
+            rightFiligree.position.set(0.14, 0, 0);
+            bowHandleGroup.add(rightFiligree);
+
+            const gemMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.075, 0), rubyGemMat);
+            bowHandleGroup.add(gemMesh);
+
+            const lockUserData = { type: 'lock_key' };
+            [bodyMesh, shackleArcMesh, keyRingMesh, leftFiligree, rightFiligree, shaftMesh, collarMesh, gemMesh, tooth1, tooth2].forEach(m => {
+                m.userData = lockUserData;
+                interactiveObjects.push(m);
+            });
+        }
+
+        function create3DPinkBow(material) {
+            const group = new THREE.Group();
+
+            const knotGeo = new THREE.SphereGeometry(0.22, 24, 24);
+            knotGeo.scale(1.15, 0.82, 1.0);
+            const knotMesh = new THREE.Mesh(knotGeo, material);
+            knotMesh.position.y = 0.06;
+            group.add(knotMesh);
+
+            const loopGeo = new THREE.SphereGeometry(0.45, 24, 24);
+            loopGeo.scale(1.35, 0.25, 0.72);
+
+            const leftLoop = new THREE.Mesh(loopGeo, material);
+            leftLoop.position.set(-0.48, 0.04, 0.04);
+            leftLoop.rotation.z = 0.12;
+            leftLoop.rotation.y = 0.18;
+            group.add(leftLoop);
+
+            const rightLoop = new THREE.Mesh(loopGeo, material);
+            rightLoop.position.set(0.48, 0.04, 0.04);
+            rightLoop.rotation.z = -0.12;
+            rightLoop.rotation.y = -0.18;
+            group.add(rightLoop);
+
+            const createRibbonTail = (angleZ) => {
+                const shape = new THREE.Shape();
+                shape.moveTo(-0.18, 0);
+                shape.lineTo(0.18, 0);
+                shape.lineTo(0.24, -0.78);
+                shape.lineTo(0, -0.62);
+                shape.lineTo(-0.24, -0.78);
+                shape.closePath();
+
+                const extrudeSettings = { depth: 0.03, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.01 };
+                const tailGeo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+                const tailMesh = new THREE.Mesh(tailGeo, material);
+                tailMesh.rotation.x = -Math.PI / 2 + 0.08;
+                tailMesh.rotation.z = angleZ;
+                tailMesh.position.y = 0.03;
+                return tailMesh;
+            };
+
+            group.add(createRibbonTail(-0.38));
+            group.add(createRibbonTail(0.38));
+
+            return group;
+        }
+
+        function createStrawberry3D() {
+            const berryGroup = new THREE.Group();
+            const berryMat = new THREE.MeshStandardMaterial({
+                color: 0xe11d48,
+                roughness: 0.32,
+                metalness: 0.05
+            });
+            const berryGeo = new THREE.ConeGeometry(0.072, 0.14, 16);
+            const berryMesh = new THREE.Mesh(berryGeo, berryMat);
+            berryMesh.position.y = 0.07;
+            berryGroup.add(berryMesh);
+
+            const baseSphere = new THREE.Mesh(new THREE.SphereGeometry(0.068, 14, 12), berryMat);
+            baseSphere.position.y = 0.035;
+            berryGroup.add(baseSphere);
+
+            const leafMat = new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.5 });
+            const leafCrown = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.02, 0.02, 7), leafMat);
+            leafCrown.position.y = 0.01;
+            berryGroup.add(leafCrown);
+
+            return berryGroup;
+        }
+
+        function createStripedCandleTexture(stripeColorHex) {
+            const c = document.createElement('canvas');
+            c.width = 128;
+            c.height = 128;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#fffdf9';
+            ctx.fillRect(0, 0, 128, 128);
+
+            ctx.fillStyle = stripeColorHex;
+            for (let i = -128; i < 256; i += 32) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i + 14, 0);
+                ctx.lineTo(i + 14 + 64, 128);
+                ctx.lineTo(i + 64, 128);
+                ctx.closePath();
+                ctx.fill();
+            }
+            const tex = new THREE.CanvasTexture(c);
+            tex.wrapS = THREE.RepeatWrapping;
+            tex.wrapT = THREE.RepeatWrapping;
+            return tex;
+        }
+
+        function buildInteriorContents(W, H, D, wallT) {
+            const floorY = -H / 2 + wallT;
+
+            const goldAccentMat = new THREE.MeshStandardMaterial({
+                color: 0xfbbf24,
+                emissive: 0x78350f,
+                emissiveIntensity: 0.2,
+                roughness: 0.28,
+                metalness: 0.58
+            });
+
+            const starShape = new THREE.Shape();
+            for (let i = 0; i < 10; i++) {
+                const r = i % 2 === 0 ? 0.11 : 0.048;
+                const a = (i * Math.PI) / 5;
+                if (i === 0) starShape.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+                else starShape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+            }
+            starShape.closePath();
+            const flatStarGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.018, bevelEnabled: false });
+            flatStarGeo.rotateX(-Math.PI / 2);
+
+            const starPlacements = [
+                [-0.25, -0.18], [0.08, 0.12], [-0.15, 0.85], [1.45, 0.15],
+                [-1.65, 0.72], [0.22, -0.88], [1.52, 0.88]
+            ];
+            starPlacements.forEach(([sx, sz], idx) => {
+                const sMesh = new THREE.Mesh(
+                    flatStarGeo,
+                    idx % 2 === 0
+                        ? goldAccentMat
+                        : new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.4, metalness: 0.3 })
+                );
+                sMesh.position.set(sx, floorY + 0.015, sz);
+                sMesh.rotation.y = idx * 0.7;
+                boxEnclosureGroup.add(sMesh);
+            });
+
+            cakeGroup = new THREE.Group();
+            cakeAnimState.pos.set(-1.05, floorY + 0.08, -0.18);
+            cakeAnimState.targetPos.copy(cakeAnimState.pos);
+            cakeGroup.position.copy(cakeAnimState.pos);
+            boxRootGroup.add(cakeGroup);
+
+            const cakeInteractiveMeshes = [];
+
+            const porcelainStandMat = new THREE.MeshPhysicalMaterial({
+                color: 0xfffdf9,
+                roughness: 0.18,
+                metalness: 0.05,
+                clearcoat: 0.7
+            });
+            const goldTrimMat = new THREE.MeshStandardMaterial({
+                color: 0xd4af37,
+                emissive: 0x4a3508,
+                emissiveIntensity: 0.15,
+                roughness: 0.25,
+                metalness: 0.65
+            });
+
+            const pedFoot = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.48, 0.08, 32), porcelainStandMat);
+            pedFoot.position.y = 0.04;
+            cakeGroup.add(pedFoot);
+
+            const pedPillar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 0.12, 24), goldTrimMat);
+            pedPillar.position.y = 0.11;
+            cakeGroup.add(pedPillar);
+
+            const platterMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.78, 0.06, 40), porcelainStandMat);
+            platterMesh.position.y = 0.18;
+            platterMesh.receiveShadow = true;
+            cakeGroup.add(platterMesh);
+            cakeInteractiveMeshes.push(platterMesh);
+
+            const platterRimTorus = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.025, 14, 48), goldTrimMat);
+            platterRimTorus.rotation.x = Math.PI / 2;
+            platterRimTorus.position.y = 0.205;
+            cakeGroup.add(platterRimTorus);
+
+            const tier1SpongeMat = new THREE.MeshPhysicalMaterial({
+                color: 0xfce7f3,
+                roughness: 0.52,
+                clearcoat: 0.12
+            });
+            const tier1Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.68, 0.46, 40), tier1SpongeMat);
+            tier1Mesh.position.y = 0.44;
+            tier1Mesh.castShadow = true;
+            tier1Mesh.receiveShadow = true;
+            cakeGroup.add(tier1Mesh);
+            cakeInteractiveMeshes.push(tier1Mesh);
+
+            const chocGlazeMat = new THREE.MeshPhysicalMaterial({
+                color: 0x3e1f14,
+                roughness: 0.16,
+                metalness: 0.08,
+                clearcoat: 0.9,
+                clearcoatRoughness: 0.12
+            });
+            const tier1GlazeCap = new THREE.Mesh(new THREE.CylinderGeometry(0.688, 0.688, 0.04, 40), chocGlazeMat);
+            tier1GlazeCap.position.y = 0.665;
+            cakeGroup.add(tier1GlazeCap);
+            cakeInteractiveMeshes.push(tier1GlazeCap);
+
+            const dripCount1 = 22;
+            for (let i = 0; i < dripCount1; i++) {
+                const ang = (i / dripCount1) * Math.PI * 2;
+                const dripLen = 0.09 + (i % 3) * 0.055 + ((i * 7) % 4) * 0.025;
+                const r = 0.685;
+                const dx = Math.cos(ang) * r;
+                const dz = Math.sin(ang) * r;
+
+                const dripCyl = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.022, dripLen, 10), chocGlazeMat);
+                dripCyl.position.set(dx, 0.665 - dripLen / 2, dz);
+                cakeGroup.add(dripCyl);
+
+                const dripDrop = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 10), chocGlazeMat);
+                dripDrop.position.set(dx, 0.665 - dripLen, dz);
+                cakeGroup.add(dripDrop);
+            }
+
+            const creamFrostingMat = new THREE.MeshPhysicalMaterial({
+                color: 0xfffdf7,
+                roughness: 0.38,
+                clearcoat: 0.2
+            });
+
+            const rosetteCount1 = 24;
+            for (let i = 0; i < rosetteCount1; i++) {
+                const ang = (i / rosetteCount1) * Math.PI * 2;
+                const rx = Math.cos(ang) * 0.695;
+                const rz = Math.sin(ang) * 0.695;
+
+                const puff = new THREE.Mesh(new THREE.SphereGeometry(0.058, 12, 12), creamFrostingMat);
+                puff.scale.set(1.1, 0.78, 1.1);
+                puff.position.set(rx, 0.235, rz);
+                cakeGroup.add(puff);
+
+                if (i % 2 === 0) {
+                    const goldPearl = new THREE.Mesh(new THREE.SphereGeometry(0.022, 10, 10), goldTrimMat);
+                    goldPearl.position.set(Math.cos(ang) * 0.685, 0.42 + (i % 4) * 0.03, Math.sin(ang) * 0.685);
+                    cakeGroup.add(goldPearl);
+                }
+            }
+
+            const tier2SpongeMat = new THREE.MeshPhysicalMaterial({
+                color: 0xfffbeb,
+                roughness: 0.48,
+                clearcoat: 0.15
+            });
+            const tier2Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.48, 0.48, 0.38, 36), tier2SpongeMat);
+            tier2Mesh.position.y = 0.86;
+            tier2Mesh.castShadow = true;
+            tier2Mesh.receiveShadow = true;
+            cakeGroup.add(tier2Mesh);
+            cakeInteractiveMeshes.push(tier2Mesh);
+
+            const berryGlazeMat = new THREE.MeshPhysicalMaterial({
+                color: 0xf43f5e,
+                roughness: 0.15,
+                metalness: 0.05,
+                clearcoat: 0.92,
+                clearcoatRoughness: 0.1
+            });
+            const tier2GlazeCap = new THREE.Mesh(new THREE.CylinderGeometry(0.488, 0.488, 0.035, 36), berryGlazeMat);
+            tier2GlazeCap.position.y = 1.045;
+            cakeGroup.add(tier2GlazeCap);
+            cakeInteractiveMeshes.push(tier2GlazeCap);
+
+            const dripCount2 = 16;
+            for (let i = 0; i < dripCount2; i++) {
+                const ang = (i / dripCount2) * Math.PI * 2 + 0.15;
+                const dripLen = 0.07 + (i % 3) * 0.045;
+                const r = 0.485;
+                const dx = Math.cos(ang) * r;
+                const dz = Math.sin(ang) * r;
+
+                const dripCyl = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.018, dripLen, 10), berryGlazeMat);
+                dripCyl.position.set(dx, 1.045 - dripLen / 2, dz);
+                cakeGroup.add(dripCyl);
+
+                const dripDrop = new THREE.Mesh(new THREE.SphereGeometry(0.024, 10, 10), berryGlazeMat);
+                dripDrop.position.set(dx, 1.045 - dripLen, dz);
+                cakeGroup.add(dripDrop);
+            }
+
+            const rosetteCount2 = 18;
+            for (let i = 0; i < rosetteCount2; i++) {
+                const ang = (i / rosetteCount2) * Math.PI * 2;
+                const puff = new THREE.Mesh(new THREE.SphereGeometry(0.048, 12, 12), creamFrostingMat);
+                puff.scale.set(1.1, 0.75, 1.1);
+                puff.position.set(Math.cos(ang) * 0.495, 0.695, Math.sin(ang) * 0.495);
+                cakeGroup.add(puff);
+            }
+
+            const topCrownCount = 8;
+            for (let i = 0; i < topCrownCount; i++) {
+                const ang = (i / topCrownCount) * Math.PI * 2;
+                const rx = Math.cos(ang) * 0.37;
+                const rz = Math.sin(ang) * 0.37;
+
+                const swirlBase = new THREE.Mesh(new THREE.SphereGeometry(0.052, 12, 12), creamFrostingMat);
+                swirlBase.scale.set(1, 0.72, 1);
+                swirlBase.position.set(rx, 1.07, rz);
+                cakeGroup.add(swirlBase);
+
+                const strawberry = createStrawberry3D();
+                strawberry.position.set(rx, 1.09, rz);
+                strawberry.rotation.z = (Math.random() - 0.5) * 0.25;
+                strawberry.rotation.x = (Math.random() - 0.5) * 0.25;
+                cakeGroup.add(strawberry);
+            }
+
+            const candleGeo = new THREE.CylinderGeometry(0.036, 0.036, 0.34, 18);
+            const stripeHexColors = ['#38bdf8', '#f43f5e', '#f59e0b', '#a855f7', '#10b981'];
+            const flameInnerGeo = new THREE.LatheGeometry([
+                new THREE.Vector2(0, 0),
+                new THREE.Vector2(0.014, 0.012),
+                new THREE.Vector2(0.024, 0.035),
+                new THREE.Vector2(0.025, 0.058),
+                new THREE.Vector2(0.019, 0.082),
+                new THREE.Vector2(0.011, 0.105),
+                new THREE.Vector2(0.004, 0.125),
+                new THREE.Vector2(0, 0.135)
+            ], 20);
+            const flameOuterGeo = new THREE.LatheGeometry([
+                new THREE.Vector2(0, 0),
+                new THREE.Vector2(0.022, 0.012),
+                new THREE.Vector2(0.038, 0.038),
+                new THREE.Vector2(0.044, 0.066),
+                new THREE.Vector2(0.039, 0.095),
+                new THREE.Vector2(0.029, 0.124),
+                new THREE.Vector2(0.018, 0.151),
+                new THREE.Vector2(0.008, 0.174),
+                new THREE.Vector2(0, 0.19)
+            ], 24);
+
+            const candleCoords = [
+                [0, 0],
+                [-0.19, 0.08],
+                [0.19, 0.08],
+                [-0.12, -0.17],
+                [0.12, -0.17]
+            ];
+            candleFlameData = [];
+
+            candleCoords.forEach(([cx, cz], idx) => {
+                const holderMesh = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.052, 0.038, 0.035, 16),
+                    goldTrimMat
+                );
+                holderMesh.position.set(cx, 1.07, cz);
+                cakeGroup.add(holderMesh);
+
+                const cTex = createStripedCandleTexture(stripeHexColors[idx]);
+                const cMat = new THREE.MeshStandardMaterial({
+                    map: cTex,
+                    roughness: 0.3,
+                    metalness: 0.05
+                });
+                const cMesh = new THREE.Mesh(candleGeo, cMat);
+                cMesh.position.set(cx, 1.24, cz);
+                cMesh.castShadow = true;
+                cakeGroup.add(cMesh);
+
+                const wickMesh = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.007, 0.007, 0.045, 8),
+                    new THREE.MeshBasicMaterial({ color: 0x1e1b18 })
+                );
+                wickMesh.position.set(cx, 1.425, cz);
+                cakeGroup.add(wickMesh);
+
+                const fInnerMat = new THREE.MeshBasicMaterial({ color: 0xfffbeb });
+                const fMesh = new THREE.Mesh(flameInnerGeo, fInnerMat);
+                fMesh.position.set(cx, 1.445, cz);
+                cakeGroup.add(fMesh);
+
+                const fOuterMat = new THREE.MeshBasicMaterial({
+                    color: 0xff9800,
+                    transparent: true,
+                    opacity: 0.55
+                });
+                const fOuterMesh = new THREE.Mesh(flameOuterGeo, fOuterMat);
+                fOuterMesh.position.set(cx, 1.445, cz);
+                cakeGroup.add(fOuterMesh);
+
+                const cData = {
+                    index: idx,
+                    candleMesh: cMesh,
+                    flameMesh: fMesh,
+                    outerGlowMesh: fOuterMesh,
+                    lit: true,
+                    x: cx,
+                    z: cz
+                };
+                candleFlameData.push(cData);
+
+                const candleUserData = {
+                    type: 'candle_single',
+                    candleIndex: idx
+                };
+                cMesh.userData = candleUserData;
+                fMesh.userData = candleUserData;
+                fOuterMesh.userData = candleUserData;
+                interactiveObjects.push(cMesh, fMesh, fOuterMesh);
+            });
+
+            candleLight = new THREE.PointLight(0xffb300, 0.95, 4.2);
+            candleLight.position.set(0, 1.6, 0);
+            cakeGroup.add(candleLight);
+
+            const cakeUserData = { type: 'cake' };
+            cakeInteractiveMeshes.forEach(m => {
+                m.userData = cakeUserData;
+                interactiveObjects.push(m);
+            });
+
+            letterGroup = new THREE.Group();
+            letterGroup.position.set(-0.92, floorY + 0.16, 0.88);
+            letterGroup.rotation.set(-0.18, 0.24, 0.04);
+            boxEnclosureGroup.add(letterGroup);
+
+            const envBorderMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(1.18, 0.05, 0.82),
+                goldAccentMat
+            );
+            letterGroup.add(envBorderMesh);
+
+            const envGeo = new THREE.BoxGeometry(1.12, 0.065, 0.76);
+            const envMat = new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.48 });
+            const envMesh = new THREE.Mesh(envGeo, envMat);
+            envMesh.castShadow = true;
+            letterGroup.add(envMesh);
+
+            const sealGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.04, 24);
+            const sealMat = new THREE.MeshStandardMaterial({
+                color: 0xe11d48,
+                emissive: 0x881337,
+                emissiveIntensity: 0.28,
+                roughness: 0.28
+            });
+            const sealMesh = new THREE.Mesh(sealGeo, sealMat);
+            sealMesh.position.set(0, 0.045, 0.04);
+            letterGroup.add(sealMesh);
+
+            const letterUserData = { type: 'letter' };
+            envMesh.userData = letterUserData;
+            sealMesh.userData = letterUserData;
+            interactiveObjects.push(envMesh, sealMesh);
+
+            const giftConfigs = [
+                { x: 0.16, z: -0.62, w: 0.42, h: 0.36, d: 0.42, col: 0x0284c7, rotY: 0.28 },
+                { x: 0.68, z: -0.66, w: 0.38, h: 0.42, d: 0.38, col: 0xe11d48, rotY: -0.22 },
+                { x: -0.22, z: -0.88, w: 0.32, h: 0.30, d: 0.32, col: 0x9333ea, rotY: 0.42 }
+            ];
+
+            giftConfigs.forEach(cfg => {
+                const gGroup = new THREE.Group();
+                const gBoxGeo = new THREE.BoxGeometry(cfg.w, cfg.h, cfg.d);
+                const gBoxMat = new THREE.MeshStandardMaterial({ color: cfg.col, roughness: 0.42 });
+                const gBoxMesh = new THREE.Mesh(gBoxGeo, gBoxMat);
+                gBoxMesh.castShadow = true;
+                gGroup.add(gBoxMesh);
+
+                const gLidMesh = new THREE.Mesh(
+                    new THREE.BoxGeometry(cfg.w + 0.04, 0.07, cfg.d + 0.04),
+                    gBoxMat
+                );
+                gLidMesh.position.y = cfg.h / 2 - 0.02;
+                gGroup.add(gLidMesh);
+
+                const r1 = new THREE.Mesh(new THREE.BoxGeometry(cfg.w + 0.05, cfg.h + 0.02, 0.07), goldAccentMat);
+                const r2 = new THREE.Mesh(new THREE.BoxGeometry(0.07, cfg.h + 0.02, cfg.d + 0.05), goldAccentMat);
+                gGroup.add(r1, r2);
+
+                const loopGeo = new THREE.TorusGeometry(0.065, 0.02, 10, 20);
+                const loopL = new THREE.Mesh(loopGeo, goldAccentMat);
+                loopL.position.set(-0.05, cfg.h / 2 + 0.04, 0);
+                loopL.rotation.z = 0.4;
+                const loopR = new THREE.Mesh(loopGeo, goldAccentMat);
+                loopR.position.set(0.05, cfg.h / 2 + 0.04, 0);
+                loopR.rotation.z = -0.4;
+                gGroup.add(loopL, loopR);
+
+                gGroup.position.set(cfg.x, floorY + cfg.h / 2, cfg.z);
+                gGroup.rotation.y = cfg.rotY;
+
+                gBoxMesh.userData = { type: 'mini_surprise' };
+                interactiveObjects.push(gBoxMesh);
+                boxEnclosureGroup.add(gGroup);
+            });
+
+            const cupcakePositions = [
+                { x: 1.15, z: -0.45, frostCol: 0xfda4af, linerCol: 0xf59e0b },
+                { x: 0.25, z: -0.05, frostCol: 0xbae6fd, linerCol: 0xec4899 }
+            ];
+            cupcakePositions.forEach(cp => {
+                const cupcakeGroup = new THREE.Group();
+                cupcakeGroup.position.set(cp.x, floorY + 0.12, cp.z);
+                boxEnclosureGroup.add(cupcakeGroup);
+
+                const linerMesh = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.17, 0.12, 0.22, 20),
+                    new THREE.MeshStandardMaterial({ color: cp.linerCol, roughness: 0.55 })
+                );
+                cupcakeGroup.add(linerMesh);
+
+                const swirlMesh = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.175, 18, 18),
+                    new THREE.MeshStandardMaterial({ color: cp.frostCol, roughness: 0.4 })
+                );
+                swirlMesh.scale.set(1, 0.85, 1);
+                swirlMesh.position.y = 0.14;
+                cupcakeGroup.add(swirlMesh);
+
+                const swirlTop = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.11, 14, 14),
+                    new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.4 })
+                );
+                swirlTop.position.y = 0.24;
+                cupcakeGroup.add(swirlTop);
+
+                const cherryMesh = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.048, 12, 12),
+                    new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.2 })
+                );
+                cherryMesh.position.y = 0.33;
+                cupcakeGroup.add(cherryMesh);
+
+                swirlMesh.userData = { type: 'mini_surprise' };
+                interactiveObjects.push(swirlMesh);
+            });
+
+            const hatGroup = new THREE.Group();
+            hatGroup.position.set(1.56, floorY + 0.26, -0.25);
+            hatGroup.rotation.z = -0.1;
+            boxEnclosureGroup.add(hatGroup);
+
+            const hatBrim = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.032, 12, 24), goldAccentMat);
+            hatBrim.rotation.x = Math.PI / 2;
+            hatBrim.position.y = -0.22;
+            hatGroup.add(hatBrim);
+
+            const coneMesh = new THREE.Mesh(
+                new THREE.ConeGeometry(0.21, 0.48, 24),
+                new THREE.MeshStandardMaterial({ color: 0x9333ea, roughness: 0.45 })
+            );
+            hatGroup.add(coneMesh);
+
+            const pomMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(0.068, 14, 14),
+                goldAccentMat
+            );
+            pomMesh.position.y = 0.26;
+            hatGroup.add(pomMesh);
+
+            coneMesh.userData = { type: 'mini_surprise' };
+            interactiveObjects.push(coneMesh);
+
+            const hornConfigs = [
+                { x: -0.18, z: 0.45, rotY: 0.65, col: 0x06b6d4 },
+                { x: 1.48, z: 0.35, rotY: -0.85, col: 0xf43f5e }
+            ];
+            hornConfigs.forEach(hc => {
+                const hornGroup = new THREE.Group();
+                hornGroup.position.set(hc.x, floorY + 0.06, hc.z);
+                hornGroup.rotation.y = hc.rotY;
+
+                const hornCone = new THREE.Mesh(
+                    new THREE.ConeGeometry(0.065, 0.38, 16),
+                    new THREE.MeshStandardMaterial({ color: hc.col, roughness: 0.4 })
+                );
+                hornCone.rotation.z = Math.PI / 2;
+                hornGroup.add(hornCone);
+
+                const mouthpiece = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.022, 0.022, 0.12, 12),
+                    goldAccentMat
+                );
+                mouthpiece.rotation.z = Math.PI / 2;
+                mouthpiece.position.x = 0.22;
+                hornGroup.add(mouthpiece);
+
+                const curledPaper = new THREE.Mesh(
+                    new THREE.TorusGeometry(0.055, 0.018, 10, 20),
+                    goldAccentMat
+                );
+                curledPaper.position.set(-0.22, 0.02, 0);
+                hornGroup.add(curledPaper);
+
+                hornCone.userData = { type: 'mini_surprise' };
+                interactiveObjects.push(hornCone);
+                boxEnclosureGroup.add(hornGroup);
+            });
+
+            const miniBalloonOffsets = [
+                { x: -0.15, y: 0.56, z: -0.06, rotZ:  0.14, rotX:  0.06, styleIdx: 1 },
+                { x:  0.15, y: 0.62, z: -0.04, rotZ: -0.14, rotX:  0.04, styleIdx: 0 },
+                { x:  0.00, y: 0.76, z: -0.14, rotZ:  0.02, rotX: -0.08, styleIdx: 2 }
+            ];
+            const bouquetGroup = new THREE.Group();
+            bouquetGroup.position.set(1.45, floorY, -0.82);
+            boxEnclosureGroup.add(bouquetGroup);
+
+            const weightMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.065, 0.06, 16), goldAccentMat);
+            weightMesh.position.y = 0.03;
+            bouquetGroup.add(weightMesh);
+
+            miniBalloonOffsets.forEach((cfg) => {
+                const { group: bGroup, balloonMesh } = createRealisticBalloon3D(
+                    REALISTIC_BALLOON_STYLES[cfg.styleIdx],
+                    false
+                );
+                bGroup.scale.setScalar(0.52);
+                bGroup.position.set(cfg.x, cfg.y, cfg.z);
+                bGroup.rotation.set(cfg.rotX, 0, cfg.rotZ);
+                balloonMesh.userData = { type: 'mini_surprise' };
+                interactiveObjects.push(balloonMesh);
+                bouquetGroup.add(bGroup);
+
+                const neckY = cfg.y - 0.44 * 0.52;
+                const stemCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(0, 0.05, 0),
+                    new THREE.Vector3(cfg.x * 0.55, neckY * 0.52, cfg.z * 0.55),
+                    new THREE.Vector3(cfg.x, neckY, cfg.z)
+                ]);
+                const stemTubeGeo = new THREE.TubeGeometry(stemCurve, 16, 0.004, 6, false);
+                const stemMesh = new THREE.Mesh(stemTubeGeo, goldAccentMat);
+                bouquetGroup.add(stemMesh);
+            });
+
+            retroCameraGroup = new THREE.Group();
+            retroCameraGroup.position.set(0.84, floorY + 0.25, 0.66);
+            retroCameraGroup.rotation.set(-Math.PI / 2 + 0.14, -0.18, 0.12);
+            boxEnclosureGroup.add(retroCameraGroup);
+
+            const camBodyMat = new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.38 });
+            const camCreamMat = new THREE.MeshStandardMaterial({ color: 0xfffbeb, roughness: 0.45 });
+            const camDarkMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.22, metalness: 0.45 });
+
+            const camBodyMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.74, 0.38), camCreamMat);
+            camBodyMesh.castShadow = true;
+            retroCameraGroup.add(camBodyMesh);
+
+            const camStripeMesh = new THREE.Mesh(new THREE.BoxGeometry(1.04, 0.28, 0.39), camBodyMat);
+            camStripeMesh.position.y = -0.03;
+            retroCameraGroup.add(camStripeMesh);
+
+            const rainbowCols = [0xf43f5e, 0xf59e0b, 0x10b981, 0x38bdf8];
+            rainbowCols.forEach((rCol, idx) => {
+                const strip = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.045, 0.28, 0.015),
+                    new THREE.MeshBasicMaterial({ color: rCol })
+                );
+                strip.position.set(-0.34 + idx * 0.048, 0.18, 0.195);
+                retroCameraGroup.add(strip);
+            });
+
+            const lensRingBase = new THREE.Mesh(new THREE.CylinderGeometry(0.29, 0.31, 0.08, 28), camBodyMat);
+            lensRingBase.rotation.x = Math.PI / 2;
+            lensRingBase.position.set(0, -0.02, 0.21);
+            retroCameraGroup.add(lensRingBase);
+
+            const lensBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.26, 0.22, 28), goldAccentMat);
+            lensBarrel.rotation.x = Math.PI / 2;
+            lensBarrel.position.set(0, -0.02, 0.27);
+            retroCameraGroup.add(lensBarrel);
+
+            const lensGlass = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.24, 28), camDarkMat);
+            lensGlass.rotation.x = Math.PI / 2;
+            lensGlass.position.set(0, -0.02, 0.28);
+            retroCameraGroup.add(lensGlass);
+
+            const lensReflection = new THREE.Mesh(
+                new THREE.CircleGeometry(0.055, 16),
+                new THREE.MeshBasicMaterial({ color: 0xbae6fd })
+            );
+            lensReflection.position.set(-0.05, 0.03, 0.402);
+            retroCameraGroup.add(lensReflection);
+
+            const flashMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(0.24, 0.15, 0.06),
+                new THREE.MeshBasicMaterial({ color: 0xfef08a })
+            );
+            flashMesh.position.set(0.30, 0.21, 0.19);
+            retroCameraGroup.add(flashMesh);
+
+            const viewfinderMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(0.14, 0.13, 0.06),
+                camDarkMat
+            );
+            viewfinderMesh.position.set(-0.32, 0.21, 0.19);
+            retroCameraGroup.add(viewfinderMesh);
+
+            const shutterMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.08, 18), camBodyMat);
+            shutterMesh.rotation.x = Math.PI / 2;
+            shutterMesh.position.set(0.34, -0.22, 0.21);
+            retroCameraGroup.add(shutterMesh);
+
+            const miniPhotoFrame = new THREE.Mesh(
+                new THREE.BoxGeometry(0.58, 0.50, 0.025),
+                new THREE.MeshBasicMaterial({ color: 0xffffff })
+            );
+            miniPhotoFrame.position.set(0, -0.52, 0.06);
+            miniPhotoFrame.rotation.x = -0.15;
+            retroCameraGroup.add(miniPhotoFrame);
+
+            const miniPhotoInner = new THREE.Mesh(
+                new THREE.BoxGeometry(0.48, 0.36, 0.03),
+                new THREE.MeshBasicMaterial({ color: 0xf43f5e })
+            );
+            miniPhotoInner.position.set(0, -0.49, 0.062);
+            miniPhotoInner.rotation.x = -0.15;
+            retroCameraGroup.add(miniPhotoInner);
+
+            const cameraUserData = { type: 'album' };
+            [camBodyMesh, camStripeMesh, lensRingBase, lensBarrel, lensGlass, miniPhotoFrame, miniPhotoInner].forEach(m => {
+                m.userData = cameraUserData;
+                interactiveObjects.push(m);
+            });
+        }
+
+        function spawnCandleSmoke3D(candleData) {
+            if (!cakeGroup) return;
+            const smokeMat = new THREE.MeshBasicMaterial({
+                color: 0xe2e8f0,
+                transparent: true,
+                opacity: 0.75
+            });
+
+            for (let i = 0; i < 6; i++) {
+                const puff = new THREE.Mesh(new THREE.SphereGeometry(0.032 + Math.random() * 0.022, 10, 10), smokeMat.clone());
+                puff.position.set(
+                    candleData.x + (Math.random() - 0.5) * 0.04,
+                    1.50 + i * 0.03,
+                    candleData.z + (Math.random() - 0.5) * 0.04
+                );
+                cakeGroup.add(puff);
+                smokeParticles.push({
+                    mesh: puff,
+                    vy: 0.012 + Math.random() * 0.01,
+                    vx: (Math.random() - 0.5) * 0.006,
+                    vz: (Math.random() - 0.5) * 0.006,
+                    age: 0
+                });
+            }
+        }
+
+        
+        function triggerBoxSurpriseBurst(balloonCount = 7, confettiCount = 110) {
+            initPartyGeometries();
+
+            activeBalloons.forEach(b => {
+                const interIdx = interactiveObjects.indexOf(b.mesh);
+                if (interIdx !== -1) interactiveObjects.splice(interIdx, 1);
+                partyGroup.remove(b.group);
+            });
+            activeBalloons = [];
+
+            const boxWorldPos = new THREE.Vector3();
+            if (boxRootGroup) boxRootGroup.getWorldPosition(boxWorldPos);
+
+            const count = Math.min(balloonCount, 8);
+            const spreadWidth = Math.min(5.2, Math.max(2.28, (count - 1) * 0.76));
+
+            for (let i = 0; i < count; i++) {
+                const styleConfig = REALISTIC_BALLOON_STYLES[i % REALISTIC_BALLOON_STYLES.length];
+                const { group: singleBalloonGroup, balloonMesh } = createRealisticBalloon3D(styleConfig, true);
+
+                balloonMesh.userData = {
+                    type: 'balloon',
+                    parentBalloonGroup: singleBalloonGroup
+                };
+
+                const spreadPosition = count > 1 ? i / (count - 1) - 0.5 : 0;
+                const startX = boxWorldPos.x + spreadPosition * spreadWidth;
+                const startYPos = boxWorldPos.y - 0.15 + (i % 3) * 0.08;
+                const startZ = boxWorldPos.z + ((i % 2) * 2 - 1) * 0.12;
+
+                singleBalloonGroup.position.set(startX, startYPos, startZ);
+                singleBalloonGroup.scale.setScalar(0.01);
+
+                const targetScale = 0.82 + (i % 3) * 0.09;
+
+                partyGroup.add(singleBalloonGroup);
+                interactiveObjects.push(balloonMesh);
+
+                activeBalloons.push({
+                    group: singleBalloonGroup,
+                    mesh: balloonMesh,
+                    age: -i * 0.08,
+                    targetScale: targetScale,
+                    speedY: 0.017 + (i % 3) * 0.004,
+                    driftX: spreadPosition * 0.002,
+                    driftZ: 0,
+                    swayPhase: i * 1.1,
+                    swaySpeed: 1.5 + (i % 3) * 0.3,
+                    rotSpeedY: (Math.random() - 0.5) * 0.003
+                });
+            }
+
+            const confettiColors = [0xfde047, 0xf43f5e, 0x38bdf8, 0xffffff, 0xc084fc, 0x4ade80, 0xfb923c];
+
+            for (let c = 0; c < confettiCount; c++) {
+                const geo = sharedConfettiGeos[c % sharedConfettiGeos.length];
+                const col = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                const mat = new THREE.MeshBasicMaterial({
+                    color: col,
+                    side: THREE.DoubleSide
+                });
+
+                const confMesh = new THREE.Mesh(geo, mat);
+
+                confMesh.position.set(
+                    boxWorldPos.x + (Math.random() - 0.5) * 2.0,
+                    boxWorldPos.y - 0.15 + Math.random() * 0.25,
+                    boxWorldPos.z + (Math.random() - 0.5) * 1.4
+                );
+
+                confMesh.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+
+                const angle = Math.random() * Math.PI * 2;
+                const spread = 0.025 + Math.random() * 0.095;
+                const vy = 0.12 + Math.random() * 0.17;
+
+                partyGroup.add(confMesh);
+
+                activeConfetti.push({
+                    mesh: confMesh,
+                    vx: Math.cos(angle) * spread,
+                    vy: vy,
+                    vz: Math.sin(angle) * spread,
+                    rotX: (Math.random() - 0.5) * 0.24,
+                    rotY: (Math.random() - 0.5) * 0.24,
+                    rotZ: (Math.random() - 0.5) * 0.24,
+                    flutterPhase: Math.random() * Math.PI * 2,
+                    life: 0,
+                    maxLife: 200 + Math.floor(Math.random() * 90)
+                });
+            }
+        }
+
+        function popSingleBalloon(balloonMesh, clientX, clientY) {
+            const idx = activeBalloons.findIndex(b => b.mesh === balloonMesh);
+            if (idx === -1) return;
+
+            const bData = activeBalloons[idx];
+            spawnFloatingSparkles(clientX, clientY, 6);
+
+            const interIdx = interactiveObjects.indexOf(balloonMesh);
+            if (interIdx !== -1) interactiveObjects.splice(interIdx, 1);
+
+            partyGroup.remove(bData.group);
+            activeBalloons.splice(idx, 1);
+        }
+
+        function clearAllPartyEffects() {
+            activeBalloons.forEach(b => {
+                const interIdx = interactiveObjects.indexOf(b.mesh);
+                if (interIdx !== -1) interactiveObjects.splice(interIdx, 1);
+                partyGroup.remove(b.group);
+            });
+            activeBalloons = [];
+
+            activeConfetti.forEach(c => {
+                partyGroup.remove(c.mesh);
+            });
+            activeConfetti = [];
+
+            clearScreenBalloonsAndConfetti();
+        }
+
+        function updatePartyPhysics() {
+            for (let i = activeBalloons.length - 1; i >= 0; i--) {
+                const b = activeBalloons[i];
+                b.age += 0.016;
+
+                if (b.age < 0) continue;
+
+                const currentScale = Math.min(b.targetScale, b.group.scale.x + (b.targetScale - b.group.scale.x) * 0.10);
+                b.group.scale.setScalar(currentScale);
+
+                b.group.position.y += b.speedY;
+                b.group.position.x += b.driftX + Math.sin(b.age * b.swaySpeed + b.swayPhase) * 0.002;
+                b.group.position.z += b.driftZ + Math.cos(b.age * b.swaySpeed + b.swayPhase) * 0.0015;
+
+                b.group.rotation.z = Math.sin(b.age * b.swaySpeed + b.swayPhase) * 0.08;
+                b.group.rotation.x = Math.cos(b.age * b.swaySpeed * 0.8 + b.swayPhase) * 0.05;
+                b.group.rotation.y += b.rotSpeedY;
+
+                if (b.group.position.y > 9.5) {
+                    const interIdx = interactiveObjects.indexOf(b.mesh);
+                    if (interIdx !== -1) interactiveObjects.splice(interIdx, 1);
+                    partyGroup.remove(b.group);
+                    activeBalloons.splice(i, 1);
+                }
+            }
+
+            for (let i = activeConfetti.length - 1; i >= 0; i--) {
+                const c = activeConfetti[i];
+                c.life++;
+
+                c.vy -= 0.0038;
+                c.vx *= 0.985;
+                c.vz *= 0.985;
+
+                const flutterX = Math.sin(c.life * 0.15 + c.flutterPhase) * 0.008;
+                const flutterZ = Math.cos(c.life * 0.13 + c.flutterPhase) * 0.008;
+
+                c.mesh.position.x += c.vx + flutterX;
+                c.mesh.position.y += c.vy;
+                c.mesh.position.z += c.vz + flutterZ;
+
+                c.mesh.rotation.x += c.rotX;
+                c.mesh.rotation.y += c.rotY;
+                c.mesh.rotation.z += c.rotZ;
+
+                if (c.life >= c.maxLife || c.mesh.position.y < -4.5) {
+                    partyGroup.remove(c.mesh);
+                    activeConfetti.splice(i, 1);
+                }
+            }
+
+            for (let i = smokeParticles.length - 1; i >= 0; i--) {
+                const sp = smokeParticles[i];
+                sp.age += 1;
+                sp.mesh.position.y += sp.vy;
+                sp.mesh.position.x += sp.vx;
+                sp.mesh.position.z += sp.vz;
+                sp.mesh.scale.multiplyScalar(1.03);
+                sp.mesh.material.opacity = Math.max(0, 0.75 - sp.age * 0.018);
+
+                if (sp.age > 42) {
+                    cakeGroup.remove(sp.mesh);
+                    smokeParticles.splice(i, 1);
+                }
+            }
+        }
+
+        
+        function enterCakeZoomMode() {
+            if (!isBoxOpen) return;
+            isCakeFocused = true;
+
+            if (boxEnclosureGroup) boxEnclosureGroup.visible = false;
+            const blurBackdrop = document.getElementById('cake-blur-backdrop');
+            if (blurBackdrop) blurBackdrop.classList.add('active');
+
+            cakeAnimState.targetPos.set(0, -0.05, 1.85);
+            cakeAnimState.targetScale = 2.25;
+            updateCameraFramingTargets();
+
+            const overlay = document.getElementById('cake-zoom-overlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
+            updateCakeOverlayStatus();
+            playMagicChime(true);
+        }
+
+        function exitCakeZoomMode() {
+            isCakeFocused = false;
+
+            if (boxEnclosureGroup) boxEnclosureGroup.visible = true;
+            const blurBackdrop = document.getElementById('cake-blur-backdrop');
+            if (blurBackdrop) blurBackdrop.classList.remove('active');
+
+            const floorY = -2.15 / 2 + 0.12;
+            cakeAnimState.targetPos.set(-1.05, floorY + 0.08, -0.18);
+            cakeAnimState.targetScale = 1.0;
+            updateCameraFramingTargets();
+
+            const overlay = document.getElementById('cake-zoom-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
+        }
+
+        function updateCakeOverlayStatus() {
+            const litCount = candleFlameData.filter(c => c.lit).length;
+            const labelEl = document.getElementById('blow-all-zoom-label');
+
+            if (candleLight) candleLight.intensity = (litCount / 5) * 0.95;
+
+            if (litCount === 0) {
+                if (labelEl) labelEl.textContent = 'Encender las Velas';
+            } else {
+                if (labelEl) labelEl.textContent = 'Soplar las Velas';
+            }
+        }
+
+        function extinguishSingleCandle(candleIdx, clientX, clientY) {
+            const cData = candleFlameData[candleIdx];
+            if (!cData) return;
+
+            if (!isCakeFocused) {
+                enterCakeZoomMode();
+                return;
+            }
+
+            if (cData.lit) {
+                cData.lit = false;
+                cData.flameMesh.visible = false;
+                if (cData.outerGlowMesh) cData.outerGlowMesh.visible = false;
+                spawnCandleSmoke3D(cData);
+                spawnFloatingSparkles(clientX || window.innerWidth / 2, clientY || window.innerHeight / 2, 6);
+                updateCakeOverlayStatus();
+
+                const remaining = candleFlameData.filter(c => c.lit).length;
+                if (remaining === 0) {
+                    celebrateAllCandlesBlownOut();
+                }
+            } else {
+                cData.lit = true;
+                cData.flameMesh.visible = true;
+                if (cData.outerGlowMesh) cData.outerGlowMesh.visible = true;
+                updateCakeOverlayStatus();
+            }
+        }
+
+        function blowOrRelightAllCandles() {
+            const anyLit = candleFlameData.some(c => c.lit);
+            if (anyLit) {
+                candleFlameData.forEach((cData, i) => {
+                    if (cData.lit) {
+                        setTimeout(() => {
+                            cData.lit = false;
+                            cData.flameMesh.visible = false;
+                            if (cData.outerGlowMesh) cData.outerGlowMesh.visible = false;
+                            spawnCandleSmoke3D(cData);
+                            updateCakeOverlayStatus();
+                        }, i * 90);
+                    }
+                });
+                setTimeout(() => {
+                    celebrateAllCandlesBlownOut();
+                }, 480);
+            } else {
+                candleFlameData.forEach(cData => {
+                    cData.lit = true;
+                    cData.flameMesh.visible = true;
+                    if (cData.outerGlowMesh) cData.outerGlowMesh.visible = true;
+                });
+                playMagicChime(true);
+                updateCakeOverlayStatus();
+            }
+        }
+
+        function celebrateAllCandlesBlownOut() {
+            playHappyBirthdayMelody();
+            triggerBoxSurpriseBurst(7, 130);
+            spawnScreenBalloonsAndConfetti();
+            spawnFloatingSparkles(window.innerWidth / 2, window.innerHeight * 0.45, 16);
+        }
+
+        let currentCarouselIndex = 0;
+        const totalPolaroids = 6;
+
+        function initPolaroidCarousel() {
+            const cards = document.querySelectorAll('.polaroid-card');
+            const radius = 235;
+            cards.forEach((card, idx) => {
+                const angleDeg = idx * (360 / totalPolaroids);
+                card.style.transform = `rotateY(${angleDeg}deg) translateZ(${radius}px)`;
+
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentCarouselIndex = idx;
+                    updatePolaroidCarouselRotation();
+
+                    if (!card.classList.contains('revealed')) {
+                        card.classList.remove('unrevealed');
+                        card.classList.add('revealed');
+                        playMagicChime(true);
+                        spawnFloatingSparkles(e.clientX, e.clientY, 10);
+                    } else {
+                        spawnFloatingSparkles(e.clientX, e.clientY, 5);
+                    }
+
+                    const msgText = document.getElementById('album-message-text');
+                    if (msgText) msgText.textContent = card.getAttribute('data-msg');
+                });
+            });
+            updatePolaroidCarouselRotation();
+        }
+
+        function updatePolaroidCarouselRotation() {
+            const ring = document.getElementById('polaroid-carousel-ring');
+            if (!ring) return;
+            const angleDeg = -currentCarouselIndex * (360 / totalPolaroids);
+            ring.style.transform = `translateZ(-160px) rotateY(${angleDeg}deg)`;
+
+            const activeCard = document.querySelector(`.polaroid-card[data-index="${currentCarouselIndex}"]`);
+            const msgText = document.getElementById('album-message-text');
+            if (activeCard && msgText) {
+                msgText.textContent = activeCard.getAttribute('data-msg');
+            }
+        }
+
+        let celebrationAudio;
+        let birthdayMelodyEndsAt = 0;
+
+        async function prepareCelebrationAudio() {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return null;
+
+            try {
+                celebrationAudio ??= new AudioContextClass();
+                if (celebrationAudio.state !== 'running') await celebrationAudio.resume();
+                return celebrationAudio;
+            } catch (error) {
+                console.warn('No se pudo iniciar el sonido de la celebración.', error);
+                return null;
+            }
+        }
+
+        function playCelebrationNote(context, midiNote, start, duration, volume) {
+            const oscillator = context.createOscillator();
+            const gain = context.createGain();
+            oscillator.type = 'triangle';
+            oscillator.frequency.value = 440 * 2 ** ((midiNote - 69) / 12);
+
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(volume, start + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+            oscillator.connect(gain).connect(context.destination);
+            oscillator.onended = () => {
+                oscillator.disconnect();
+                gain.disconnect();
+            };
+            oscillator.start(start);
+            oscillator.stop(start + duration);
+        }
+
+        async function playHappyBirthdayMelody() {
+            const context = await prepareCelebrationAudio();
+            if (!context || context.currentTime < birthdayMelodyEndsAt) return;
+
+            const notes = [
+                [60, 0.75], [60, 0.25], [62, 1], [60, 1], [65, 1], [64, 2],
+                [60, 0.75], [60, 0.25], [62, 1], [60, 1], [67, 1], [65, 2],
+                [60, 0.75], [60, 0.25], [72, 1], [69, 1], [65, 1], [64, 1], [62, 1],
+                [70, 0.75], [70, 0.25], [69, 1], [65, 1], [67, 1], [65, 2]
+            ];
+            const beat = 0.36;
+            let start = context.currentTime + 0.03;
+            for (const [note, beats] of notes) {
+                playCelebrationNote(context, note, start, beats * beat * 0.95, 0.22);
+                start += beats * beat;
+            }
+            birthdayMelodyEndsAt = start;
+        }
+
+        async function playMagicChime(ascending) {
+            const context = await prepareCelebrationAudio();
+            if (!context) return;
+
+            const notes = ascending ? [72, 76, 79] : [79, 76, 72];
+            const start = context.currentTime + 0.02;
+            notes.forEach((note, index) => {
+                playCelebrationNote(context, note, start + index * 0.075, 0.20, 0.10);
+            });
+        }
+
+
+        function unlockAndOpenBox() {
+            if (isUnlockingAnim) return;
+            if (!isBoxLocked) {
+                toggleGiftBox();
+                return;
+            }
+
+            prepareCelebrationAudio();
+            isUnlockingAnim = true;
+            keyAnimState.active = true;
+            keyAnimState.startTime = performance.now();
+
+            animState.targetUserRotY = 0;
+            animState.targetUserRotX = 0.18;
+
+            spawnFloatingSparkles(window.innerWidth / 2, window.innerHeight * 0.52, 10);
+        }
+
+        function toggleGiftBox(forceState = null) {
+            if (isCakeFocused) exitCakeZoomMode();
+            isBoxOpen = forceState !== null ? forceState : !isBoxOpen;
+
+            const btnLabel = document.getElementById('btn-label');
+            const openAlbumBtn = document.getElementById('open-album-btn');
+            const openLetterBtn = document.getElementById('open-letter-btn');
+            const zoomCakeBtn = document.getElementById('zoom-cake-btn');
+            const partyBurstBtn = document.getElementById('party-burst-btn');
+
+            updateCameraFramingTargets();
+
+            if (isBoxOpen) {
+                isBoxLocked = false;
+                animState.targetLidAngle = -Math.PI * 0.58;
+                animState.targetUserRotY = -0.12;
+                animState.targetUserRotX = 0.14;
+
+                if (btnLabel) btnLabel.textContent = 'Cerrar Caja';
+
+                [openAlbumBtn, openLetterBtn, zoomCakeBtn, partyBurstBtn].forEach(btn => {
+                    if (btn) {
+                        btn.classList.remove('hidden');
+                        btn.classList.add('flex');
+                    }
+                });
+
+                playHappyBirthdayMelody();
+
+                triggerBoxSurpriseBurst(7, 130);
+                spawnScreenBalloonsAndConfetti();
+
+                spawnFloatingSparkles(window.innerWidth / 2, window.innerHeight * 0.48, 14);
+            } else {
+                isBoxLocked = true;
+                isUnlockingAnim = false;
+                keyAnimState.active = false;
+
+                animState.targetLidAngle = 0;
+                animState.targetUserRotY = 0;
+                animState.targetUserRotX = 0.22;
+
+                if (padlockGroup && keyGroup && padlockShackle) {
+                    padlockGroup.visible = true;
+                    keyGroup.visible = true;
+                    padlockGroup.scale.setScalar(1);
+                    keyGroup.scale.setScalar(1);
+                    padlockShackle.position.y = 0.22;
+                    padlockShackle.rotation.y = 0;
+                    keyGroup.position.set(
+                        LOCK_KEYHOLE_POS.x,
+                        LOCK_KEYHOLE_POS.y,
+                        LOCK_KEYHOLE_POS.z + 0.48
+                    );
+                    keyGroup.rotation.set(0, 0, 0);
+                }
+
+                playMagicChime(false);
+
+                if (btnLabel) btnLabel.textContent = 'Desbloquear Caja';
+
+                [openAlbumBtn, openLetterBtn, zoomCakeBtn, partyBurstBtn].forEach(btn => {
+                    if (btn) {
+                        btn.classList.add('hidden');
+                        btn.classList.remove('flex');
+                    }
+                });
+
+                clearAllPartyEffects();
+            }
+        }
+
+        function setupInteractionEvents() {
+            const container = document.getElementById('canvas-container');
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+
+            let isDragging = false;
+            let pointerDownPos = { x: 0, y: 0 };
+            let prevPointerPos = { x: 0, y: 0 };
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const albumModal = document.getElementById('album-modal');
+                    const letterModal = document.getElementById('letter-modal');
+                    if (albumModal && !albumModal.classList.contains('hidden')) {
+                        albumModal.classList.add('hidden');
+                        albumModal.classList.remove('flex');
+                    }
+                    if (letterModal && !letterModal.classList.contains('hidden')) {
+                        letterModal.classList.add('hidden');
+                        letterModal.classList.remove('flex');
+                    }
+                    if (isCakeFocused) {
+                        exitCakeZoomMode();
+                    }
+                    if (isBoxOpen || isUnlockingAnim || !isBoxLocked) {
+                        toggleGiftBox(false);
+                    }
+                }
+            });
+
+            container.addEventListener('pointerdown', (e) => {
+                isDragging = true;
+                pointerDownPos = { x: e.clientX, y: e.clientY };
+                prevPointerPos = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - prevPointerPos.x;
+                const dy = e.clientY - prevPointerPos.y;
+                prevPointerPos = { x: e.clientX, y: e.clientY };
+
+                animState.targetUserRotY = Math.max(-1.6, Math.min(1.6, animState.targetUserRotY + dx * 0.0065));
+                animState.targetUserRotX = Math.max(-0.6, Math.min(1.25, animState.targetUserRotX + dy * 0.0065));
+            });
+
+            window.addEventListener('pointerup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                const moveDist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+                if (moveDist < 8) {
+                    handleSceneClick(e.clientX, e.clientY);
+                }
+            });
+
+            function handleSceneClick(clientX, clientY) {
+                mouse.x = (clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(mouse, camera);
+
+                if (isBoxOpen) {
+                    const hits = raycaster.intersectObjects(interactiveObjects, false);
+                    if (hits.length > 0) {
+                        const hitObj = hits[0].object;
+                        const data = hitObj.userData;
+
+                        if (data.type === 'balloon') {
+                            popSingleBalloon(hitObj, clientX, clientY);
+                            return;
+                        }
+
+                        if (data.type === 'candle_single') {
+                            extinguishSingleCandle(data.candleIndex, clientX, clientY);
+                            return;
+                        }
+
+                        if (data.type === 'cake') {
+                            if (!isCakeFocused) {
+                                enterCakeZoomMode();
+                            } else {
+                                blowOrRelightAllCandles();
+                            }
+                            return;
+                        }
+
+                        if (!isCakeFocused) {
+                            if (data.type === 'letter') {
+                                spawnFloatingSparkles(clientX, clientY, 10);
+                                openLetterModal();
+                                return;
+                            }
+
+                            if (data.type === 'album') {
+                                spawnFloatingSparkles(clientX, clientY, 8);
+                                openAlbumModal();
+                                return;
+                            }
+
+                            if (data.type === 'mini_surprise') {
+                                spawnFloatingSparkles(clientX, clientY, 10);
+                                triggerBoxSurpriseBurst(4, 45);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                if (!isCakeFocused) {
+                    const boxHits = raycaster.intersectObjects(boxRootGroup.children, true);
+                    if (boxHits.length > 0) {
+                        if (isBoxLocked) {
+                            unlockAndOpenBox();
+                        } else if (!isBoxOpen) {
+                            toggleGiftBox(true);
+                        }
+                    }
+                }
+            }
+
+            const menuToggleBtn = document.getElementById('corner-menu-toggle');
+            const menuDropdown = document.getElementById('corner-menu-dropdown');
+
+            if (menuToggleBtn && menuDropdown) {
+                menuToggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = menuDropdown.classList.contains('hidden');
+                    if (isHidden) {
+                        menuDropdown.classList.remove('hidden');
+                        menuDropdown.classList.add('flex');
+                    } else {
+                        menuDropdown.classList.add('hidden');
+                        menuDropdown.classList.remove('flex');
+                    }
+                });
+
+                window.addEventListener('pointerdown', (e) => {
+                    if (!menuDropdown.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                        menuDropdown.classList.add('hidden');
+                        menuDropdown.classList.remove('flex');
+                    }
+                });
+            }
+
+            const closeCornerMenu = () => {
+                if (menuDropdown) {
+                    menuDropdown.classList.add('hidden');
+                    menuDropdown.classList.remove('flex');
+                }
+            };
+
+            const toggleBtn = document.getElementById('toggle-box-btn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    closeCornerMenu();
+                    if (isBoxLocked) {
+                        unlockAndOpenBox();
+                    } else {
+                        toggleGiftBox();
+                    }
+                });
+            }
+
+            const zoomCakeBtn = document.getElementById('zoom-cake-btn');
+            if (zoomCakeBtn) {
+                zoomCakeBtn.addEventListener('click', () => {
+                    closeCornerMenu();
+                    if (!isCakeFocused) {
+                        enterCakeZoomMode();
+                    } else {
+                        exitCakeZoomMode();
+                    }
+                });
+            }
+
+            const blowAllZoomBtn = document.getElementById('blow-all-zoom-btn');
+            if (blowAllZoomBtn) {
+                blowAllZoomBtn.addEventListener('click', () => {
+                    blowOrRelightAllCandles();
+                });
+            }
+
+            const exitCakeZoomBtn = document.getElementById('exit-cake-zoom-btn');
+            if (exitCakeZoomBtn) {
+                exitCakeZoomBtn.addEventListener('click', () => {
+                    exitCakeZoomMode();
+                });
+            }
+
+            const openLetterBtn = document.getElementById('open-letter-btn');
+            if (openLetterBtn) {
+                openLetterBtn.addEventListener('click', () => {
+                    closeCornerMenu();
+                    if (isCakeFocused) exitCakeZoomMode();
+                    openLetterModal();
+                });
+            }
+
+            const openAlbumBtn = document.getElementById('open-album-btn');
+            if (openAlbumBtn) {
+                openAlbumBtn.addEventListener('click', () => {
+                    closeCornerMenu();
+                    if (isCakeFocused) exitCakeZoomMode();
+                    openAlbumModal();
+                });
+            }
+
+            const partyBtn = document.getElementById('party-burst-btn');
+            if (partyBtn) {
+                partyBtn.addEventListener('click', (e) => {
+                    closeCornerMenu();
+                    playHappyBirthdayMelody();
+                    triggerBoxSurpriseBurst(6, 100);
+                    spawnScreenBalloonsAndConfetti();
+                    spawnFloatingSparkles(e.clientX, e.clientY, 12);
+                });
+            }
+
+            const albumModal = document.getElementById('album-modal');
+            const msgText = document.getElementById('album-message-text');
+
+            document.getElementById('close-modal-btn').addEventListener('click', () => {
+                albumModal.classList.add('hidden');
+                albumModal.classList.remove('flex');
+            });
+
+            albumModal.addEventListener('click', (e) => {
+                if (e.target === albumModal) {
+                    albumModal.classList.add('hidden');
+                    albumModal.classList.remove('flex');
+                }
+            });
+
+            document.getElementById('carousel-prev-btn').addEventListener('click', () => {
+                currentCarouselIndex = (currentCarouselIndex - 1 + totalPolaroids) % totalPolaroids;
+                updatePolaroidCarouselRotation();
+            });
+
+            document.getElementById('carousel-next-btn').addEventListener('click', () => {
+                currentCarouselIndex = (currentCarouselIndex + 1) % totalPolaroids;
+                updatePolaroidCarouselRotation();
+            });
+
+            document.getElementById('reveal-all-polaroids-btn').addEventListener('click', (e) => {
+                document.querySelectorAll('.polaroid-card').forEach((c, i) => {
+                    setTimeout(() => {
+                        c.classList.remove('unrevealed');
+                        c.classList.add('revealed');
+                    }, i * 110);
+                });
+                playMagicChime(true);
+                spawnFloatingSparkles(e.clientX, e.clientY, 12);
+                const activeCard = document.querySelector(`.polaroid-card[data-index="${currentCarouselIndex}"]`);
+                if (activeCard && msgText) msgText.textContent = activeCard.getAttribute('data-msg');
+            });
+
+            document.getElementById('modal-heart-burst-btn').addEventListener('click', (e) => {
+                playHappyBirthdayMelody();
+                triggerBoxSurpriseBurst(6, 95);
+                spawnFloatingSparkles(e.clientX, e.clientY, 14);
+                spawnScreenBalloonsAndConfetti();
+            });
+
+            const letterModal = document.getElementById('letter-modal');
+            document.getElementById('close-letter-btn').addEventListener('click', () => {
+                letterModal.classList.add('hidden');
+                letterModal.classList.remove('flex');
+            });
+
+            letterModal.addEventListener('click', (e) => {
+                if (e.target === letterModal) {
+                    letterModal.classList.add('hidden');
+                    letterModal.classList.remove('flex');
+                }
+            });
+
+            document.getElementById('letter-celebrate-btn').addEventListener('click', (e) => {
+                playHappyBirthdayMelody();
+                triggerBoxSurpriseBurst(6, 95);
+                spawnFloatingSparkles(e.clientX, e.clientY, 14);
+                spawnScreenBalloonsAndConfetti();
+            });
+
+            document.getElementById('letter-to-album-btn').addEventListener('click', () => {
+                letterModal.classList.add('hidden');
+                letterModal.classList.remove('flex');
+                openAlbumModal();
+            });
+        }
+
+        function openAlbumModal(customMessage = null) {
+            const modal = document.getElementById('album-modal');
+            const msgText = document.getElementById('album-message-text');
+            if (customMessage) {
+                msgText.textContent = customMessage;
+            }
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            updatePolaroidCarouselRotation();
+        }
+
+        function openLetterModal() {
+            const modal = document.getElementById('letter-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function onWindowResize() {
+            if (!camera || !renderer) return;
+            camera.aspect = window.innerWidth / window.innerHeight;
+
+            const isMobilePortrait = window.innerWidth < 640;
+            camera.fov = isMobilePortrait ? 46 : 36;
+            camera.updateProjectionMatrix();
+
+            updateCameraFramingTargets();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animateLoop() {
+            requestAnimationFrame(animateLoop);
+
+            const now = performance.now();
+            updatePartyPhysics();
+
+            if (keyGroup && padlockGroup && padlockShackle) {
+                if (isBoxLocked && !keyAnimState.active) {
+
+                    keyGroup.position.set(
+                        LOCK_KEYHOLE_POS.x + Math.sin(now * 0.0028) * 0.025,
+                        LOCK_KEYHOLE_POS.y + Math.cos(now * 0.0034) * 0.035,
+                        LOCK_KEYHOLE_POS.z + 0.46 + Math.sin(now * 0.0038) * 0.04
+                    );
+                    const profileSwing = Math.sin(now * 0.0025) * 0.08;
+                    keyGroup.rotation.set(
+                        0,
+                        0,
+                        Math.PI / 2 + profileSwing
+                    );
+                } else if (keyAnimState.active) {
+                    const elapsed = now - keyAnimState.startTime;
+                    const p = Math.min(1, elapsed / keyAnimState.duration);
+
+                    if (p < 0.40) {
+
+                        const k = p / 0.40;
+                        const easeK = 1 - Math.pow(1 - k, 3);
+                        keyGroup.position.set(
+                            LOCK_KEYHOLE_POS.x,
+                            LOCK_KEYHOLE_POS.y,
+                            (LOCK_KEYHOLE_POS.z + 0.46) * (1 - easeK) + (LOCK_KEYHOLE_POS.z - 0.02) * easeK
+                        );
+                        keyGroup.rotation.set(0, 0, Math.PI / 2);
+                    } else if (p < 0.78) {
+
+                        const k = (p - 0.40) / 0.38;
+                        const easeTurn = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+                        keyGroup.position.set(
+                            LOCK_KEYHOLE_POS.x,
+                            LOCK_KEYHOLE_POS.y,
+                            LOCK_KEYHOLE_POS.z - 0.02
+                        );
+                        keyGroup.rotation.set(0, 0, Math.PI / 2 - easeTurn * (Math.PI * 0.55));
+
+                        const shackleK = Math.max(0, (k - 0.25) / 0.75);
+                        padlockShackle.position.y = 0.22 + shackleK * 0.13;
+                        padlockShackle.rotation.y = shackleK * 0.92;
+                    } else {
+
+                        const k = (p - 0.78) / 0.22;
+                        const s = Math.max(0.001, 1 - k);
+                        padlockGroup.scale.setScalar(s);
+                        keyGroup.scale.setScalar(s);
+                    }
+
+                    if (p >= 1) {
+                        keyAnimState.active = false;
+                        isUnlockingAnim = false;
+                        padlockGroup.visible = false;
+                        keyGroup.visible = false;
+                        toggleGiftBox(true);
+                    }
+                }
+            }
+
+            animState.lidAngle += (animState.targetLidAngle - animState.lidAngle) * 0.08;
+            if (lidPivotGroup) {
+                lidPivotGroup.rotation.x = animState.lidAngle;
+            }
+
+            if (bowGroup && lidCrossRibbonMesh) {
+                const openProgress = Math.min(1, Math.abs(animState.lidAngle) / (Math.PI * 0.45));
+                bowGroup.scale.setScalar(Math.max(0.001, 0.76 * (1 - openProgress * 0.99)));
+            }
+
+            if (cakeGroup) {
+                cakeAnimState.pos.lerp(cakeAnimState.targetPos, 0.09);
+                cakeGroup.position.copy(cakeAnimState.pos);
+                cakeAnimState.scale += (cakeAnimState.targetScale - cakeAnimState.scale) * 0.09;
+                cakeGroup.scale.setScalar(cakeAnimState.scale);
+
+                if (isCakeFocused) {
+                    cakeGroup.rotation.y = Math.sin(now * 0.0015) * 0.18;
+                } else {
+                    cakeGroup.rotation.y *= 0.9;
+                }
+            }
+
+            candleFlameData.forEach((cData, idx) => {
+                if (cData.lit && cData.flameMesh) {
+                    const s = 1 + Math.sin(now * 0.02 + idx * 1.9) * 0.16;
+                    cData.flameMesh.scale.set(1, s, 1);
+                    cData.flameMesh.rotation.z = Math.sin(now * 0.006 + idx * 2.4) * 0.12;
+                    if (cData.outerGlowMesh) {
+                        cData.outerGlowMesh.scale.set(1 + (s - 1) * 0.5, s, 1 + (s - 1) * 0.5);
+                        cData.outerGlowMesh.rotation.z = cData.flameMesh.rotation.z;
+                    }
+                }
+            });
+
+            animState.camPos.lerp(animState.targetCamPos, 0.065);
+            animState.camLookAt.lerp(animState.targetCamLookAt, 0.065);
+            camera.position.copy(animState.camPos);
+            camera.lookAt(animState.camLookAt);
+
+            animState.userRotX += (animState.targetUserRotX - animState.userRotX) * 0.08;
+            animState.userRotY += (animState.targetUserRotY - animState.userRotY) * 0.08;
+
+            if (boxRootGroup) {
+                const floatY = Math.sin(now * 0.0022) * 0.035;
+                boxRootGroup.position.y = (isBoxOpen ? -0.18 : 0.05) + floatY;
+                boxRootGroup.rotation.y = animState.userRotY;
+                boxRootGroup.rotation.x = animState.userRotX;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.onload = function () {
+            attachImageFallbacks();
+            createBackgroundSparkles();
+            initThreeScene();
+            animateLoop();
+        };
+    </script>
+
+</body>
+
+   <!--
+
+Contáctame:
+
+   * Crea tus diseños sin código
+ https://comparte-amor.vercel.app/
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
+ 
+    * Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+
+-->
+
+</html>
